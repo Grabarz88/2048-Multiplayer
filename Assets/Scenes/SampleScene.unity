@@ -295,7 +295,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486526342}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8, y: 0, z: 0}
+  m_LocalPosition: {x: 7.43, y: 4.78, z: 0}
   m_LocalScale: {x: 1.4332, y: 1.2407, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -478,7 +478,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197175173}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8, y: 0, z: 0}
+  m_LocalPosition: {x: -8, y: 4.87, z: 0}
   m_LocalScale: {x: 1.4332, y: 1.2407, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -578,7 +578,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1916185458}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.38, y: 4.87, z: 0}
   m_LocalScale: {x: 1.4332, y: 1.2407, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -633,10 +633,7 @@ MonoBehaviour:
   kafelek: {fileID: 242912556}
   TableNumberX: 1
   TableNumberY: 0
-  pozycje:
-  - {fileID: 1197175173}
-  - {fileID: 1916185458}
-  - {fileID: 486526342}
+  field: {fileID: 1276975382082961938, guid: b54917ec155d7e941a3f4d71358642b7, type: 3}
 --- !u!4 &2088097665
 Transform:
   m_ObjectHideFlags: 0

@@ -12,7 +12,26 @@ public class FieldScript : MonoBehaviour
     [SerializeField] float positionY;
 
     [SerializeField] bool isTaken;
+    [SerializeField] bool isWall;
+    
 
+    public void PositionSetter(float X, float Y)
+    {
+        positionX = X;
+        positionY = Y;
 
+        this.gameObject.transform.position = new Vector2(positionX, positionY);
+    }
 
+    public float PositionXGetter() {return positionX;}
+    public float PositionYGetter() {return positionY;}
+
+    public void TableNumberSetter(int TableX, int TableY)
+    {
+        TableNumberX = TableX;
+        TableNumberY = TableY;
+    }
+
+    public int TableXGetter() {return TableNumberX;}
+    public int TableYGetter() {return TableNumberY;}
 }
