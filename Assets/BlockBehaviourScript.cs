@@ -10,8 +10,10 @@ public class BlockBehaviourScript : MonoBehaviour
     [SerializeField] int TableNumberY; // Pozycha Y kafelka
     [SerializeField] int value; // Liczba na kafelku
     [SerializeField] GameObject FieldSpawner;
+    FieldScript Fieldscript;
     List<GameObject> fields;
     bool moved = false;
+    string dir;
     
     
     void AfterSpawn(int X, int Y)
@@ -22,27 +24,53 @@ public class BlockBehaviourScript : MonoBehaviour
     }
     
     
-    void OnGUI() 
+    void Update() 
     {
+        
         if(Input.GetButtonDown("MoveRight") && moved == false)
         {
             TableNumberX++;
-            moved = true;
-            fields = FieldSpawner.GetComponent<SpawnField>().fields;
-
-            foreach (GameObject field in fields)
-        {
-            // int fieldXposition = field.GetComponent<FieldScript>().TableXGetter();
-            Debug.Log(field.GetComponent<FieldScript>().TableXGetter());
+            dir = "right";
+            moved = true;    
         }
+        else if(Input.GetButtonDown("MoveLeft") && moved == false)
+        {
+            TableNumberX--;
+            dir = "left";
+            moved = true; 
+        }
+        else if(Input.GetButtonDown("MoveUp") && moved == false)
+        {
+            TableNumberY++;
+            dir = "up";
+            moved = true; 
+        }
+        else if(Input.GetButtonDown("MoveDown") && moved == false)
+        {
+            TableNumberY--;
+            dir = "down";
+            moved = true; 
+        }  
+        // Debug.Log(TableNumberX);
+        // Debug.Log(TableNumberY);
+        fields = FieldSpawner.GetComponent<SpawnField>().fields;
+        foreach (GameObject field in fields)
+        {
+            Fieldscript = field.GetComponent<FieldScript>();
+            if (TableNumberX == Fieldscript.TableXGetter() && TableNumberY == Fieldscript.TableYGetter() && Fieldscript.IsWall() == false)
+            {
+                gameObject.transform.position = new Vector2(Fieldscript.PositionXGetter(), Fieldscript.PositionYGetter());
+            }
+            else if (TableNumberX == Fieldscript.TableXGetter() && TableNumberY == Fieldscript.TableYGetter() && Fieldscript.IsWall() == true)
+            {
+                if(dir == "right"){TableNumberX--;}
+                else if(dir == "left"){TableNumberX++;}
+                else if(dir == "up"){TableNumberY--;}
+                else if(dir == "down"){TableNumberY++;}
+            }
             
         }
-        // else if(Input.GetButtonDown("MoveLeft") && moved == false)
-        // {
-        //     TableNumberX--;
-        //     moved = true;
-        //     kafelek.gameObject.transform.position = new Vector2(pozycje[TableNumberX].gameObject.transform.position.x, pozycje[TableNumberY].gameObject.transform.position.y);
-        // }
+        moved = false;
     }
 
 

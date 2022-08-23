@@ -12,7 +12,7 @@ public class FieldScript : MonoBehaviour
     [SerializeField] float positionY;
 
     [SerializeField] bool isTaken;
-    [SerializeField] bool isWall;
+    [SerializeField] public bool isWall;
     
 
     public void PositionSetter(float X, float Y)
@@ -34,4 +34,7 @@ public class FieldScript : MonoBehaviour
 
     public int TableXGetter() {return TableNumberX;}
     public int TableYGetter() {return TableNumberY;}
+
+    public bool IsTaken() {return isTaken;}
+    public bool IsWall() {return isWall;}
 }
