@@ -7,8 +7,8 @@ public class SpawnField : MonoBehaviour
     //Ten skrypt spawnuje pola po których będa się poruszały kafelki.
     [SerializeField] GameObject field;
     [SerializeField] GameObject wall;
-    [SerializeField] int PodajSzerokoscPlanszy;
-    [SerializeField] int PodajWysokoscPlanszy;
+    [SerializeField] public int PodajSzerokoscPlanszy;
+    [SerializeField] public int PodajWysokoscPlanszy;
     
     
     public List<GameObject> fields = new List<GameObject>(); // Lista pól
