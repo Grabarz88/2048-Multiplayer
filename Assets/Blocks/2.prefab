@@ -95,7 +95,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43f99e49830738e4abd8de58678dde81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TableNumberX: -1
-  TableNumberY: 0
-  value: 0
+  CurrentXTablePosition: 0
+  CurrentYTablePosition: 0
+  TableNumberX: 3
+  TableNumberY: 3
+  value: 2
   FieldSpawner: {fileID: 0}
+  BlockSpawner: {fileID: 0}
+  moved: 0
+  unmovable: 0

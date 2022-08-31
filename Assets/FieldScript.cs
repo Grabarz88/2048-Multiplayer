@@ -11,9 +11,32 @@ public class FieldScript : MonoBehaviour
     [SerializeField] float positionX;
     [SerializeField] float positionY;
 
-    [SerializeField] bool isTaken;
+    [SerializeField] public bool isTaken;
     [SerializeField] public bool isWall;
+    public bool checkedForSpawnPurpose = false;
+
+    [SerializeField] GameObject BlockSpawner;
+    List<GameObject> blocks;
+    BlockBehaviourScript BlockBehaviourScript;
     
+    void Start() 
+    {
+        BlockSpawner = GameObject.Find("BlockSpawner"); // Pamiętaj tu zmienić na BlockSpawner(clone) jak już zrobisz jakieś menu albo coś    
+    }
+    
+    void Update()
+    {
+        blocks = BlockSpawner.GetComponent<SpawnBlock>().blocks;
+        foreach(GameObject block in blocks)
+        {
+            BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+            if(BlockBehaviourScript.CurrentXTablePosition == TableNumberX && BlockBehaviourScript.CurrentYTablePosition == TableNumberY)
+            {
+                isTaken = true;
+            }
+        }
+    }
+
 
     public void PositionSetter(float X, float Y)
     {
