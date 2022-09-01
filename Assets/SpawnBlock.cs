@@ -88,12 +88,16 @@ public class SpawnBlock : MonoBehaviour
         
         void SpawnNewBlocks()
         {
+            Debug.Log("SpawnNewBlocks");
             busy = true;
             foreach(GameObject block in blocks)
             {
-                BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-                BlockBehaviourScript.moving = false;
-                BlockBehaviourScript.unmovable = false;
+                if(block != null)
+                {
+                    BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                    BlockBehaviourScript.moving = false;
+                    BlockBehaviourScript.unmovable = false;
+                }
             }
 
             int fieldCounter = 0;
@@ -136,18 +140,24 @@ public class SpawnBlock : MonoBehaviour
 
 
     
-    public void checkSpawnReady()
+    public void Update()
     {
+        Debug.Log("checkSpawnReady");
+        Debug.Log("bloków: " + blocks.Count);
         int blockCounter = 0;
+        int blockCounter2 = 0;
         foreach(GameObject block in blocks)
         {
+           
            if (block != null)
            {
-             BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-             if (BlockBehaviourScript.isUnMovable() == true) {blockCounter++;}
+                BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                blockCounter2++;
+                if (BlockBehaviourScript.isUnMovable() == true) {blockCounter++;}
+                Debug.Log("blockCounter: " + blockCounter);
            }
         }
-        if (blockCounter == blocks.Count) {SpawnNewBlocks();}
+        if (blockCounter == blockCounter2) {SpawnNewBlocks();}
     }
 
     public void levelUp(int X, int Y, int previousValue)
@@ -158,6 +168,7 @@ public class SpawnBlock : MonoBehaviour
             BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
             if (BlockBehaviourScript.CurrentXTablePosition == X && BlockBehaviourScript.CurrentYTablePosition == Y)
             {
+                removeBlockFromList(block.name);
                 Destroy(block);
             }
             

@@ -77,7 +77,6 @@ public class BlockBehaviourScript : MonoBehaviour
             dir = "down";
             moving = true; 
         }  
-
         fields = FieldSpawner.GetComponent<SpawnField>().fields;
         foreach (GameObject field in fields)
         {
@@ -128,6 +127,7 @@ public class BlockBehaviourScript : MonoBehaviour
                                             Debug.Log(block);
                                             BlockSpawner.GetComponent<SpawnBlock>().removeBlockFromList(block.name);
                                             Destroy(gameObject);
+                                            // BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
                                         }
                                         else if(NextBlockBehaviourScript.getValue() != value)
                                         {
@@ -135,7 +135,7 @@ public class BlockBehaviourScript : MonoBehaviour
                                             TableNumberY = CurrentYTablePosition;
                                             unmovable = true;
                                             moving = false;
-                                            BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
+                                            // BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
                                         }
                                     }
                                 }
@@ -151,7 +151,7 @@ public class BlockBehaviourScript : MonoBehaviour
                     else if(dir == "down"){TableNumberY++;}
                     unmovable = true;
                     moving = false;
-                    BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
+                    // BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
                 } 
             }
         }
