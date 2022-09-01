@@ -149,6 +149,7 @@ public class SpawnBlock : MonoBehaviour
         foreach(GameObject block in blocks)
         {
            
+           if(block == null){blocks.Remove(block);}
            if (block != null)
            {
                 BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
