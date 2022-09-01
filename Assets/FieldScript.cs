@@ -29,10 +29,13 @@ public class FieldScript : MonoBehaviour
         blocks = BlockSpawner.GetComponent<SpawnBlock>().blocks;
         foreach(GameObject block in blocks)
         {
+            if (block != null)
+            {
             BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
             if(BlockBehaviourScript.CurrentXTablePosition == TableNumberX && BlockBehaviourScript.CurrentYTablePosition == TableNumberY)
             {
                 isTaken = true;
+            }
             }
         }
     }

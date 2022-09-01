@@ -110,27 +110,33 @@ public class BlockBehaviourScript : MonoBehaviour
                         blocks = BlockSpawner.GetComponent<SpawnBlock>().blocks;
                         foreach (GameObject block in blocks)
                         {
-                            NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-                            if ((NextBlockBehaviourScript.CurrentXTablePosition == TableNumberX) && (NextBlockBehaviourScript.CurrentYTablePosition == TableNumberY) && NextBlockBehaviourScript != this.gameObject.GetComponent<BlockBehaviourScript>() )
+                            if(block != null)
                             {
-                                if(NextBlockBehaviourScript.isUnMovable() == false)
+                                NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                                if ((NextBlockBehaviourScript.CurrentXTablePosition == TableNumberX) && (NextBlockBehaviourScript.CurrentYTablePosition == TableNumberY) && NextBlockBehaviourScript != this.gameObject.GetComponent<BlockBehaviourScript>() )
                                 {
-                                    moving = false;
-                                }
-                                else if (NextBlockBehaviourScript.isUnMovable() == true)
-                                {
-                                    if (NextBlockBehaviourScript.getValue() == value)
+                                    if(NextBlockBehaviourScript.isUnMovable() == false)
                                     {
-                                        NextBlockBehaviourScript.levelUp();
-                                        Destroy(gameObject);
-                                    }
-                                    else if(NextBlockBehaviourScript.getValue() != value)
-                                    {
-                                        TableNumberX = CurrentXTablePosition;
-                                        TableNumberY = CurrentYTablePosition;
-                                        unmovable = true;
                                         moving = false;
-                                        BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
+                                    }
+                                    else if (NextBlockBehaviourScript.isUnMovable() == true)
+                                    {
+                                        if (NextBlockBehaviourScript.getValue() == value)
+                                        {
+                                            NextBlockBehaviourScript.levelUp();
+                                            // tu funkcja usuwająca blok z tablicy
+                                            Debug.Log(block);
+                                            BlockSpawner.GetComponent<SpawnBlock>().removeBlockFromList(block.name);
+                                            Destroy(gameObject);
+                                        }
+                                        else if(NextBlockBehaviourScript.getValue() != value)
+                                        {
+                                            TableNumberX = CurrentXTablePosition;
+                                            TableNumberY = CurrentYTablePosition;
+                                            unmovable = true;
+                                            moving = false;
+                                            BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
+                                        }
                                     }
                                 }
                             }

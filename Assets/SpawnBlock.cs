@@ -141,8 +141,11 @@ public class SpawnBlock : MonoBehaviour
         int blockCounter = 0;
         foreach(GameObject block in blocks)
         {
-            BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-            if (BlockBehaviourScript.isUnMovable() == true) {blockCounter++;}
+           if (block != null)
+           {
+             BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+             if (BlockBehaviourScript.isUnMovable() == true) {blockCounter++;}
+           }
         }
         if (blockCounter == blocks.Count) {SpawnNewBlocks();}
     }
@@ -161,6 +164,20 @@ public class SpawnBlock : MonoBehaviour
             // if(value == 2){Instantiate(block4);}
         }
         busy = false;
+    }
+
+    public void removeBlockFromList(string blockToRemove)
+    {
+        foreach(GameObject block in blocks)
+        {
+            if (block.gameObject.name == blockToRemove)
+            {
+                Debug.Log("remove");
+                blocks.Remove(gameObject);
+            }
+        }
+        
+
     }
 
     }
