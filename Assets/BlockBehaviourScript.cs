@@ -4,197 +4,50 @@ using UnityEngine;
 
 public class BlockBehaviourScript : MonoBehaviour
 {
-  
-    //Ten skrypt odpowiada za ruch kafelek.
-    [SerializeField] public int CurrentXTablePosition;
-    [SerializeField] public int CurrentYTablePosition;
+    [SerializeField] public int TableNumberX;
+    [SerializeField] public int TableNumberY;
 
-    [SerializeField] int TableNumberX; // Pozycja X kafelka
-    [SerializeField] int TableNumberY; // Pozycha Y kafelka
-    [SerializeField] int value; // Liczba na kafelku
+    [SerializeField] public float positionX;
+    [SerializeField] public float positionY;
+
+
     [SerializeField] GameObject FieldSpawner;
-    [SerializeField] GameObject BlockSpawner;
+    SpawnField SpawnField;
+
+
+    public List<GameObject> fields;
     FieldScript FieldScript;
-    BlockBehaviourScript NextBlockBehaviourScript;
-    List<GameObject> fields;
-    List<GameObject> blocks;
-    bool moved = false;
-    bool unmovable = false;
-    string dir;
+
     
     
-    void AfterSpawn(int X, int Y)
+    void Start()
     {
-        CurrentXTablePosition = X;
-        CurrentYTablePosition = Y;
-        TableNumberX = CurrentXTablePosition;
-        TableNumberY = CurrentYTablePosition;
-        gameObject.transform.position = new Vector2(CurrentXTablePosition, CurrentYTablePosition);
+
+
+
     }
     
-    
-    void Update() 
+    public void AfterSpawn(int x, int y)
     {
-        
-        if(Input.GetButtonDown("MoveRight") && moved == false)
-        {
-            TableNumberX++;
-            dir = "right";
-            moved = true;    
-        }
-        else if(Input.GetButtonDown("MoveLeft") && moved == false)
-        {
-            TableNumberX--;
-            dir = "left";
-            moved = true; 
-        }
-        else if(Input.GetButtonDown("MoveUp") && moved == false)
-        {
-            TableNumberY++;
-            dir = "up";
-            moved = true; 
-        }
-        else if(Input.GetButtonDown("MoveDown") && moved == false)
-        {
-            TableNumberY--;
-            dir = "down";
-            moved = true; 
-        }  
-        fields = FieldSpawner.GetComponent<SpawnField>().fields;
+        FieldSpawner = GameObject.Find("FieldSpawner");
+        SpawnField = FieldSpawner.GetComponent<SpawnField>();
+        fields = SpawnField.fields;
+        Debug.Log("AfterSpawn");
+        TableNumberX = x;
+        TableNumberY = y;
         foreach (GameObject field in fields)
         {
-            FieldScript = field.GetComponent<FieldScript>();
-            if (TableNumberX == FieldScript.TableXGetter() && TableNumberY == FieldScript.TableYGetter() && FieldScript.IsWall() == false)
+            Debug.Log("foreach");
+            FieldScript = field.gameObject.GetComponent<FieldScript>();
+            if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
             {
-               if (FieldScript.IsTaken() == false)
-               {
-                    gameObject.transform.position = new Vector2(FieldScript.PositionXGetter(), FieldScript.PositionYGetter());
-                    CurrentXTablePosition = TableNumberX;
-                    CurrentYTablePosition = TableNumberY;
-               }
-               else if (FieldScript.IsTaken() == true)
-               {
-                    blocks = BlockSpawner.GetComponent<SpawnBlock>().blocks;
-                    foreach (GameObject block in blocks)
-                    {
-                        NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-                        if ((NextBlockBehaviourScript.CurrentXTablePosition == TableNumberX) && (NextBlockBehaviourScript.CurrentYTablePosition == TableNumberY))
-                        {
-                            if(NextBlockBehaviourScript.isUnMovable() == true)
-                            {
-                                moved = false;
-                            }
-<<<<<<< HEAD
-                        }
-                        CurrentXTablePosition = TableNumberX;
-                        CurrentYTablePosition = TableNumberY;
-                        moving = false;
-                        if (dir == "right"){TableNumberX++;}
-                        else if (dir == "left"){TableNumberX--;}
-                        else if (dir == "up"){TableNumberY++;}
-                        else if (dir == "down"){TableNumberY--;}
-                    }
-                        else if (FieldScript.IsTaken() == true)
-                    {
-                        blocks = BlockSpawner.GetComponent<SpawnBlock>().blocks;
-                        foreach (GameObject block in blocks)
-                        {
-                            if(block != null)
-                            {
-                                NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-                                if ((NextBlockBehaviourScript.CurrentXTablePosition == TableNumberX) && (NextBlockBehaviourScript.CurrentYTablePosition == TableNumberY) && NextBlockBehaviourScript != this.gameObject.GetComponent<BlockBehaviourScript>() )
-                                {
-                                    if(NextBlockBehaviourScript.isUnMovable() == false)
-                                    {
-                                        moving = false;
-                                    }
-                                    else if (NextBlockBehaviourScript.isUnMovable() == true)
-                                    {
-                                        if (NextBlockBehaviourScript.getValue() == value)
-                                        {
-                                            
-                                            // -----------Test ---------------
-                                        if(dir == "right"){TableNumberX--;}
-                                        else if(dir == "left"){TableNumberX++;}
-                                        else if(dir == "up"){TableNumberY--;}
-                                        else if(dir == "down"){TableNumberY++;}
-                                        unmovable = true;
-                                        moving = false;
-
-                                            //--------------------------------
-                                            
-                                            
-                                            
-                                            
-                                            // NextBlockBehaviourScript.levelUp();
-                                            // // tu funkcja usuwająca blok z tablicy
-                                            // Debug.Log(block);
-                                            // BlockSpawner.GetComponent<SpawnBlock>().removeBlockFromList(block.name);
-                                            // Destroy(gameObject);
-                                            // BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
-                                        }
-                                        else if(NextBlockBehaviourScript.getValue() != value)
-                                        {
-                                            TableNumberX = CurrentXTablePosition;
-                                            TableNumberY = CurrentYTablePosition;
-                                            unmovable = true;
-                                            moving = false;
-                                            // BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
-                                        }
-                                    }
-=======
-                            else if (NextBlockBehaviourScript.isUnMovable() == false)
-                            {
-                                if (NextBlockBehaviourScript.getValue() == value)
-                                {
-                                    NextBlockBehaviourScript.levelUp();
-                                    Destroy(gameObject);
-                                    
-                                }
-                                else if(NextBlockBehaviourScript.getValue() != value)
-                                {
-                                    TableNumberX = CurrentXTablePosition;
-                                    TableNumberY = CurrentYTablePosition;
-                                    moved = false;
->>>>>>> parent of c9698da (Big Update. Finding issues tomorrow)
-                                }
-                            }
-                        }
-                    }
-<<<<<<< HEAD
-                }
-                else if (FieldScript.IsWall() == true)
-                {
-                    if(dir == "right"){TableNumberX--;}
-                    else if(dir == "left"){TableNumberX++;}
-                    else if(dir == "up"){TableNumberY--;}
-                    else if(dir == "down"){TableNumberY++;}
-                    unmovable = true;
-                    moving = false;
-                    // BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
-                } 
-=======
-               }
->>>>>>> parent of c9698da (Big Update. Finding issues tomorrow)
+                Debug.Log("znalazłem");
+                positionX = FieldScript.positionX;
+                positionY = FieldScript.positionY;
+                FieldScript.isTaken = true; //Póki co, jest to potrzebne do testów. W dalszym etapie produkcji, pola chyba muszą same sprawdzać czy są zajęte
             }
-            else if (TableNumberX == FieldScript.TableXGetter() && TableNumberY == FieldScript.TableYGetter() && FieldScript.IsWall() == true)
-            {
-                if(dir == "right"){TableNumberX--;}
-                else if(dir == "left"){TableNumberX++;}
-                else if(dir == "up"){TableNumberY--;}
-                else if(dir == "down"){TableNumberY++;}
-                unmovable = true;
-            }
-            
         }
-        moved = false;
-    }
-
-    public bool isUnMovable() {return unmovable;}
-    public int getValue() {return value;}
-    public void levelUp()
-    {
-        BlockSpawner.GetComponent<SpawnBlock>().levelUp(CurrentXTablePosition, CurrentYTablePosition, value);
+        this.gameObject.transform.position = new Vector2(positionX, positionY);
     }
 
 
