@@ -18,83 +18,73 @@ public class BlockBehaviourScript : MonoBehaviour
     BlockBehaviourScript NextBlockBehaviourScript;
     List<GameObject> fields;
     List<GameObject> blocks;
-    public bool moving = false;
-    public bool unmovable = false;
+    bool moved = false;
+    bool unmovable = false;
     string dir;
     
     
-    // void Start()
-    // {
-    //     FieldSpawner = GameObject.Find("FieldSpawner"); // Pamiętaj dodać na końcu (clone) jak już zrobisz jakieś menu itp.
-    //     BlockSpawner = GameObject.Find("BlockSpawner");
-    // }
-    
-    public void AfterSpawn(int X, int Y)
+    void AfterSpawn(int X, int Y)
     {
         CurrentXTablePosition = X;
         CurrentYTablePosition = Y;
         TableNumberX = CurrentXTablePosition;
         TableNumberY = CurrentYTablePosition;
-
-        FieldSpawner = GameObject.Find("FieldSpawner");
-        BlockSpawner = GameObject.Find("BlockSpawner");
-        fields = FieldSpawner.GetComponent<SpawnField>().fields;
-        foreach(GameObject field in fields)
-        {
-            FieldScript = field.GetComponent<FieldScript>();
-            if (TableNumberX == FieldScript.TableXGetter() && TableNumberY == FieldScript.TableYGetter())
-            {
-                gameObject.transform.position = new Vector2(FieldScript.PositionXGetter(), FieldScript.PositionYGetter());
-            }
-        }
+        gameObject.transform.position = new Vector2(CurrentXTablePosition, CurrentYTablePosition);
     }
     
     
     void Update() 
     {
         
-        if(Input.GetButtonDown("MoveRight") && moving == false && unmovable == false)
+        if(Input.GetButtonDown("MoveRight") && moved == false)
         {
             TableNumberX++;
             dir = "right";
-            moving = true;    
+            moved = true;    
         }
-        else if(Input.GetButtonDown("MoveLeft") && moving == false && unmovable == false)
+        else if(Input.GetButtonDown("MoveLeft") && moved == false)
         {
             TableNumberX--;
             dir = "left";
-            moving = true; 
+            moved = true; 
         }
-        else if(Input.GetButtonDown("MoveUp") && moving == false && unmovable == false)
+        else if(Input.GetButtonDown("MoveUp") && moved == false)
         {
             TableNumberY++;
             dir = "up";
-            moving = true; 
+            moved = true; 
         }
-        else if(Input.GetButtonDown("MoveDown") && moving == false && unmovable == false)
+        else if(Input.GetButtonDown("MoveDown") && moved == false)
         {
             TableNumberY--;
             dir = "down";
-            moving = true; 
+            moved = true; 
         }  
         fields = FieldSpawner.GetComponent<SpawnField>().fields;
         foreach (GameObject field in fields)
         {
             FieldScript = field.GetComponent<FieldScript>();
-            if (TableNumberX == FieldScript.TableXGetter() && TableNumberY == FieldScript.TableYGetter())
-            {    
-                if(FieldScript.IsWall() == false)
-                {
-                    if (FieldScript.IsTaken() == false)
+            if (TableNumberX == FieldScript.TableXGetter() && TableNumberY == FieldScript.TableYGetter() && FieldScript.IsWall() == false)
+            {
+               if (FieldScript.IsTaken() == false)
+               {
+                    gameObject.transform.position = new Vector2(FieldScript.PositionXGetter(), FieldScript.PositionYGetter());
+                    CurrentXTablePosition = TableNumberX;
+                    CurrentYTablePosition = TableNumberY;
+               }
+               else if (FieldScript.IsTaken() == true)
+               {
+                    blocks = BlockSpawner.GetComponent<SpawnBlock>().blocks;
+                    foreach (GameObject block in blocks)
                     {
-                        gameObject.transform.position = new Vector2(FieldScript.PositionXGetter(), FieldScript.PositionYGetter());
-                        foreach (GameObject leftField in fields)
+                        NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                        if ((NextBlockBehaviourScript.CurrentXTablePosition == TableNumberX) && (NextBlockBehaviourScript.CurrentYTablePosition == TableNumberY))
                         {
-                            FieldScript = leftField.GetComponent<FieldScript>();
-                            if (FieldScript.TableXGetter() == CurrentXTablePosition && FieldScript.TableYGetter() == CurrentYTablePosition)
+                            if(NextBlockBehaviourScript.isUnMovable() == true)
                             {
-                                FieldScript.isTaken = false;
+                                moved = false;
                             }
+<<<<<<< HEAD
                         }
                         CurrentXTablePosition = TableNumberX;
                         CurrentYTablePosition = TableNumberY;
@@ -152,10 +142,26 @@ public class BlockBehaviourScript : MonoBehaviour
                                             // BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
                                         }
                                     }
+=======
+                            else if (NextBlockBehaviourScript.isUnMovable() == false)
+                            {
+                                if (NextBlockBehaviourScript.getValue() == value)
+                                {
+                                    NextBlockBehaviourScript.levelUp();
+                                    Destroy(gameObject);
+                                    
+                                }
+                                else if(NextBlockBehaviourScript.getValue() != value)
+                                {
+                                    TableNumberX = CurrentXTablePosition;
+                                    TableNumberY = CurrentYTablePosition;
+                                    moved = false;
+>>>>>>> parent of c9698da (Big Update. Finding issues tomorrow)
                                 }
                             }
                         }
                     }
+<<<<<<< HEAD
                 }
                 else if (FieldScript.IsWall() == true)
                 {
@@ -167,9 +173,21 @@ public class BlockBehaviourScript : MonoBehaviour
                     moving = false;
                     // BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
                 } 
+=======
+               }
+>>>>>>> parent of c9698da (Big Update. Finding issues tomorrow)
             }
+            else if (TableNumberX == FieldScript.TableXGetter() && TableNumberY == FieldScript.TableYGetter() && FieldScript.IsWall() == true)
+            {
+                if(dir == "right"){TableNumberX--;}
+                else if(dir == "left"){TableNumberX++;}
+                else if(dir == "up"){TableNumberY--;}
+                else if(dir == "down"){TableNumberY++;}
+                unmovable = true;
+            }
+            
         }
-        
+        moved = false;
     }
 
     public bool isUnMovable() {return unmovable;}

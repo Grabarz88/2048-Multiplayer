@@ -11,14 +11,10 @@ public class FieldScript : MonoBehaviour
     [SerializeField] float positionX;
     [SerializeField] float positionY;
 
-    [SerializeField] public bool isTaken;
+    [SerializeField] bool isTaken;
     [SerializeField] public bool isWall;
-    public bool checkedForSpawnPurpose = false;
-
-    [SerializeField] GameObject BlockSpawner;
-    List<GameObject> blocks;
-    BlockBehaviourScript BlockBehaviourScript;
     
+<<<<<<< HEAD
     void Start() 
     {
         BlockSpawner = GameObject.Find("BlockSpawner"); // Pamiętaj tu zmienić na BlockSpawner(clone) jak już zrobisz jakieś menu albo coś    
@@ -40,6 +36,8 @@ public class FieldScript : MonoBehaviour
         }
     }
 
+=======
+>>>>>>> parent of c9698da (Big Update. Finding issues tomorrow)
 
     public void PositionSetter(float X, float Y)
     {

@@ -19,7 +19,6 @@ public class SpawnBlock : MonoBehaviour
 
     [SerializeField] GameObject FieldSpawner;
     SpawnField SpawnField;
-    FieldScript FieldScript;
     public BlockBehaviourScript BlockBehaviourScript;
     public List<GameObject> fields;
     public List<GameObject> blocks;
@@ -28,22 +27,11 @@ public class SpawnBlock : MonoBehaviour
     int placableMinY;
     int placableMaxY;
     
-    bool busy;
-    bool updating;
-    int allBlocksNumber = 1;
 
     void Start()
     {
         SpawnField = FieldSpawner.GetComponent<SpawnField>();
         fields = SpawnField.fields;
-        
-        
-        GameObject block0 = Instantiate(block2);
-        blocks.Add(block0);
-        block0.GetComponent<BlockBehaviourScript>().AfterSpawn(2, 2);
-
-        
-
         // BARDZO SŁABY POMYSŁ NA ZNAJDYWANIE PRZEDZIAŁU DOSTĘPNYCH PÓL
         //-------------------------------------------------------------
         // placableMinX = SpawnField.PodajSzerokoscPlanszy;
@@ -85,6 +73,7 @@ public class SpawnBlock : MonoBehaviour
         //JEŻELI ZNAJDZIESZ DOWOLNE WOLNE POLE, WYZERUJ LICZNIK I POSTAW TAM KAFELEK.
         //JEŻELI LICZNIK DOJDZIE DO OSTATNIEJ POZYCJI W LIŚCIE ZAKOŃCZ GRĘ.
         
+<<<<<<< HEAD
         
         public void SpawnNewBlocks()
         {
@@ -166,10 +155,18 @@ public class SpawnBlock : MonoBehaviour
     //     if (blockCounter == blockCounter2) {SpawnNewBlocks();}
     // }
     //--------------------------------------------------------------------------------------------------------------------------
+=======
+
+
+    
+    void Update()
+    {
+        
+    }
+>>>>>>> parent of c9698da (Big Update. Finding issues tomorrow)
 
     public void levelUp(int X, int Y, int previousValue)
     {
-        busy = true;
         foreach (GameObject block in blocks)
         {
             BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
@@ -181,7 +178,6 @@ public class SpawnBlock : MonoBehaviour
             
             // if(value == 2){Instantiate(block4);}
         }
-        busy = false;
     }
 
     public void removeBlockFromList(string blockToRemove)
