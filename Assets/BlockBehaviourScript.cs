@@ -122,11 +122,25 @@ public class BlockBehaviourScript : MonoBehaviour
                                     {
                                         if (NextBlockBehaviourScript.getValue() == value)
                                         {
-                                            NextBlockBehaviourScript.levelUp();
-                                            // tu funkcja usuwająca blok z tablicy
-                                            Debug.Log(block);
-                                            BlockSpawner.GetComponent<SpawnBlock>().removeBlockFromList(block.name);
-                                            Destroy(gameObject);
+                                            
+                                            // -----------Test ---------------
+                                        if(dir == "right"){TableNumberX--;}
+                                        else if(dir == "left"){TableNumberX++;}
+                                        else if(dir == "up"){TableNumberY--;}
+                                        else if(dir == "down"){TableNumberY++;}
+                                        unmovable = true;
+                                        moving = false;
+
+                                            //--------------------------------
+                                            
+                                            
+                                            
+                                            
+                                            // NextBlockBehaviourScript.levelUp();
+                                            // // tu funkcja usuwająca blok z tablicy
+                                            // Debug.Log(block);
+                                            // BlockSpawner.GetComponent<SpawnBlock>().removeBlockFromList(block.name);
+                                            // Destroy(gameObject);
                                             // BlockSpawner.GetComponent<SpawnBlock>().checkSpawnReady();
                                         }
                                         else if(NextBlockBehaviourScript.getValue() != value)

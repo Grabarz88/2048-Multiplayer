@@ -86,9 +86,12 @@ public class SpawnBlock : MonoBehaviour
         //JEŻELI LICZNIK DOJDZIE DO OSTATNIEJ POZYCJI W LIŚCIE ZAKOŃCZ GRĘ.
         
         
-        void SpawnNewBlocks()
+        public void SpawnNewBlocks()
         {
             Debug.Log("SpawnNewBlocks");
+            Debug.Log("-----");
+            Debug.Log("Blocks count:" + blocks.Count);
+            Debug.Log("-----");
             busy = true;
             foreach(GameObject block in blocks)
             {
@@ -140,26 +143,29 @@ public class SpawnBlock : MonoBehaviour
 
 
     
-    public void Update()
-    {
-        Debug.Log("checkSpawnReady");
-        Debug.Log("bloków: " + blocks.Count);
-        int blockCounter = 0;
-        int blockCounter2 = 0;
-        foreach(GameObject block in blocks)
-        {
+    
+    //-------------------------------- Spróbujmy to przenieść do innego obiektu który będzie bufforem -------------------
+    // public void Update()
+    // {
+    //     Debug.Log("checkSpawnReady");
+    //     Debug.Log("bloków: " + blocks.Count);
+    //     int blockCounter = 0;
+    //     int blockCounter2 = 0;
+    //     foreach(GameObject block in blocks)
+    //     {
            
-           if(block == null){blocks.Remove(block);}
-           if (block != null)
-           {
-                BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-                blockCounter2++;
-                if (BlockBehaviourScript.isUnMovable() == true) {blockCounter++;}
-                Debug.Log("blockCounter: " + blockCounter);
-           }
-        }
-        if (blockCounter == blockCounter2) {SpawnNewBlocks();}
-    }
+    //        if(block == null){blocks.Remove(block);}
+    //        if (block != null)
+    //        {
+    //             BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+    //             blockCounter2++;
+    //             if (BlockBehaviourScript.isUnMovable() == true) {blockCounter++;}
+    //             Debug.Log("blockCounter: " + blockCounter);
+    //        }
+    //     }
+    //     if (blockCounter == blockCounter2) {SpawnNewBlocks();}
+    // }
+    //--------------------------------------------------------------------------------------------------------------------------
 
     public void levelUp(int X, int Y, int previousValue)
     {
