@@ -482,7 +482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   block2: {fileID: 6548639278486057283, guid: 202142c005bce9844918cd3731b6cc8d, type: 3}
-  block4: {fileID: 0}
+  block4: {fileID: 2982866698252926593, guid: 6146331017b3e3f458206963b6009a89, type: 3}
   block8: {fileID: 0}
   block16: {fileID: 0}
   block32: {fileID: 0}
@@ -674,8 +674,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   field: {fileID: 1276975382082961938, guid: b54917ec155d7e941a3f4d71358642b7, type: 3}
   wall: {fileID: 4793780333399501271, guid: 035638171e0b17843bd8f0aee9cb5544, type: 3}
-  PodajSzerokoscPlanszy: 4
-  PodajWysokoscPlanszy: 4
+  PodajSzerokoscPlanszy: 6
+  PodajWysokoscPlanszy: 6
   fields: []
 --- !u!4 &1969988883
 Transform:

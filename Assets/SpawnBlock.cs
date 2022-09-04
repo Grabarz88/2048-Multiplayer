@@ -88,6 +88,19 @@ public class SpawnBlock : MonoBehaviour
            FieldScript.checkedForSpawnPurpose = false;
         }
     }
+
+    public void BlockLevelUp(int x, int y, string dir)
+    {
+        GameObject block = Instantiate(block4);
+        blocks.Add(block);
+        block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
+        block.GetComponent<BlockBehaviourScript>().dir = dir;
+        block.GetComponent<BlockBehaviourScript>().unmovable = false;
+        block.gameObject.name = "block" + blockID;
+        blockID++; 
+
+
+    }
 }
 
 

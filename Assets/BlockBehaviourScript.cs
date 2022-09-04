@@ -12,19 +12,111 @@ public class BlockBehaviourScript : MonoBehaviour
 
 
     [SerializeField] GameObject FieldSpawner;
+    [SerializeField] GameObject BlockSpawner;
     SpawnField SpawnField;
-
+    SpawnBlock SpawnBlock;
+    BlockBehaviourScript NextBlockBehaviourScript;
 
     public List<GameObject> fields;
+    public List<GameObject> blocks;
     FieldScript FieldScript;
 
-    
+    [SerializeField] public int value;
+    public string dir;
+    [SerializeField] public bool unmovable;
+
     
     void Start()
     {
+    FieldSpawner = GameObject.Find("FieldSpawner");
+    SpawnField = FieldSpawner.GetComponent<SpawnField>();
+    fields = SpawnField.fields;
+    dir = "empty";    
+    }
 
 
 
+    void Update()
+    {
+        if(Input.GetButtonDown("MoveRight")){dir = "right";}
+        if(Input.GetButtonDown("MoveLeft")){dir = "left";}
+        if(Input.GetButtonDown("MoveUp")){dir = "up";}
+        if(Input.GetButtonDown("MoveDown")){dir = "down";}
+
+        if(unmovable == false)
+        {
+            if(dir == "right"){TableNumberX++;}
+            else if(dir == "left"){TableNumberX--;}
+            else if(dir == "up"){TableNumberY++;}
+            else if(dir == "down"){TableNumberY--;}
+
+            foreach(GameObject field in fields)
+            {
+                FieldScript = field.GetComponent<FieldScript>();
+                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
+                {
+                    if(FieldScript.isWall == true)
+                    {
+                        if(dir == "right"){TableNumberX--;}
+                        else if(dir == "left"){TableNumberX++;}
+                        else if(dir == "up"){TableNumberY--;}
+                        else if(dir == "down"){TableNumberY++;}
+                        unmovable = true; //Pole jest ścianą, więc cofamy zmianę wartości pozycji w tabeli a potem deklarujemy że ten blok już się nie poruszy.
+                    }
+                    else if(FieldScript.isTaken == true && dir != "empty")
+                    {
+                        BlockSpawner = GameObject.Find("BlockSpawner");
+                        SpawnBlock = BlockSpawner.GetComponent<SpawnBlock>();
+                        blocks = SpawnBlock.blocks;
+                        try
+                        {
+                        foreach(GameObject block in blocks)
+                        {
+                            if(block != null)
+                            {
+                                NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                                if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value == value)
+                                {
+                                    //Przypadek w którym następuje zderzenie dwóch kafelków o tej samej wartości
+                                    Debug.Log("Tu powstanie większy blok: " + TableNumberX + " " + TableNumberY);
+                                    Debug.Log("Teraz, to pole będzie zajęte");
+                                    Destroy(block);
+                                    SpawnBlock.BlockLevelUp(NextBlockBehaviourScript.TableNumberX, NextBlockBehaviourScript.TableNumberY, dir);
+                                    Destroy(this.gameObject);
+                                    ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
+                                    //Tutaj wywołać funkcję robiącą nowy kafelek
+                                }
+                                else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == false)
+                                {
+                                    //Przypadek w którym nastąpiło zderzenie, ale uderzony kafelek może się jeszcze poruszać
+                                    if(dir == "right"){TableNumberX--;} //Wycofujemy zwiększenie wartości. Następna iteracja Update na powrót ją zwiększy i znowu sprawdzi, czy następne pole jest już wolne
+                                    else if(dir == "left"){TableNumberX++;}
+                                    else if(dir == "up"){TableNumberY--;}
+                                    else if(dir == "down"){TableNumberY++;} 
+                                }
+                                else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value != value)
+                                {
+                                    //Przypadek w którym nastąpiło zderzenie kafelków o różnych wartościach
+                                    if(dir == "right"){TableNumberX--;}
+                                    else if(dir == "left"){TableNumberX++;}
+                                    else if(dir == "up"){TableNumberY--;}
+                                    else if(dir == "down"){TableNumberY++;}
+                                    unmovable = true;
+                                }
+                            }
+                        }
+                        }
+                        catch{}
+                    }
+                    else if(FieldScript.isTaken == false)
+                    {
+                        transform.position = new Vector2(FieldScript.positionX, FieldScript.positionY); //Ponieważ nie zmieniamy wartości unmovable, to bloczek się przesunie i będzie mógł ponownie sprawdzanie z Update, tym razem dla następnego kafelka.
+                        TakeNewField(TableNumberX, TableNumberY);
+                        ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
+                    }
+                }
+            }
+        }
     }
     
     public void AfterSpawn(int x, int y)
@@ -37,7 +129,6 @@ public class BlockBehaviourScript : MonoBehaviour
         TableNumberY = y;
         foreach (GameObject field in fields)
         {
-            Debug.Log("foreach");
             FieldScript = field.gameObject.GetComponent<FieldScript>();
             if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
             {
@@ -48,6 +139,40 @@ public class BlockBehaviourScript : MonoBehaviour
             }
         }
         this.gameObject.transform.position = new Vector2(positionX, positionY);
+        TakeNewField(TableNumberX, TableNumberY); //Wykorzystanie tego tutaj jest bez sensu, skoro wyżej w tej funkcji ręcznie ustawiamy zajętość.
+    }
+
+    public void ReleaseOldField(int x, int y, string blockDir) //Ten x i y są niewykorzystane. To na pewno będzie działało?
+    {
+        foreach (GameObject previousField in fields) 
+        {
+            FieldScript = previousField.gameObject.GetComponent<FieldScript>();
+            if(blockDir == "right")
+            {
+                if(FieldScript.TableNumberX == TableNumberX-1 && FieldScript.TableNumberY == TableNumberY){FieldScript.isTaken = false;}
+            }
+            else if(blockDir == "left")
+            {
+                if(FieldScript.TableNumberX == TableNumberX+1 && FieldScript.TableNumberY == TableNumberY){FieldScript.isTaken = false;}
+            }
+            else if(blockDir == "up")
+            {
+                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY-1){FieldScript.isTaken = false;}
+            }
+            else if(blockDir == "down")
+            {
+                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY+1){FieldScript.isTaken = false;}    
+            }
+        }
+    }
+
+    public void TakeNewField(int x, int y)
+    {
+        foreach (GameObject nextField in fields)
+        {
+            FieldScript = nextField.gameObject.GetComponent<FieldScript>();
+            if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY){FieldScript.isTaken = true;}
+        }
     }
 
 
