@@ -80,9 +80,11 @@ public class BlockBehaviourScript : MonoBehaviour
                                     //Przypadek w którym następuje zderzenie dwóch kafelków o tej samej wartości
                                     Debug.Log("Tu powstanie większy blok: " + TableNumberX + " " + TableNumberY);
                                     Debug.Log("Teraz, to pole będzie zajęte");
+                                    SpawnBlock.RemoveBlockFromList(block);
                                     Destroy(block);
                                     SpawnBlock.BlockLevelUp(NextBlockBehaviourScript.TableNumberX, NextBlockBehaviourScript.TableNumberY, dir);
                                     Destroy(this.gameObject);
+                                    SpawnBlock.RemoveBlockFromList(this.gameObject);
                                     ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
                                     //Tutaj wywołać funkcję robiącą nowy kafelek
                                 }

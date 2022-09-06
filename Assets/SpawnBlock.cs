@@ -27,6 +27,7 @@ public class SpawnBlock : MonoBehaviour
     public List<GameObject> blocks;
    
     int blockID = 0;
+    int unmovableBlockCounter;
 
     void Start()
     {
@@ -34,6 +35,40 @@ public class SpawnBlock : MonoBehaviour
         fields = SpawnField.fields;    
     }
 
+    void Update()
+    {
+        unmovableBlockCounter = 0;
+        try
+        {
+            blocks.TrimExcess();
+            foreach(GameObject block in blocks)
+            {
+                if (block != null)
+                {
+                    if (block.GetComponent<BlockBehaviourScript>().unmovable == true)
+                    {
+                        unmovableBlockCounter++;
+                        Debug.Log("unmovableBlockCounter: " + unmovableBlockCounter);
+                        Debug.Log("blocks.Count: " + blocks.Count);
+                    }
+                }
+
+            }
+            if (unmovableBlockCounter == blocks.Count)
+            {
+                SpawnNewBlock();
+                blocks.TrimExcess();
+                foreach(GameObject block in blocks)
+                {
+                    block.GetComponent<BlockBehaviourScript>().unmovable = false;
+                }
+            
+            
+            }
+        }
+        catch{}
+    }
+    
     public void SpawnNewBlock()
     {
         Debug.Log("Rozpoczynam spawnowanie");
@@ -100,6 +135,11 @@ public class SpawnBlock : MonoBehaviour
         blockID++; 
 
 
+    }
+
+    public void RemoveBlockFromList(GameObject block)
+    {
+        blocks.Remove(block);
     }
 }
 
