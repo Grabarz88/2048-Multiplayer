@@ -483,15 +483,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   block2: {fileID: 6548639278486057283, guid: 202142c005bce9844918cd3731b6cc8d, type: 3}
   block4: {fileID: 2982866698252926593, guid: 6146331017b3e3f458206963b6009a89, type: 3}
-  block8: {fileID: 0}
-  block16: {fileID: 0}
-  block32: {fileID: 0}
-  block64: {fileID: 0}
-  block128: {fileID: 0}
-  block256: {fileID: 0}
-  block512: {fileID: 0}
-  block1024: {fileID: 0}
-  block2048: {fileID: 0}
+  block8: {fileID: 62336383860760994, guid: cc656b015f765be4abd2127862d426ce, type: 3}
+  block16: {fileID: 5557197061296345389, guid: 42cad285a2fbd7443bea2a100f80d065, type: 3}
+  block32: {fileID: 7392635210852763435, guid: 5933c08dd5499f744ac992272e7c95e8, type: 3}
+  block64: {fileID: 8290123697746218438, guid: f85a40586a8f5564780c02c2b924cea9, type: 3}
+  block128: {fileID: 6684360867517883428, guid: 6a9c3b794f760a74f9da229853f14599, type: 3}
+  block256: {fileID: 4935485131079825205, guid: 423615e011cc8374394bb0c975147cb1, type: 3}
+  block512: {fileID: 8004561220406157196, guid: 55d75e40b120f9e4684a79a45835c429, type: 3}
+  block1024: {fileID: 7589271542141106786, guid: 8abb41999453d654494c434aec48a0ed, type: 3}
+  block2048: {fileID: 8096653111912233380, guid: 770f7645e1f3bcb4daac5137d33e1e9b, type: 3}
+  block4096: {fileID: 5495911748744285333, guid: f24fe167e19bbed42b7b02ac9d8436ae, type: 3}
   FieldSpawner: {fileID: 1969988881}
   BlockBehaviourScript: {fileID: 0}
   fields: []

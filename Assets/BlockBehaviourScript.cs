@@ -78,24 +78,13 @@ public class BlockBehaviourScript : MonoBehaviour
                                 NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
                                 if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value == value)
                                 {
-                                    //Przypadek w którym następuje zderzenie dwóch kafelków o tej samej wartości
-                                    // if(cantLevelUpNow == false)
-                                    // {
-                                        SpawnBlock.RemoveBlockFromList(block);
-                                        Destroy(block);
-                                        SpawnBlock.BlockLevelUp(NextBlockBehaviourScript.TableNumberX, NextBlockBehaviourScript.TableNumberY, dir, value);
-                                        ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
-                                        SpawnBlock.RemoveBlockFromList(this.gameObject);
-                                        Destroy(this.gameObject);
-                                    // }
-                                    // else if(cantLevelUpNow == true)
-                                    // {
-                                    //     if(dir == "right"){TableNumberX--;}
-                                    //     else if(dir == "left"){TableNumberX++;}
-                                    //     else if(dir == "up"){TableNumberY--;}
-                                    //     else if(dir == "down"){TableNumberY++;}
-                                    //     unmovable = true;
-                                    // }
+                                    SpawnBlock.RemoveBlockFromList(block);
+                                    Destroy(block);
+                                    SpawnBlock.BlockLevelUp(NextBlockBehaviourScript.TableNumberX, NextBlockBehaviourScript.TableNumberY, value);
+                                    ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
+                                    SpawnBlock.RemoveBlockFromList(this.gameObject);
+                                    Destroy(this.gameObject);
+
                                 }
                                 else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == false)
                                 {

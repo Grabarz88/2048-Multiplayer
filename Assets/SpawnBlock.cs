@@ -146,7 +146,7 @@ public class SpawnBlock : MonoBehaviour
         }
     }
 
-    public void BlockLevelUp(int x, int y, string dir, int value) //#TODO This function can be optimized.
+    public void BlockLevelUp(int x, int y, int value) //#TODO This function can be optimized.
     {
         GameObject block = new GameObject();
         if(value == 2){block = Instantiate(block4);}
@@ -166,8 +166,6 @@ public class SpawnBlock : MonoBehaviour
         block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
         block.GetComponent<BlockBehaviourScript>().unmovable = true;
         block.GetComponent<BlockBehaviourScript>().moved = true;
-        block.GetComponent<BlockBehaviourScript>().dir = dir;
-        block.GetComponent<BlockBehaviourScript>().cantLevelUpNow =  true;
         block.gameObject.name = "block" + blockID;
         blockID++; 
 
