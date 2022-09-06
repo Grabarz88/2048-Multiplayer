@@ -17,6 +17,7 @@ public class SpawnBlock : MonoBehaviour
     [SerializeField] GameObject block512;
     [SerializeField] GameObject block1024;
     [SerializeField] GameObject block2048;
+    [SerializeField] GameObject block4096;
     //Następne bloki trzeba będzie dorobić i dodać
 
     [SerializeField] GameObject FieldSpawner;
@@ -68,6 +69,7 @@ public class SpawnBlock : MonoBehaviour
                 {
                     block.GetComponent<BlockBehaviourScript>().unmovable = false;
                     block.GetComponent<BlockBehaviourScript>().moved = false;
+                    block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = false;
                 }
             
             
@@ -110,13 +112,18 @@ public class SpawnBlock : MonoBehaviour
                         }
                         else if (FieldScript.isTaken == false)
                         {
-                            GameObject block = Instantiate(block2);
+                            GameObject block = new GameObject();
+                            int randomBlock = Random.Range(1, 2);
+                            if(randomBlock == 1) {block = Instantiate(block2);}
+                            else if(randomBlock == 2) {block = Instantiate(block4);}
+        
+                            
                             blocks.Add(block);
                             block.GetComponent<BlockBehaviourScript>().AfterSpawn(FieldScript.TableNumberX, FieldScript.TableNumberY);
                             block.gameObject.name = "block" + blockID;
                             blockID++;
                             blockSpawned = true;
-                            Debug.Log("Zespawnowałem blok");
+                            
                             ClearAfterSpawn();
                         }
                     }
@@ -139,14 +146,28 @@ public class SpawnBlock : MonoBehaviour
         }
     }
 
-    public void BlockLevelUp(int x, int y, string dir)
+    public void BlockLevelUp(int x, int y, string dir, int value) //#TODO This function can be optimized.
     {
-        GameObject block = Instantiate(block4);
+        GameObject block = new GameObject();
+        if(value == 2){block = Instantiate(block4);}
+        else if(value == 4){block = Instantiate(block8);}
+        else if(value == 8){block = Instantiate(block16);}
+        else if(value == 16){block = Instantiate(block32);}
+        else if(value == 32){block = Instantiate(block64);}
+        else if(value == 64){block = Instantiate(block128);}
+        else if(value == 128){block = Instantiate(block256);}
+        else if(value == 256){block = Instantiate(block512);}
+        else if(value == 512){block = Instantiate(block1024);}
+        else if(value == 1024){block = Instantiate(block2048);}
+        else if(value == 2048){block = Instantiate(block4096);}
+        
+        
         blocks.Add(block);
         block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
-        block.GetComponent<BlockBehaviourScript>().dir = dir;
         block.GetComponent<BlockBehaviourScript>().unmovable = true;
         block.GetComponent<BlockBehaviourScript>().moved = true;
+        block.GetComponent<BlockBehaviourScript>().dir = dir;
+        block.GetComponent<BlockBehaviourScript>().cantLevelUpNow =  true;
         block.gameObject.name = "block" + blockID;
         blockID++; 
 

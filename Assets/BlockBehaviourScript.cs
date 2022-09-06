@@ -25,7 +25,7 @@ public class BlockBehaviourScript : MonoBehaviour
     public string dir;
     [SerializeField] public bool unmovable;
     [SerializeField] public bool moved; // This variable is used to ensure that blocks won't spawn during "vidmo move. That means, if we press the button in direction that won't make any blocks move.
-
+    [SerializeField] public bool cantLevelUpNow = false;
     
     void Start()
     {
@@ -79,15 +79,23 @@ public class BlockBehaviourScript : MonoBehaviour
                                 if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value == value)
                                 {
                                     //Przypadek w którym następuje zderzenie dwóch kafelków o tej samej wartości
-                                    Debug.Log("Tu powstanie większy blok: " + TableNumberX + " " + TableNumberY);
-                                    Debug.Log("Teraz, to pole będzie zajęte");
-                                    SpawnBlock.RemoveBlockFromList(block);
-                                    Destroy(block);
-                                    SpawnBlock.BlockLevelUp(NextBlockBehaviourScript.TableNumberX, NextBlockBehaviourScript.TableNumberY, dir);
-                                    Destroy(this.gameObject);
-                                    SpawnBlock.RemoveBlockFromList(this.gameObject);
-                                    ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
-                                    //Tutaj wywołać funkcję robiącą nowy kafelek
+                                    // if(cantLevelUpNow == false)
+                                    // {
+                                        SpawnBlock.RemoveBlockFromList(block);
+                                        Destroy(block);
+                                        SpawnBlock.BlockLevelUp(NextBlockBehaviourScript.TableNumberX, NextBlockBehaviourScript.TableNumberY, dir, value);
+                                        ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
+                                        SpawnBlock.RemoveBlockFromList(this.gameObject);
+                                        Destroy(this.gameObject);
+                                    // }
+                                    // else if(cantLevelUpNow == true)
+                                    // {
+                                    //     if(dir == "right"){TableNumberX--;}
+                                    //     else if(dir == "left"){TableNumberX++;}
+                                    //     else if(dir == "up"){TableNumberY--;}
+                                    //     else if(dir == "down"){TableNumberY++;}
+                                    //     unmovable = true;
+                                    // }
                                 }
                                 else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == false)
                                 {
