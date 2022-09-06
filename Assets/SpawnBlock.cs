@@ -26,6 +26,7 @@ public class SpawnBlock : MonoBehaviour
     public List<GameObject> fields;
     public List<GameObject> blocks;
    
+    int movedBlockCounter;
     int blockID = 0;
     int unmovableBlockCounter;
 
@@ -38,6 +39,7 @@ public class SpawnBlock : MonoBehaviour
     void Update()
     {
         unmovableBlockCounter = 0;
+        movedBlockCounter = 0;
         try
         {
             blocks.TrimExcess();
@@ -50,20 +52,33 @@ public class SpawnBlock : MonoBehaviour
                         unmovableBlockCounter++;
                         Debug.Log("unmovableBlockCounter: " + unmovableBlockCounter);
                         Debug.Log("blocks.Count: " + blocks.Count);
+                        if(block.GetComponent<BlockBehaviourScript>().moved == true)
+                        {
+                            movedBlockCounter++;
+                        }
                     }
                 }
 
             }
-            if (unmovableBlockCounter == blocks.Count)
+            if (unmovableBlockCounter == blocks.Count && movedBlockCounter > 0)
             {
                 SpawnNewBlock();
                 blocks.TrimExcess();
                 foreach(GameObject block in blocks)
                 {
                     block.GetComponent<BlockBehaviourScript>().unmovable = false;
+                    block.GetComponent<BlockBehaviourScript>().moved = false;
                 }
             
             
+            }
+            else if (unmovableBlockCounter == blocks.Count && movedBlockCounter == 0)
+            {
+                foreach(GameObject block in blocks)
+                {
+                    block.GetComponent<BlockBehaviourScript>().unmovable = false;
+                    block.GetComponent<BlockBehaviourScript>().moved = false;
+                }
             }
         }
         catch{}
@@ -130,7 +145,8 @@ public class SpawnBlock : MonoBehaviour
         blocks.Add(block);
         block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
         block.GetComponent<BlockBehaviourScript>().dir = dir;
-        block.GetComponent<BlockBehaviourScript>().unmovable = false;
+        block.GetComponent<BlockBehaviourScript>().unmovable = true;
+        block.GetComponent<BlockBehaviourScript>().moved = true;
         block.gameObject.name = "block" + blockID;
         blockID++; 
 

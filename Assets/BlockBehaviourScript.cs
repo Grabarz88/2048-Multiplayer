@@ -24,6 +24,7 @@ public class BlockBehaviourScript : MonoBehaviour
     [SerializeField] public int value;
     public string dir;
     [SerializeField] public bool unmovable;
+    [SerializeField] public bool moved; // This variable is used to ensure that blocks won't spawn during "vidmo move. That means, if we press the button in direction that won't make any blocks move.
 
     
     void Start()
@@ -113,6 +114,7 @@ public class BlockBehaviourScript : MonoBehaviour
                     else if(FieldScript.isTaken == false)
                     {
                         transform.position = new Vector2(FieldScript.positionX, FieldScript.positionY); //Ponieważ nie zmieniamy wartości unmovable, to bloczek się przesunie i będzie mógł ponownie sprawdzanie z Update, tym razem dla następnego kafelka.
+                        moved = true;
                         TakeNewField(TableNumberX, TableNumberY);
                         ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
                     }
