@@ -80,6 +80,7 @@ public class SpawnBlock : MonoBehaviour
                 {
                     block.GetComponent<BlockBehaviourScript>().unmovable = false;
                     block.GetComponent<BlockBehaviourScript>().moved = false;
+                    block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = true;
                 }
             }
         }
@@ -166,6 +167,7 @@ public class SpawnBlock : MonoBehaviour
         block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
         block.GetComponent<BlockBehaviourScript>().unmovable = true;
         block.GetComponent<BlockBehaviourScript>().moved = true;
+        block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = true;
         block.gameObject.name = "block" + blockID;
         blockID++; 
 
