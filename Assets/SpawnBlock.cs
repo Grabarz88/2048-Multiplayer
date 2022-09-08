@@ -80,7 +80,7 @@ public class SpawnBlock : MonoBehaviour
                 {
                     block.GetComponent<BlockBehaviourScript>().unmovable = false;
                     block.GetComponent<BlockBehaviourScript>().moved = false;
-                    block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = true;
+                    // block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = true;
                     block.GetComponent<BlockBehaviourScript>().dir = "null";
                 }
             }
