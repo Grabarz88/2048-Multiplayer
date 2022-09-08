@@ -136,7 +136,6 @@ public class BlockBehaviourScript : MonoBehaviour
         FieldSpawner = GameObject.Find("FieldSpawner");
         SpawnField = FieldSpawner.GetComponent<SpawnField>();
         fields = SpawnField.fields;
-        Debug.Log("AfterSpawn");
         TableNumberX = x;
         TableNumberY = y;
         foreach (GameObject field in fields)
@@ -144,7 +143,6 @@ public class BlockBehaviourScript : MonoBehaviour
             FieldScript = field.gameObject.GetComponent<FieldScript>();
             if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
             {
-                Debug.Log("znalazłem");
                 positionX = FieldScript.positionX;
                 positionY = FieldScript.positionY;
                 FieldScript.isTaken = true; //Póki co, jest to potrzebne do testów. W dalszym etapie produkcji, pola chyba muszą same sprawdzać czy są zajęte

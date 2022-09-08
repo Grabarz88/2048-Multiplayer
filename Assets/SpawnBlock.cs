@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class SpawnBlock : MonoBehaviour
 {
+    GameObject block;
     [SerializeField] GameObject block2;
     [SerializeField] GameObject block4;
     [SerializeField] GameObject block8;
@@ -68,6 +69,7 @@ public class SpawnBlock : MonoBehaviour
                     block.GetComponent<BlockBehaviourScript>().unmovable = false;
                     block.GetComponent<BlockBehaviourScript>().moved = false;
                     block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = false;
+                    block.GetComponent<BlockBehaviourScript>().dir = "null";
                 }
             
             
@@ -79,6 +81,7 @@ public class SpawnBlock : MonoBehaviour
                     block.GetComponent<BlockBehaviourScript>().unmovable = false;
                     block.GetComponent<BlockBehaviourScript>().moved = false;
                     block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = true;
+                    block.GetComponent<BlockBehaviourScript>().dir = "null";
                 }
             }
         }
@@ -108,7 +111,6 @@ public class SpawnBlock : MonoBehaviour
                         }
                         else if (FieldScript.isTaken == false)
                         {
-                            GameObject block = new GameObject();
                             int randomBlock = Random.Range(1, 2);
                             if(randomBlock == 1) {block = Instantiate(block2);}
                             else if(randomBlock == 2) {block = Instantiate(block4);}
@@ -144,7 +146,7 @@ public class SpawnBlock : MonoBehaviour
 
     public void BlockLevelUp(int x, int y, int value) //#TODO This function can be optimized.
     {
-        GameObject block = new GameObject();
+        
         if(value == 2){block = Instantiate(block4);}
         else if(value == 4){block = Instantiate(block8);}
         else if(value == 8){block = Instantiate(block16);}
