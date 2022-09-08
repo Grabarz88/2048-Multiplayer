@@ -51,8 +51,6 @@ public class SpawnBlock : MonoBehaviour
                     if (block.GetComponent<BlockBehaviourScript>().unmovable == true)
                     {
                         unmovableBlockCounter++;
-                        Debug.Log("unmovableBlockCounter: " + unmovableBlockCounter);
-                        Debug.Log("blocks.Count: " + blocks.Count);
                         if(block.GetComponent<BlockBehaviourScript>().moved == true)
                         {
                             movedBlockCounter++;
@@ -89,9 +87,6 @@ public class SpawnBlock : MonoBehaviour
     
     public void SpawnNewBlock()
     {
-        Debug.Log("Rozpoczynam spawnowanie");
-
-
         int fieldCounter = 0;
         bool blockSpawned = false;
 

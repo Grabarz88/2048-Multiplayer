@@ -32,7 +32,7 @@ public class SpawnField : MonoBehaviour
                 GameObject aField = Instantiate(wall);
                 fields.Add(aField);
                 aField.GetComponent<FieldScript>().TableNumberSetter(x, y);
-                aField.GetComponent<FieldScript>().PositionSetter(x*8, y*8);
+                aField.GetComponent<FieldScript>().PositionSetter(x*32, y*32);
                 x++; 
                 }
             else
@@ -40,7 +40,7 @@ public class SpawnField : MonoBehaviour
                 GameObject aField = Instantiate(field);
                 fields.Add(aField);
                 aField.GetComponent<FieldScript>().TableNumberSetter(x, y);
-                aField.GetComponent<FieldScript>().PositionSetter(x*8, y*8);
+                aField.GetComponent<FieldScript>().PositionSetter(x*32, y*32);
                 x++; 
                 }
  
