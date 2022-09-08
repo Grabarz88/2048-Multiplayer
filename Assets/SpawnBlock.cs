@@ -102,12 +102,14 @@ public class SpawnBlock : MonoBehaviour
                     if (FieldScript.isWall == true)
                     {
                         fieldCounter++;
+                        FieldScript.checkedForSpawnPurpose = true;
                     }
                     else if (FieldScript.isWall == false)
                     {
                         if(FieldScript.isTaken == true)
                         {
                             fieldCounter++;
+                            FieldScript.checkedForSpawnPurpose = true;
                         }
                         else if (FieldScript.isTaken == false)
                         {
@@ -123,6 +125,7 @@ public class SpawnBlock : MonoBehaviour
                             blockSpawned = true;
                             
                             ClearAfterSpawn();
+                            CheckForGameOver();
                         }
                     }
 
@@ -142,6 +145,30 @@ public class SpawnBlock : MonoBehaviour
            FieldScript = field.gameObject.GetComponent<FieldScript>();
            FieldScript.checkedForSpawnPurpose = false;
         }
+    }
+
+    void CheckForGameOver()
+    {
+        int canMove = 0;
+        foreach(GameObject block in blocks)
+        {
+            BlockBehaviourScript BBH = block.GetComponent<BlockBehaviourScript>();
+            foreach (GameObject neighbourBlock in blocks)
+            {
+                BlockBehaviourScript nBBH = neighbourBlock.GetComponent<BlockBehaviourScript>();
+                if(BBH.value == nBBH.value)
+                {
+                    if(BBH.TableNumberX == nBBH.TableNumberX && BBH.TableNumberY == nBBH.TableNumberY+1){canMove++;}
+                    if(BBH.TableNumberY == nBBH.TableNumberY && BBH.TableNumberX == nBBH.TableNumberX+1){canMove++;}
+                }
+            }
+        }
+        foreach(GameObject field in fields)
+        {
+            FieldScript FS = field.GetComponent<FieldScript>();
+            if(FS.isTaken == false && FS.isWall == false){canMove++;}
+        }
+        if(canMove == 0) {Debug.Log("TRUE GAME OVER");}
     }
 
     public void BlockLevelUp(int x, int y, int value) //#TODO This function can be optimized.
