@@ -35,7 +35,24 @@ public class SpawnBlock : MonoBehaviour
     void Start()
     {
         SpawnField = FieldSpawner.GetComponent<SpawnField>();
-        fields = SpawnField.fields;    
+        fields = SpawnField.fields;
+
+        int randomX = Random.Range(1, SpawnField.PodajSzerokoscPlanszy-1);
+        int randomY = Random.Range(1, SpawnField.PodajWysokoscPlanszy-1);
+
+        block = Instantiate(block2);
+        blocks.Add(block);
+        block.GetComponent<BlockBehaviourScript>().AfterSpawn(randomX, randomY);
+        block.gameObject.name = "block" + blockID;
+        blockID++;
+
+ 
+        
+
+
+
+        SpawnNewBlock();   
+         
     }
 
     void Update()
@@ -92,6 +109,8 @@ public class SpawnBlock : MonoBehaviour
     {
         int fieldCounter = 0;
         bool blockSpawned = false;
+
+
 
         while (fieldCounter < fields.Count && blockSpawned == false)
             {
