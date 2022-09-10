@@ -151,10 +151,6 @@ public class SpawnBlock : MonoBehaviour
                 }
                 
             }
-        if(fieldCounter == fields.Count)
-        {
-            Debug.Log("GAME OVER");
-        }
     }
 
     void ClearAfterSpawn()
