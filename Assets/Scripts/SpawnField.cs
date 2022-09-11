@@ -13,7 +13,7 @@ public class SpawnField : MonoBehaviour
     
     public List<GameObject> fields = new List<GameObject>(); // Lista pól
 
-    
+    GameObject CustomSetter;
     
 
     
@@ -21,6 +21,17 @@ public class SpawnField : MonoBehaviour
 
     void Start() //Tutaj spawnowane są pola. Od razu po pojawieniu nadaje się im pozycję fizyczną i pozycję w tabeli pól.
     {
+       if(GameObject.Find("CustomSetter"))
+       {
+        CustomSetter = GameObject.Find("CustomSetter");
+        PodajSzerokoscPlanszy = CustomSetter.GetComponent<CustomSetterScript>().X;
+        PodajWysokoscPlanszy = CustomSetter.GetComponent<CustomSetterScript>().Y;
+       }
+       else
+       {
+        PodajSzerokoscPlanszy = 6;
+        PodajWysokoscPlanszy = 6;
+       }
        int y = 0;
        int x = 0;
        while (y < PodajSzerokoscPlanszy)
@@ -48,9 +59,14 @@ public class SpawnField : MonoBehaviour
         x = 0;
         y++;
        }
-       
-       
+    }
 
+
+    private void OnDestroy() {
+        if(CustomSetter != null)
+        {
+            GameObject.Destroy(CustomSetter);
+        }
     }
 
     
