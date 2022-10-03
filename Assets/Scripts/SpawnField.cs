@@ -7,6 +7,7 @@ public class SpawnField : MonoBehaviour
     //Ten skrypt spawnuje pola po których będa się poruszały kafelki.
     [SerializeField] GameObject field;
     [SerializeField] GameObject wall;
+    [SerializeField] GameObject fieldBackground;
     [SerializeField] public int PodajSzerokoscPlanszy;
     [SerializeField] public int PodajWysokoscPlanszy;
     
@@ -49,11 +50,13 @@ public class SpawnField : MonoBehaviour
             else
                 {
                 GameObject aField = Instantiate(field);
+                GameObject aFieldBackground = Instantiate(fieldBackground, new Vector3(x*32, y*32, 1), Quaternion.identity);
                 fields.Add(aField);
                 aField.GetComponent<FieldScript>().TableNumberSetter(x, y);
                 aField.GetComponent<FieldScript>().PositionSetter(x*32, y*32);
                 x++; 
                 }
+            
  
         }
         x = 0;

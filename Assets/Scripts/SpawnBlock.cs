@@ -28,12 +28,18 @@ public class SpawnBlock : MonoBehaviour
     public List<GameObject> fields;
     public List<GameObject> blocks;
    
+   [SerializeField] GameObject ScoreCounter;
+   ScoreCounterScript ScoreCounterScript;
+
     int movedBlockCounter;
     int blockID = 0;
     int unmovableBlockCounter;
 
     void Start()
     {
+        ScoreCounter = GameObject.Find("ScoreCounter");
+        ScoreCounterScript = ScoreCounter.GetComponent<ScoreCounterScript>();
+
         SpawnField = FieldSpawner.GetComponent<SpawnField>();
         fields = SpawnField.fields;
 
@@ -189,17 +195,17 @@ public class SpawnBlock : MonoBehaviour
     public void BlockLevelUp(int x, int y, int value) //#TODO This function can be optimized.
     {
         
-        if(value == 2){block = Instantiate(block4);}
-        else if(value == 4){block = Instantiate(block8);}
-        else if(value == 8){block = Instantiate(block16);}
-        else if(value == 16){block = Instantiate(block32);}
-        else if(value == 32){block = Instantiate(block64);}
-        else if(value == 64){block = Instantiate(block128);}
-        else if(value == 128){block = Instantiate(block256);}
-        else if(value == 256){block = Instantiate(block512);}
-        else if(value == 512){block = Instantiate(block1024);}
-        else if(value == 1024){block = Instantiate(block2048);}
-        else if(value == 2048){block = Instantiate(block4096);}
+        if(value == 2){block = Instantiate(block4); ScoreCounterScript.AddPoints(4);}
+        else if(value == 4){block = Instantiate(block8); ScoreCounterScript.AddPoints(8);}
+        else if(value == 8){block = Instantiate(block16); ScoreCounterScript.AddPoints(16);}
+        else if(value == 16){block = Instantiate(block32); ScoreCounterScript.AddPoints(32);}
+        else if(value == 32){block = Instantiate(block64); ScoreCounterScript.AddPoints(64);}
+        else if(value == 64){block = Instantiate(block128); ScoreCounterScript.AddPoints(128);}
+        else if(value == 128){block = Instantiate(block256); ScoreCounterScript.AddPoints(256);}
+        else if(value == 256){block = Instantiate(block512); ScoreCounterScript.AddPoints(512);}
+        else if(value == 512){block = Instantiate(block1024); ScoreCounterScript.AddPoints(1024);}
+        else if(value == 1024){block = Instantiate(block2048); ScoreCounterScript.AddPoints(2048);}
+        else if(value == 2048){block = Instantiate(block4096); ScoreCounterScript.AddPoints(4096);}
         
         
         blocks.Add(block);
