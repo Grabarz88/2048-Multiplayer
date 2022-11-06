@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BlockBehaviourScript : MonoBehaviour
 {
@@ -22,15 +23,20 @@ public class BlockBehaviourScript : MonoBehaviour
     FieldScript FieldScript;
 
     [SerializeField] public int value;
+	[SerializeField] public int reserveValue;
     public string dir;
     [SerializeField] public bool unmovable;
     [SerializeField] public bool moved; // This variable is used to ensure that blocks won't spawn during "vidmo move". That means, if we press the button in direction that won't make any blocks move.
-    [SerializeField] public bool cantLevelUpNow = false; // This variable is solution to issue #5
+    [SerializeField] public bool cantLevelUpNow = false; // This variable is solution to issue #5. Now it is useless
+	[SerializeField] public bool readyToMove = false;
+	[SerializeField] public bool readyToBeDestroyed = false; 
+	[SerializeField] public bool moveExecuting = false;
 
     public GameObject pauseButton;
 	public GameObject exitButton;
     public bool isPauseActive = false;
-	
+
+	Vector2 targetFieldPosition;
     
     void Start()
     {
@@ -40,13 +46,27 @@ public class BlockBehaviourScript : MonoBehaviour
     dir = "empty";  
 	pauseButton = GameObject.Find("Restart");  
 	exitButton = GameObject.Find("Back");  
+	
+
+	if (this.gameObject.name == "block0")
+	{
+		int randomX;
+		int randomY;
+		BlockSpawner = GameObject.Find("BlockSpawner");
+	    SpawnBlock = BlockSpawner.GetComponent<SpawnBlock>();
+		randomX = SpawnBlock.randomX;
+		randomY = SpawnBlock.randomY;
+		AfterSpawn(randomX, randomY);
+
+	}
     }
 
 
 
     void Update()
     {
-        if(pauseButton.GetComponent<ShowRestartPanel>().isPauseActive || exitButton.GetComponent<ShowExitPanel>().isPauseActive)
+        //Zaczynamy od warunku sprawdzającego czy gra jest w pauzie. Btw, to się da zoptymalizować
+		if(pauseButton.GetComponent<ShowRestartPanel>().isPauseActive || exitButton.GetComponent<ShowExitPanel>().isPauseActive)
 		{
 			isPauseActive = true;
 		}
@@ -58,63 +78,59 @@ public class BlockBehaviourScript : MonoBehaviour
 
         if (isPauseActive == false)
         {
+			//Zbieranie kierunku w którym mają się poruszać bloki
 	        if(Input.GetButtonDown("MoveRight")){dir = "right";}
 	        if(Input.GetButtonDown("MoveLeft")){dir = "left";}
 	        if(Input.GetButtonDown("MoveUp")){dir = "up";}
 	        if(Input.GetButtonDown("MoveDown")){dir = "down";}
 	
-	        if(unmovable == false)
+	        if(unmovable == false)//Upewniamy się, że bloki jeszcze nie znalazły jeszcze miejsca, w którym muszą się zatrzymać
 	        {
-	            if(dir == "right"){TableNumberX++;}
+	            //Wskazujemy, jakie pole będziemy teraz sprawdzali.
+				if(dir == "right"){TableNumberX++;} 
 	            else if(dir == "left"){TableNumberX--;}
 	            else if(dir == "up"){TableNumberY++;}
 	            else if(dir == "down"){TableNumberY--;}
 	
-	            foreach(GameObject field in fields)
+	            foreach(GameObject field in fields) //Będziemy sprawdzali wszystkie pola tak długo aż znajdziemy odpowiednie.
 	            {
-	                FieldScript = field.GetComponent<FieldScript>();
-	                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
+	                FieldScript = field.GetComponent<FieldScript>(); //Żeby to sprawdzić wykorzystujemy skrypt FieldScript, który przechowuje dane o wartościach pól
+	                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY) //Dalszą część warunku wykonujemy, tylko jeśli pole ma poszukiwane przez nas wartości.
 	                {
-	                    if(FieldScript.isWall == true)
+	                    if(FieldScript.isWall == true) // Sprawdzamy, czy sprawdzane pole jest ścianą.
 	                    {
-	                        if(dir == "right"){TableNumberX--;}
+	                        //Jeśli pole jest ścianą, to wycofujemy zmianę wartości i deklarujemy, że nie blok nie będzie mógł się dalej poruszyć.
+							if(dir == "right"){TableNumberX--;}
 	                        else if(dir == "left"){TableNumberX++;}
 	                        else if(dir == "up"){TableNumberY--;}
 	                        else if(dir == "down"){TableNumberY++;}
-	                        unmovable = true; //Pole jest ścianą, więc cofamy zmianę wartości pozycji w tabeli a potem deklarujemy że ten blok już się nie poruszy.
+							unmovable = true;
+							readyToMove = true; 
+							Debug.Log("Ściana");
 	                    }
-	                    else if(FieldScript.isTaken == true && dir != "empty")
+	                    else if(FieldScript.isTaken == true && dir != "empty") // Jeżeli pole nie jest ścianą, to sprawdzamy czy jest zajęte przez jakiś blok. Dla pewności sprawdzamy też, czy nie zostało sprawdzone pole na którym aktualnie stoi blok sprawdzający.
 	                    {
-	                        BlockSpawner = GameObject.Find("BlockSpawner");
+	                        //Ponieważ pole jest zajęte, to musimy znaleźć skrypt SpawnBlock, posiadający tablicę bloków. Pozwoli nam to na wyszukanie bloku w którym weszliśmy w kolizję.
+							BlockSpawner = GameObject.Find("BlockSpawner"); 
 	                        SpawnBlock = BlockSpawner.GetComponent<SpawnBlock>();
 	                        blocks = SpawnBlock.blocks;
-	                        try
+	                        try //Ze względu na okazjonalne zmiany tablicy bloków, trzeba być gotowym na ignorowanie błędów
 	                        {
-	                        foreach(GameObject block in blocks)
+	                        foreach(GameObject block in blocks) //Będziemy sprawdzali każdy blok, tak długo aż znajdziemy ten z którym nastąpiła kolizja.
 	                        {
-	                            if(block != null)
+	                            if(block != null) // Sprawdzamy tylko nie puste bloki.
 	                            {
-	                                NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-	                                if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value == value)
+	                                NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>(); //Odpytanie odbędzie się poprzez skrypt BlovkBehaviourScript bloku z którym doszło do kolizji
+	                                // Sprawdzamy, czy pozycja znalezionego bloku odpowiada naszej szukanej pozycji, czy zakończył już ruch deklaracją unmovable oraz czy jego wartość odpowiada wartości naszego bloku.
+									if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value == value)
 	                                {
-	                                    if(NextBlockBehaviourScript.cantLevelUpNow == false)
-	                                    {
-	                                        SpawnBlock.RemoveBlockFromList(block);
-	                                        Destroy(block);
-	                                        SpawnBlock.BlockLevelUp(NextBlockBehaviourScript.TableNumberX, NextBlockBehaviourScript.TableNumberY, value);
-	                                        ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
-	                                        SpawnBlock.RemoveBlockFromList(this.gameObject);
-	                                        Destroy(this.gameObject);
-	                                    }
-	                                    else if (NextBlockBehaviourScript.cantLevelUpNow == true)
-	                                    {
-	                                        if(dir == "right"){TableNumberX--;}
-	                                        else if(dir == "left"){TableNumberX++;}
-	                                        else if(dir == "up"){TableNumberY--;}
-	                                        else if(dir == "down"){TableNumberY++;}
-	                                        unmovable = true;
-	                                    }
-	
+										//Po znalezieniu takiego bloku, oznaczamy się jako gotowe do ruchu, gotowe do zniszczenia, zwalniamy pole na którym jesteśmy i informujemy uderzony blok o fuzji.
+										readyToMove = true;
+										readyToBeDestroyed = true;
+										NextBlockBehaviourScript.value = -1; // W ten sposób upewnimy się, że inne bloki się z nim nie połączą po zderzeniu i że blok będzie wiedział, że ma tu postawić wyższy blok w OnDestroy()
+										NextBlockBehaviourScript.readyToBeDestroyed = true;
+	                                    ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
+	                                    moved = true;   
 	                                }
 	                                else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == false)
 	                                {
@@ -131,6 +147,7 @@ public class BlockBehaviourScript : MonoBehaviour
 	                                    else if(dir == "left"){TableNumberX++;}
 	                                    else if(dir == "up"){TableNumberY--;}
 	                                    else if(dir == "down"){TableNumberY++;}
+										readyToMove = true;
 	                                    unmovable = true;
 	                                }
 	                            }
@@ -138,26 +155,60 @@ public class BlockBehaviourScript : MonoBehaviour
 	                        }
 	                        catch{}
 	                    }
-	                    else if(FieldScript.isTaken == false)
+	                    else if(FieldScript.isTaken == false) //Jeśli pole nie jest zajęte to zwyczajnie na nie wchodzimy
 	                    {
-	                        Vector2 nextFieldPosition = new Vector2(FieldScript.positionX, FieldScript.positionY);
-	                        while (transform.position.x != nextFieldPosition.x || transform.position.y != nextFieldPosition.y)
-	                        {
-	                            transform.position = Vector2.MoveTowards(transform.position, nextFieldPosition, 0.1f); //Ponieważ nie zmieniamy wartości unmovable, to bloczek się przesunie i będzie mógł ponownie sprawdzanie z Update, tym razem dla następnego kafelka.
-	                        }
 	                        moved = true;
-	                        TakeNewField(TableNumberX, TableNumberY);
+							TakeNewField(TableNumberX, TableNumberY); //Deklarujemy że jesteśmy na tym kafelku.
 	                        ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
 	                    }
 	                }
 	            }
 	        }
+			else if (unmovable == true) //Jeżeli zadeklarowaliśmy, że nie możemy się ruszyć, to sprawdzamy, na jakiej pozycji mamy się pojawić
+			{
+				Debug.Log("Nie mogę się dalej ruszyć");
+				foreach(GameObject field in fields)
+	            {
+	                FieldScript = field.GetComponent<FieldScript>();
+	                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
+	                {
+						targetFieldPosition = new Vector2(FieldScript.positionX, FieldScript.positionY); //tutaj zapamiętujemy pozycję do której mamy dojść
+					}
+				}	
+			}
+
+			if(moveExecuting == true) //Jeśli SpawnBlock da komendę na wykonanie ruchu, to to zrobimy.
+			{
+				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, 0.1f); //Tutaj blok jest przesuwany
+				//Sprawdzamy czy blok jest wystarczjąco blisko swojej pozyji docelowej
+				if(Math.Abs(transform.position.x - targetFieldPosition.x) < 1 || Math.Abs(transform.position.y - targetFieldPosition.y) < 1)
+				{
+					moveExecuting = false; //Jeżeli blok jest już wystarczjąco blisko, to wstrzymujemy dalszy ruch.
+				}
+			}
+			
         }
+
+
     }
-    
-    public void AfterSpawn(int x, int y)
+   
+
+    public void executeMove() //SpawnBlock wywołuje kiedy możemy się ruszyć, tak aby wszystkie bloki zrobiły to na raz
+	{
+		moveExecuting = true;
+	}
+
+	public void executeLevelUp() //SpawnBlock wywołuje kiedy mamy się zniszczyć, tak aby wszystkie bloki zrobiły to na raz
+	{
+		if(readyToBeDestroyed == true)
+		{
+			Destroy(gameObject);
+		}
+	}
+	
+	public void AfterSpawn(int x, int y)
     {
-        FieldSpawner = GameObject.Find("FieldSpawner");
+		FieldSpawner = GameObject.Find("FieldSpawner");
         SpawnField = FieldSpawner.GetComponent<SpawnField>();
         fields = SpawnField.fields;
         TableNumberX = x;
@@ -209,6 +260,12 @@ public class BlockBehaviourScript : MonoBehaviour
         }
     }
 
-
+	private void OnDestroy() 
+	{
+		if(value == -1)
+		{
+			SpawnBlock.BlockLevelUp(TableNumberX, TableNumberY, reserveValue);
+		}	
+	}
 
 }

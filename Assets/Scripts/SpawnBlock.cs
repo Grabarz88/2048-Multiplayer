@@ -34,6 +34,11 @@ public class SpawnBlock : MonoBehaviour
     int movedBlockCounter;
     int blockID = 0;
     int unmovableBlockCounter;
+    int readyBlockCounter;
+
+    public int randomX;
+    public int randomY;
+
 
     void Start()
     {
@@ -43,12 +48,12 @@ public class SpawnBlock : MonoBehaviour
         SpawnField = FieldSpawner.GetComponent<SpawnField>();
         fields = SpawnField.fields;
 
-        int randomX = Random.Range(1, SpawnField.PodajSzerokoscPlanszy-1);
-        int randomY = Random.Range(1, SpawnField.PodajWysokoscPlanszy-1);
+        randomX = Random.Range(1, SpawnField.PodajSzerokoscPlanszy-1);
+        randomY = Random.Range(1, SpawnField.PodajWysokoscPlanszy-1);
 
         block = Instantiate(block2);
         blocks.Add(block);
-        block.GetComponent<BlockBehaviourScript>().AfterSpawn(randomX, randomY);
+        // block.GetComponent<BlockBehaviourScript>().AfterSpawn(randomX, randomY);
         block.gameObject.name = "block" + blockID;
         blockID++;
 
@@ -57,7 +62,7 @@ public class SpawnBlock : MonoBehaviour
 
 
 
-        SpawnNewBlock();   
+        // SpawnNewBlock();   
          
     }
 
@@ -72,29 +77,58 @@ public class SpawnBlock : MonoBehaviour
             {
                 if (block != null)
                 {
-                    if (block.GetComponent<BlockBehaviourScript>().unmovable == true)
+                    BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                    if (BlockBehaviourScript.unmovable == true)
                     {
                         unmovableBlockCounter++;
-                        if(block.GetComponent<BlockBehaviourScript>().moved == true)
+                        if(BlockBehaviourScript.moved == true)
                         {
                             movedBlockCounter++;
                         }
                     }
+
+                    if (BlockBehaviourScript.unmovable == true && BlockBehaviourScript.readyToMove == true)
+                    {
+                        readyBlockCounter++;
+                        Debug.Log("Ten jest gotowy");
+                    }
+
                 }
 
             }
             if (unmovableBlockCounter == blocks.Count && movedBlockCounter > 0)
             {
-                SpawnNewBlock();
-                blocks.TrimExcess();
-                foreach(GameObject block in blocks)
+                
+                Debug.Log("Bloki zostały ruszone");
+                // TUTAJ DAMY FUNKCJĘ EXECUTE BLOCKS MOVE, KTÓRA BĘDZIE WYKONYWAŁA RUCH BLOKÓW
+                // A TUTAJ DAMY FUNKCJĘ NISZCZENIA BLOKÓW, KTÓRA BĘDZIE NISZCZYŁA BLOKI WYKONUJĄCE POŁĄCZENIE
+                if(readyBlockCounter == blocks.Count)
                 {
-                    block.GetComponent<BlockBehaviourScript>().unmovable = false;
-                    block.GetComponent<BlockBehaviourScript>().moved = false;
-                    block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = false;
-                    block.GetComponent<BlockBehaviourScript>().dir = "null";
+                    foreach(GameObject block in blocks)
+                    {
+                        block.GetComponent<BlockBehaviourScript>().executeMove();
+                        Debug.Log("Execute move");
+                    }
+                
+                    foreach(GameObject block in blocks)
+                    {
+                        block.GetComponent<BlockBehaviourScript>().executeLevelUp();
+                        Debug.Log("Execute Lvel Up");
+                    }
+
+                    SpawnNewBlock();
+                    blocks.TrimExcess();
+                    foreach(GameObject block in blocks)
+                    {
+                        Debug.Log("Clear all blocks");
+                        block.GetComponent<BlockBehaviourScript>().unmovable = false;
+                        block.GetComponent<BlockBehaviourScript>().moved = false;
+                        block.GetComponent<BlockBehaviourScript>().readyToMove = false;
+                        block.GetComponent<BlockBehaviourScript>().readyToBeDestroyed = false;
+                        block.GetComponent<BlockBehaviourScript>().moveExecuting = false;
+                        block.GetComponent<BlockBehaviourScript>().dir = "null";
+                    }
                 }
-            
             
             }
             else if (unmovableBlockCounter == blocks.Count && movedBlockCounter == 0)
@@ -103,7 +137,9 @@ public class SpawnBlock : MonoBehaviour
                 {
                     block.GetComponent<BlockBehaviourScript>().unmovable = false;
                     block.GetComponent<BlockBehaviourScript>().moved = false;
-                    // block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = true;
+                    block.GetComponent<BlockBehaviourScript>().readyToMove = false;
+                    block.GetComponent<BlockBehaviourScript>().readyToBeDestroyed = false;
+                    block.GetComponent<BlockBehaviourScript>().moveExecuting = false;
                     block.GetComponent<BlockBehaviourScript>().dir = "null";
                 }
             }

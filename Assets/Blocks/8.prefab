@@ -70,7 +70,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1389693631
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d61258f2d9b46254ab6a747f8568bad2, type: 3}
   m_Color: {r: 0.93333334, g: 0.88235295, b: 0.7882353, a: 1}
@@ -104,7 +104,14 @@ MonoBehaviour:
   fields: []
   blocks: []
   value: 8
+  reserveValue: 8
   dir: 
   unmovable: 0
   moved: 0
   cantLevelUpNow: 0
+  readyToMove: 0
+  readyToBeDestroyed: 0
+  moveExecuting: 0
+  pauseButton: {fileID: 0}
+  exitButton: {fileID: 0}
+  isPauseActive: 0
