@@ -35,6 +35,7 @@ public class SpawnBlock : MonoBehaviour
     int blockID = 0;
     int unmovableBlockCounter;
     int readyBlockCounter;
+    int finishedMoveCounter;
 
     public int randomX;
     public int randomY;
@@ -70,6 +71,8 @@ public class SpawnBlock : MonoBehaviour
     {
         unmovableBlockCounter = 0;
         movedBlockCounter = 0;
+        finishedMoveCounter = 0;
+        readyBlockCounter = 0;
         try
         {
             blocks.TrimExcess();
@@ -90,7 +93,12 @@ public class SpawnBlock : MonoBehaviour
                     if (BlockBehaviourScript.unmovable == true && BlockBehaviourScript.readyToMove == true)
                     {
                         readyBlockCounter++;
-                        Debug.Log("Ten jest gotowy");
+                        // Debug.Log("Ten jest gotowy");
+                    }
+
+                    if(BlockBehaviourScript.unmovable == true && BlockBehaviourScript.finishedMove == true)
+                    {
+                        finishedMoveCounter++;
                     }
 
                 }
@@ -99,38 +107,21 @@ public class SpawnBlock : MonoBehaviour
             if (unmovableBlockCounter == blocks.Count && movedBlockCounter > 0)
             {
                 
-                Debug.Log("Bloki zostały ruszone");
+                
+
                 // TUTAJ DAMY FUNKCJĘ EXECUTE BLOCKS MOVE, KTÓRA BĘDZIE WYKONYWAŁA RUCH BLOKÓW
                 // A TUTAJ DAMY FUNKCJĘ NISZCZENIA BLOKÓW, KTÓRA BĘDZIE NISZCZYŁA BLOKI WYKONUJĄCE POŁĄCZENIE
                 if(readyBlockCounter == blocks.Count)
                 {
+                    Debug.Log("Wszystkie bloki kotowe do ruchu");
                     foreach(GameObject block in blocks)
                     {
                         block.GetComponent<BlockBehaviourScript>().executeMove();
-                        Debug.Log("Execute move");
-                    }
-                
-                    foreach(GameObject block in blocks)
-                    {
-                        block.GetComponent<BlockBehaviourScript>().executeLevelUp();
-                        Debug.Log("Execute Lvel Up");
-                    }
-
-                    SpawnNewBlock();
-                    blocks.TrimExcess();
-                    foreach(GameObject block in blocks)
-                    {
-                        Debug.Log("Clear all blocks");
-                        block.GetComponent<BlockBehaviourScript>().unmovable = false;
-                        block.GetComponent<BlockBehaviourScript>().moved = false;
-                        block.GetComponent<BlockBehaviourScript>().readyToMove = false;
-                        block.GetComponent<BlockBehaviourScript>().readyToBeDestroyed = false;
-                        block.GetComponent<BlockBehaviourScript>().moveExecuting = false;
-                        block.GetComponent<BlockBehaviourScript>().dir = "null";
+                        // Debug.Log("Execute move");
                     }
                 }
-            
             }
+
             else if (unmovableBlockCounter == blocks.Count && movedBlockCounter == 0)
             {
                 foreach(GameObject block in blocks)
@@ -140,9 +131,37 @@ public class SpawnBlock : MonoBehaviour
                     block.GetComponent<BlockBehaviourScript>().readyToMove = false;
                     block.GetComponent<BlockBehaviourScript>().readyToBeDestroyed = false;
                     block.GetComponent<BlockBehaviourScript>().moveExecuting = false;
+                    block.GetComponent<BlockBehaviourScript>().finishedMove = false;
                     block.GetComponent<BlockBehaviourScript>().dir = "null";
                 }
             }
+
+            if(finishedMoveCounter == blocks.Count)
+                    {
+                        Debug.Log("Wszyscy skończyli");
+                        foreach(GameObject block in blocks)
+                        {
+                            block.GetComponent<BlockBehaviourScript>().executeLevelUp();
+                            Debug.Log("Execute Level Up");
+                        }
+
+                        SpawnNewBlock();
+                        blocks.TrimExcess();
+                        foreach(GameObject block in blocks)
+                        {
+                            Debug.Log("Clear all blocks");
+                            block.GetComponent<BlockBehaviourScript>().unmovable = false;
+                            block.GetComponent<BlockBehaviourScript>().moved = false;
+                            block.GetComponent<BlockBehaviourScript>().readyToMove = false;
+                            block.GetComponent<BlockBehaviourScript>().readyToBeDestroyed = false;
+                            block.GetComponent<BlockBehaviourScript>().moveExecuting = false;
+                            block.GetComponent<BlockBehaviourScript>().finishedMove = false;
+                            block.GetComponent<BlockBehaviourScript>().dir = "null";
+                        }
+
+
+
+                    }
         }
         catch{}
     }
@@ -246,9 +265,9 @@ public class SpawnBlock : MonoBehaviour
         
         blocks.Add(block);
         block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
-        block.GetComponent<BlockBehaviourScript>().unmovable = true;
-        block.GetComponent<BlockBehaviourScript>().moved = true;
-        block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = true;
+        block.GetComponent<BlockBehaviourScript>().unmovable = false;
+        block.GetComponent<BlockBehaviourScript>().moved = false;
+        block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = false;
         block.gameObject.name = "block" + blockID;
         blockID++; 
 
