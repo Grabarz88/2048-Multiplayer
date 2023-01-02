@@ -109,11 +109,10 @@ public class SpawnBlock : MonoBehaviour
                 
                 
 
-                // TUTAJ DAMY FUNKCJĘ EXECUTE BLOCKS MOVE, KTÓRA BĘDZIE WYKONYWAŁA RUCH BLOKÓW
-                // A TUTAJ DAMY FUNKCJĘ NISZCZENIA BLOKÓW, KTÓRA BĘDZIE NISZCZYŁA BLOKI WYKONUJĄCE POŁĄCZENIE
+              
                 if(readyBlockCounter == blocks.Count)
                 {
-                    Debug.Log("Wszystkie bloki kotowe do ruchu");
+                    // Debug.Log("Wszystkie bloki gotowe do ruchu");
                     foreach(GameObject block in blocks)
                     {
                         block.GetComponent<BlockBehaviourScript>().executeMove();
@@ -138,18 +137,19 @@ public class SpawnBlock : MonoBehaviour
 
             if(finishedMoveCounter == blocks.Count)
                     {
-                        Debug.Log("Wszyscy skończyli");
+                        // Debug.Log("Wszyscy skończyli");
                         foreach(GameObject block in blocks)
                         {
                             block.GetComponent<BlockBehaviourScript>().executeLevelUp();
-                            Debug.Log("Execute Level Up");
+                            // Debug.Log("Execute Level Up");
                         }
 
                         SpawnNewBlock();
                         blocks.TrimExcess();
                         foreach(GameObject block in blocks)
                         {
-                            Debug.Log("Clear all blocks");
+                            Debug.Log("X: " + (block.GetComponent<BlockBehaviourScript>().TableNumberX) + "  Y: " + (block.GetComponent<BlockBehaviourScript>().TableNumberY));
+                            // Debug.Log("Clear all blocks");
                             block.GetComponent<BlockBehaviourScript>().unmovable = false;
                             block.GetComponent<BlockBehaviourScript>().moved = false;
                             block.GetComponent<BlockBehaviourScript>().readyToMove = false;

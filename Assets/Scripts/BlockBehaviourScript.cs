@@ -125,16 +125,16 @@ public class BlockBehaviourScript : MonoBehaviour
 	                            {
 	                                NextBlockBehaviourScript = block.GetComponent<BlockBehaviourScript>(); //Odpytanie odbędzie się poprzez skrypt BlovkBehaviourScript bloku z którym doszło do kolizji
 	                                // Sprawdzamy, czy pozycja znalezionego bloku odpowiada naszej szukanej pozycji, czy zakończył już ruch deklaracją unmovable oraz czy jego wartość odpowiada wartości naszego bloku.
-									if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value == value)
+									if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value == value && NextBlockBehaviourScript.readyToBeDestroyed == false)
 	                                {
 										//Po znalezieniu takiego bloku, oznaczamy się jako gotowe do ruchu, gotowe do zniszczenia, zwalniamy pole na którym jesteśmy i informujemy uderzony blok o fuzji.
 										readyToMove = true;
 										readyToBeDestroyed = true;
 										NextBlockBehaviourScript.value = -1; // W ten sposób upewnimy się, że inne bloki się z nim nie połączą po zderzeniu i że blok będzie wiedział, że ma tu postawić wyższy blok w OnDestroy()
 										NextBlockBehaviourScript.readyToBeDestroyed = true;
-										TakeNewField(TableNumberX, TableNumberY);
 										ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
-	                                    moved = true;   
+	                                    moved = true;
+										unmovable = true;   
 	                                }
 	                                else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == false)
 	                                {
@@ -144,15 +144,13 @@ public class BlockBehaviourScript : MonoBehaviour
 	                                    else if(dir == "up"){TableNumberY--;}
 	                                    else if(dir == "down"){TableNumberY++;} 
 	                                }
-	                                else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value != value)
+	                                else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value != reserveValue)
 	                                {
 	                                    //Przypadek w którym nastąpiło zderzenie kafelków o różnych wartościach
 	                                    if(dir == "right"){TableNumberX--;}
 	                                    else if(dir == "left"){TableNumberX++;}
 	                                    else if(dir == "up"){TableNumberY--;}
 	                                    else if(dir == "down"){TableNumberY++;}
-										TakeNewField(TableNumberX, TableNumberY);
-										ReleaseOldField(TableNumberX, TableNumberY, dir);
 										readyToMove = true;
 	                                    unmovable = true;
 										
@@ -186,7 +184,7 @@ public class BlockBehaviourScript : MonoBehaviour
 
 			if(unmovable == true && moveExecuting == true) //Jeśli SpawnBlock da komendę na wykonanie ruchu, to to zrobimy.
 			{
-				Debug.Log("Krok wykonany");
+				// Debug.Log("Krok wykonany");
 				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, 0.5f); //Tutaj blok jest przesuwany
 
 				//Sprawdzamy czy blok jest wystarczjąco blisko swojej pozyji docelowej
@@ -194,7 +192,7 @@ public class BlockBehaviourScript : MonoBehaviour
 				{
 					moveExecuting = false; //Jeżeli blok jest już wystarczjąco blisko, to wstrzymujemy dalszy ruch.
 					finishedMove = true;
-					Debug.Log("moveExecuting = false");
+					// Debug.Log("moveExecuting = false");
 				}
 			}
 			
@@ -207,7 +205,7 @@ public class BlockBehaviourScript : MonoBehaviour
     public void executeMove() //SpawnBlock wywołuje kiedy możemy się ruszyć, tak aby wszystkie bloki zrobiły to na raz
 	{
 		moveExecuting = true;
-		Debug.Log("moveExecuting = true");
+		// Debug.Log("moveExecuting = true");
 	}
 
 	public void executeLevelUp() //SpawnBlock wywołuje kiedy mamy się zniszczyć, tak aby wszystkie bloki zrobiły to na raz
@@ -220,9 +218,9 @@ public class BlockBehaviourScript : MonoBehaviour
 	
 	public void AfterSpawn(int x, int y)
     {
-		FieldSpawner = GameObject.Find("FieldSpawner");
-        SpawnField = FieldSpawner.GetComponent<SpawnField>();
-        fields = SpawnField.fields;
+		FieldSpawner = GameObject.Find("FieldSpawner"); //Niepotrzebne. Robimy to wcześniej
+        SpawnField = FieldSpawner.GetComponent<SpawnField>(); //Niepotrzebne. Robimy to wcześniej
+        fields = SpawnField.fields; //Niepotrzebne. Robimy to wcześniej
         TableNumberX = x;
         TableNumberY = y;
         foreach (GameObject field in fields)
@@ -274,6 +272,18 @@ public class BlockBehaviourScript : MonoBehaviour
 
 	private void OnDestroy() 
 	{
+		foreach (GameObject thisFieldToRelease in fields)
+		{
+			if(thisFieldToRelease != null) // Ten warunek jest zabezpieczeniem przed pojawianiem się błędów przy zamykaniu gry
+			{
+				FieldScript = thisFieldToRelease.gameObject.GetComponent<FieldScript>();
+			}
+			if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
+			{
+				FieldScript.isTaken = false;
+			}
+		}
+
 		if(value == -1)
 		{
 			SpawnBlock.BlockLevelUp(TableNumberX, TableNumberY, reserveValue);

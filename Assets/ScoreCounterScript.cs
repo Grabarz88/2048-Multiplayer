@@ -17,7 +17,7 @@ public class ScoreCounterScript : MonoBehaviour
     public void AddPoints(int value)
     {
         score = score + value;
-        Debug.Log(score);
+        // Debug.Log(score);
     }
 
 }
