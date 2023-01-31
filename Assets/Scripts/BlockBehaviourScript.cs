@@ -111,7 +111,7 @@ public class BlockBehaviourScript : MonoBehaviour
 	                        else if(dir == "down"){TableNumberY++;}
 							unmovable = true;
 							readyToMove = true; 
-							Debug.Log("Ściana");
+							// Debug.Log("Ściana");
 							
 	                    }
 	                    else if(FieldScript.isTaken == true && dir != "empty") // Jeżeli pole nie jest ścianą, to sprawdzamy czy jest zajęte przez jakiś blok. Dla pewności sprawdzamy też, czy nie zostało sprawdzone pole na którym aktualnie stoi blok sprawdzający.

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class SpawnBlock : MonoBehaviour
 {
+    public GameObject gameOverPanel;
     GameObject block;
     [SerializeField] GameObject block2;
     [SerializeField] GameObject block4;
@@ -43,6 +44,7 @@ public class SpawnBlock : MonoBehaviour
 
     void Start()
     {
+        gameOverPanel.gameObject.SetActive(false);
         ScoreCounter = GameObject.Find("ScoreCounter");
         ScoreCounterScript = ScoreCounter.GetComponent<ScoreCounterScript>();
 
@@ -148,7 +150,7 @@ public class SpawnBlock : MonoBehaviour
                         blocks.TrimExcess();
                         foreach(GameObject block in blocks)
                         {
-                            Debug.Log("X: " + (block.GetComponent<BlockBehaviourScript>().TableNumberX) + "  Y: " + (block.GetComponent<BlockBehaviourScript>().TableNumberY));
+                            // Debug.Log("X: " + (block.GetComponent<BlockBehaviourScript>().TableNumberX) + "  Y: " + (block.GetComponent<BlockBehaviourScript>().TableNumberY));
                             // Debug.Log("Clear all blocks");
                             block.GetComponent<BlockBehaviourScript>().unmovable = false;
                             block.GetComponent<BlockBehaviourScript>().moved = false;
@@ -244,7 +246,11 @@ public class SpawnBlock : MonoBehaviour
             FieldScript FS = field.GetComponent<FieldScript>();
             if(FS.isTaken == false && FS.isWall == false){canMove++;}
         }
-        if(canMove == 0) {Debug.Log("TRUE GAME OVER");}
+        if(canMove == 0) 
+        {
+            Debug.Log("TRUE GAME OVER");
+            gameOverPanel.gameObject.SetActive(true);
+        }
     }
 
     public void BlockLevelUp(int x, int y, int value) //#TODO This function can be optimized.
