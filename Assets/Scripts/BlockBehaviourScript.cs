@@ -196,10 +196,10 @@ public class BlockBehaviourScript : MonoBehaviour
 				// Debug.Log("Krok wykonany");
 				
 				
-				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.05f)); //Tutaj blok jest przesuwany
+				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.08f)); //Tutaj blok jest przesuwany
 
 				//Sprawdzamy czy blok jest wystarczjąco blisko swojej pozyji docelowej
-				if(Math.Abs(transform.position.x - targetFieldPosition.x) < 0.5 && Math.Abs(transform.position.y - targetFieldPosition.y) < 0.5)
+				if(Math.Abs(transform.position.x - targetFieldPosition.x) < 1.5 && Math.Abs(transform.position.y - targetFieldPosition.y) < 1.5)
 				{
 					moveExecuting = false; //Jeżeli blok jest już wystarczjąco blisko, to wstrzymujemy dalszy ruch.
 					finishedMove = true;
@@ -232,11 +232,11 @@ public class BlockBehaviourScript : MonoBehaviour
 	public void setPace() // Setting pace
 	{
 		
-		if (Math.Abs(targetFieldPosition.x - transform.position.x) > 0.5f)
+		if (Math.Abs(targetFieldPosition.x - transform.position.x) > 1.5f)
 			{
 				pace = Math.Abs(transform.position.x - targetFieldPosition.x);
 			}
-		if (Math.Abs(targetFieldPosition.y - transform.position.y) > 0.5f)
+		if (Math.Abs(targetFieldPosition.y - transform.position.y) > 1.5f)
 			{
 				pace = Math.Abs(transform.position.y - targetFieldPosition.y);
 			}
