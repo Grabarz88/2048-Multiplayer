@@ -32,6 +32,7 @@ public class BlockBehaviourScript : MonoBehaviour
 	[SerializeField] public bool readyToBeDestroyed = false; 
 	[SerializeField] public bool moveExecuting = false;
 	[SerializeField] public bool finishedMove = false;
+	public float pace = 1; // This variable is used to ensure, all blocks begin and finish move in the exactly same time, nevertheless the distance from start to finish
 
 	
 
@@ -111,6 +112,7 @@ public class BlockBehaviourScript : MonoBehaviour
 							unmovable = true;
 							readyToMove = true; 
 							Debug.Log("Ściana");
+							
 	                    }
 	                    else if(FieldScript.isTaken == true && dir != "empty") // Jeżeli pole nie jest ścianą, to sprawdzamy czy jest zajęte przez jakiś blok. Dla pewności sprawdzamy też, czy nie zostało sprawdzone pole na którym aktualnie stoi blok sprawdzający.
 	                    {
@@ -135,6 +137,7 @@ public class BlockBehaviourScript : MonoBehaviour
 										ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
 	                                    moved = true;
 										unmovable = true;   
+										
 	                                }
 	                                else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == false)
 	                                {
@@ -143,6 +146,7 @@ public class BlockBehaviourScript : MonoBehaviour
 	                                    else if(dir == "left"){TableNumberX++;}
 	                                    else if(dir == "up"){TableNumberY--;}
 	                                    else if(dir == "down"){TableNumberY++;} 
+										
 	                                }
 	                                else if(TableNumberX == NextBlockBehaviourScript.TableNumberX && TableNumberY == NextBlockBehaviourScript.TableNumberY && block != this.gameObject && NextBlockBehaviourScript.unmovable == true && NextBlockBehaviourScript.value != reserveValue)
 	                                {
@@ -153,6 +157,7 @@ public class BlockBehaviourScript : MonoBehaviour
 	                                    else if(dir == "down"){TableNumberY++;}
 										readyToMove = true;
 	                                    unmovable = true;
+										
 										
 	                                }
 	                            }
@@ -165,6 +170,7 @@ public class BlockBehaviourScript : MonoBehaviour
 	                        moved = true;
 							TakeNewField(TableNumberX, TableNumberY); //Deklarujemy że jesteśmy na tym kafelku.
 	                        ReleaseOldField(TableNumberX, TableNumberY, dir); //Musimy znaleźć stary kafelek i zadeklarować, że nie jest już zajęty.
+							
 	                    }
 	                }
 	            }
@@ -178,6 +184,9 @@ public class BlockBehaviourScript : MonoBehaviour
 	                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
 	                {
 						targetFieldPosition = new Vector2(FieldScript.positionX, FieldScript.positionY); //tutaj zapamiętujemy pozycję do której mamy dojść
+						
+							
+						
 					}
 				}	
 			}
@@ -185,13 +194,16 @@ public class BlockBehaviourScript : MonoBehaviour
 			if(unmovable == true && moveExecuting == true) //Jeśli SpawnBlock da komendę na wykonanie ruchu, to to zrobimy.
 			{
 				// Debug.Log("Krok wykonany");
-				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, 0.5f); //Tutaj blok jest przesuwany
+				
+				
+				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.05f)); //Tutaj blok jest przesuwany
 
 				//Sprawdzamy czy blok jest wystarczjąco blisko swojej pozyji docelowej
 				if(Math.Abs(transform.position.x - targetFieldPosition.x) < 0.5 && Math.Abs(transform.position.y - targetFieldPosition.y) < 0.5)
 				{
 					moveExecuting = false; //Jeżeli blok jest już wystarczjąco blisko, to wstrzymujemy dalszy ruch.
 					finishedMove = true;
+					
 					// Debug.Log("moveExecuting = false");
 				}
 			}
@@ -204,6 +216,7 @@ public class BlockBehaviourScript : MonoBehaviour
 
     public void executeMove() //SpawnBlock wywołuje kiedy możemy się ruszyć, tak aby wszystkie bloki zrobiły to na raz
 	{
+		setPace(); // We are evoking function to set pace variable
 		moveExecuting = true;
 		// Debug.Log("moveExecuting = true");
 	}
@@ -216,6 +229,19 @@ public class BlockBehaviourScript : MonoBehaviour
 		}
 	}
 	
+	public void setPace() // Setting pace
+	{
+		
+		if (Math.Abs(targetFieldPosition.x - transform.position.x) > 0.5f)
+			{
+				pace = Math.Abs(transform.position.x - targetFieldPosition.x);
+			}
+		if (Math.Abs(targetFieldPosition.y - transform.position.y) > 0.5f)
+			{
+				pace = Math.Abs(transform.position.y - targetFieldPosition.y);
+			}
+		
+	}
 	public void AfterSpawn(int x, int y)
     {
 		FieldSpawner = GameObject.Find("FieldSpawner"); //Niepotrzebne. Robimy to wcześniej
