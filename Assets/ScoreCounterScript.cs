@@ -8,7 +8,7 @@ public class ScoreCounterScript : MonoBehaviour
 {
     
     [SerializeField] int score;
-    [SerializeField] int highScore;
+    [SerializeField] int highScore = 0;
     [SerializeField] Text textScore;
     [SerializeField] Text textHighScore;
     [SerializeField] GameObject ScorePanel;
