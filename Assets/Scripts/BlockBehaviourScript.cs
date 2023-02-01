@@ -199,7 +199,7 @@ public class BlockBehaviourScript : MonoBehaviour
 				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.08f)); //Tutaj blok jest przesuwany
 
 				//Sprawdzamy czy blok jest wystarczjąco blisko swojej pozyji docelowej
-				if(Math.Abs(transform.position.x - targetFieldPosition.x) < 1.5 && Math.Abs(transform.position.y - targetFieldPosition.y) < 1.5)
+				if(Math.Abs(transform.position.x - targetFieldPosition.x) < 1 && Math.Abs(transform.position.y - targetFieldPosition.y) < 1)
 				{
 					moveExecuting = false; //Jeżeli blok jest już wystarczjąco blisko, to wstrzymujemy dalszy ruch.
 					finishedMove = true;
