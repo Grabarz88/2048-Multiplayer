@@ -62,6 +62,7 @@ public class SpawnField : MonoBehaviour
         x = 0;
         y++;
        }
+
     }
 
 

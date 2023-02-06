@@ -36,7 +36,7 @@ public class SpawnBlock : MonoBehaviour
     int blockID = 0;
     int unmovableBlockCounter;
     int readyBlockCounter;
-    int finishedMoveCounter;
+    public int finishedMoveCounter;
 
     public int randomX;
     public int randomY;
@@ -71,6 +71,7 @@ public class SpawnBlock : MonoBehaviour
 
     void Update()
     {
+        // Debug.Log(blocks.Count);
         unmovableBlockCounter = 0;
         movedBlockCounter = 0;
         finishedMoveCounter = 0;
@@ -133,6 +134,7 @@ public class SpawnBlock : MonoBehaviour
                     block.GetComponent<BlockBehaviourScript>().readyToBeDestroyed = false;
                     block.GetComponent<BlockBehaviourScript>().moveExecuting = false;
                     block.GetComponent<BlockBehaviourScript>().finishedMove = false;
+                    block.GetComponent<BlockBehaviourScript>().justLeveledUp = false;
                     block.GetComponent<BlockBehaviourScript>().dir = "null";
                 }
             }
@@ -158,6 +160,7 @@ public class SpawnBlock : MonoBehaviour
                             block.GetComponent<BlockBehaviourScript>().readyToBeDestroyed = false;
                             block.GetComponent<BlockBehaviourScript>().moveExecuting = false;
                             block.GetComponent<BlockBehaviourScript>().finishedMove = false;
+                            block.GetComponent<BlockBehaviourScript>().justLeveledUp = false;
                             block.GetComponent<BlockBehaviourScript>().dir = "null";
                         }
 
@@ -170,6 +173,7 @@ public class SpawnBlock : MonoBehaviour
     
     public void SpawnNewBlock()
     {
+        // Debug.Log("SpawnNewBlock");
         int fieldCounter = 0;
         bool blockSpawned = false;
 
@@ -218,6 +222,7 @@ public class SpawnBlock : MonoBehaviour
 
     void ClearAfterSpawn()
     {
+        // Debug.Log("ClearAfterSpawn");
         foreach (GameObject field in fields)
         {
            FieldScript = field.gameObject.GetComponent<FieldScript>();
@@ -227,6 +232,8 @@ public class SpawnBlock : MonoBehaviour
 
     void CheckForGameOver()
     {
+        // Debug.Log("CheckForGameOver");
+        blocks.TrimExcess();
         int canMove = 0;
         foreach(GameObject block in blocks)
         {
@@ -255,7 +262,7 @@ public class SpawnBlock : MonoBehaviour
 
     public void BlockLevelUp(int x, int y, int value) //#TODO This function can be optimized.
     {
-        
+        Debug.Log("BlockLevelUp");
         if(value == 2){block = Instantiate(block4); ScoreCounterScript.AddPoints(4);}
         else if(value == 4){block = Instantiate(block8); ScoreCounterScript.AddPoints(8);}
         else if(value == 8){block = Instantiate(block16); ScoreCounterScript.AddPoints(16);}
@@ -273,7 +280,7 @@ public class SpawnBlock : MonoBehaviour
         block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
         block.GetComponent<BlockBehaviourScript>().unmovable = false;
         block.GetComponent<BlockBehaviourScript>().moved = false;
-        block.GetComponent<BlockBehaviourScript>().cantLevelUpNow = false;
+        block.GetComponent<BlockBehaviourScript>().dir = "empty";
         block.gameObject.name = "block" + blockID;
         blockID++; 
 
@@ -282,6 +289,7 @@ public class SpawnBlock : MonoBehaviour
 
     public void RemoveBlockFromList(GameObject block)
     {
+        // Debug.Log("RemoveBlockFromList");
         blocks.Remove(block);
     }
 }

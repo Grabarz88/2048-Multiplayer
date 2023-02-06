@@ -47,6 +47,7 @@ public class ScoreCounterScript : MonoBehaviour
 
     public void AddPoints(int value)
     {
+        Debug.Log("AddPoints");
         score = score + value;
 
         if(score > highScore)
@@ -64,6 +65,7 @@ public class ScoreCounterScript : MonoBehaviour
 
   public void adjustScoreFieldSize()
   {
+    Debug.Log("adjustScoreFieldSize");
     if(score > 999 && scoreGrowth1 == false)
     {
       ScorePanelRectTransform.sizeDelta = new Vector2(ScorePanelRectTransform.sizeDelta.x + 20, ScorePanelRectTransform.sizeDelta.y);
@@ -125,7 +127,7 @@ public class ScoreCounterScript : MonoBehaviour
   public void adjustHighScoreFieldSize()
   {
 
-    
+    Debug.Log("adjustHighScoreFieldSize");
 
     if(highScore > 999999 && highScoreGrowth1 == false)
     {
