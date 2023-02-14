@@ -32,14 +32,23 @@ public class SpawnBlock : MonoBehaviour
    [SerializeField] GameObject ScoreCounter;
    ScoreCounterScript ScoreCounterScript;
 
-    int movedBlockCounter;
+    int idleCounter;
+    int finishedSearchingCounter;
+    int willMoveCounter;
+    int finishedMovingCounter;
+    
     int blockID = 0;
+    public int randomX;
+    public int randomY;
+
+    //----------Te potencjalnie można wyrzucić
+    int movedBlockCounter;
+    
     int unmovableBlockCounter;
     int readyBlockCounter;
     public int finishedMoveCounter;
+    //------------------------------------------
 
-    public int randomX;
-    public int randomY;
 
 
     void Start()
@@ -56,7 +65,6 @@ public class SpawnBlock : MonoBehaviour
 
         block = Instantiate(block2);
         blocks.Add(block);
-        // block.GetComponent<BlockBehaviourScript>().AfterSpawn(randomX, randomY);
         block.gameObject.name = "block" + blockID;
         blockID++;
 
@@ -72,101 +80,71 @@ public class SpawnBlock : MonoBehaviour
     void Update()
     {
         // Debug.Log(blocks.Count);
-        unmovableBlockCounter = 0;
-        movedBlockCounter = 0;
-        finishedMoveCounter = 0;
-        readyBlockCounter = 0;
+        
         try
         {
             blocks.TrimExcess();
+            idleCounter = 0;
+            finishedSearchingCounter = 0;
+            willMoveCounter = 0;
+            finishedMovingCounter = 0;
             foreach(GameObject block in blocks)
             {
                 if (block != null)
                 {
+                    //Sprawdzamy statusy bloków
                     BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-                    if (BlockBehaviourScript.unmovable == true)
-                    {
-                        unmovableBlockCounter++;
-                        if(BlockBehaviourScript.moved == true)
-                        {
-                            movedBlockCounter++;
-                        }
-                    }
-
-                    if (BlockBehaviourScript.unmovable == true && BlockBehaviourScript.readyToMove == true)
-                    {
-                        readyBlockCounter++;
-                        // Debug.Log("Ten jest gotowy");
-                    }
-
-                    if(BlockBehaviourScript.unmovable == true && BlockBehaviourScript.finishedMove == true)
-                    {
-                        finishedMoveCounter++;
-                    }
-
-                }
-
-            }
-            if (unmovableBlockCounter == blocks.Count && movedBlockCounter > 0)
-            {
-                
-                
-
-              
-                if(readyBlockCounter == blocks.Count)
-                {
-                    // Debug.Log("Wszystkie bloki gotowe do ruchu");
-                    foreach(GameObject block in blocks)
-                    {
-                        block.GetComponent<BlockBehaviourScript>().executeMove();
-                        // Debug.Log("Execute move");
-                    }
+                    if (BlockBehaviourScript.idle == true) {idleCounter++;}
+                    if (BlockBehaviourScript.finishedSearching == true) {finishedSearchingCounter++;}
+                    if (BlockBehaviourScript.willMove == true || BlockBehaviourScript.willBeDestroyed == true) {willMoveCounter++;}
+                    if (BlockBehaviourScript.finishedMoving == true) {finishedMovingCounter++;}
                 }
             }
 
-            else if (unmovableBlockCounter == blocks.Count && movedBlockCounter == 0)
+            if(idleCounter == blocks.Count)
             {
                 foreach(GameObject block in blocks)
                 {
-                    block.GetComponent<BlockBehaviourScript>().unmovable = false;
-                    block.GetComponent<BlockBehaviourScript>().moved = false;
-                    block.GetComponent<BlockBehaviourScript>().readyToMove = false;
-                    block.GetComponent<BlockBehaviourScript>().readyToBeDestroyed = false;
-                    block.GetComponent<BlockBehaviourScript>().moveExecuting = false;
-                    block.GetComponent<BlockBehaviourScript>().finishedMove = false;
-                    block.GetComponent<BlockBehaviourScript>().justLeveledUp = false;
-                    block.GetComponent<BlockBehaviourScript>().dir = "null";
+                    //Mówimy blokom, że mogą się zacząć szukać swoich nowych pozycji
+                    BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                    BlockBehaviourScript.executeSearching();
                 }
             }
+           
+            if(finishedSearchingCounter == blocks.Count && willMoveCounter > 0)
+            {
+                foreach(GameObject block in blocks)
+                {
+                    //Mówimy blokom, że mogą zacząć wykonywać ruch
+                    BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                    BlockBehaviourScript.executeMove();
+                }
+            }
+            else if(finishedSearchingCounter == blocks.Count && willMoveCounter == 0)
+            {
+                foreach(GameObject block in blocks)
+                {
+                    BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                    BlockBehaviourScript.dir = "empty";
+                    BlockBehaviourScript.finishedSearching = false;
+                    BlockBehaviourScript.idle = true;
 
-            if(finishedMoveCounter == blocks.Count)
-                    {
-                        // Debug.Log("Wszyscy skończyli");
-                        foreach(GameObject block in blocks)
-                        {
-                            block.GetComponent<BlockBehaviourScript>().executeLevelUp();
-                            // Debug.Log("Execute Level Up");
-                        }
-
-                        SpawnNewBlock();
-                        blocks.TrimExcess();
-                        foreach(GameObject block in blocks)
-                        {
-                            // Debug.Log("X: " + (block.GetComponent<BlockBehaviourScript>().TableNumberX) + "  Y: " + (block.GetComponent<BlockBehaviourScript>().TableNumberY));
-                            // Debug.Log("Clear all blocks");
-                            block.GetComponent<BlockBehaviourScript>().unmovable = false;
-                            block.GetComponent<BlockBehaviourScript>().moved = false;
-                            block.GetComponent<BlockBehaviourScript>().readyToMove = false;
-                            block.GetComponent<BlockBehaviourScript>().readyToBeDestroyed = false;
-                            block.GetComponent<BlockBehaviourScript>().moveExecuting = false;
-                            block.GetComponent<BlockBehaviourScript>().finishedMove = false;
-                            block.GetComponent<BlockBehaviourScript>().justLeveledUp = false;
-                            block.GetComponent<BlockBehaviourScript>().dir = "null";
-                        }
-
-
-
-                    }
+                }
+            }
+            
+            if(finishedMovingCounter == blocks.Count)
+            {
+                foreach(GameObject block in blocks)
+                {
+                    //Mówimy blokom, że skoro skończyły się ruszać to mogą się zniszczyć jeśli potrzebują i mają się przygotować do następnej kolejki
+                    BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+                    BlockBehaviourScript.executeLevelUp();
+                    BlockBehaviourScript.finishedMoving = false;
+                    BlockBehaviourScript.idle = true;
+                    BlockBehaviourScript.dir = "empty";
+                }
+                SpawnNewBlock();
+            }
         }
         catch{}
     }
@@ -278,8 +256,6 @@ public class SpawnBlock : MonoBehaviour
         
         blocks.Add(block);
         block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
-        block.GetComponent<BlockBehaviourScript>().unmovable = false;
-        block.GetComponent<BlockBehaviourScript>().moved = false;
         block.GetComponent<BlockBehaviourScript>().dir = "empty";
         block.gameObject.name = "block" + blockID;
         blockID++; 
