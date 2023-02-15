@@ -90,7 +90,7 @@ public class BlockBehaviourScript : MonoBehaviour
 	        if(Input.GetButtonDown("MoveUp")){dir = "up";}
 	        if(Input.GetButtonDown("MoveDown")){dir = "down";}
 	
-	        if(unmovable == false && justLeveledUp == false)//Upewniamy się, że bloki jeszcze nie znalazły jeszcze miejsca, w którym muszą się zatrzymać
+	        if(unmovable == false )//Upewniamy się, że bloki jeszcze nie znalazły jeszcze miejsca, w którym muszą się zatrzymać   && justLeveledUp == false
 	        {
 	            // Debug.Log("BBH unmovable false check");
 				//Wskazujemy, jakie pole będziemy teraz sprawdzali.
@@ -211,7 +211,7 @@ public class BlockBehaviourScript : MonoBehaviour
 				// Debug.Log("Krok wykonany");
 				
 				// Debug.Log("BBH moving line");
-				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.2f)); //Tutaj blok jest przesuwany
+				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.1f)); //Tutaj blok jest przesuwany
 
 				//Sprawdzamy czy blok jest wystarczjąco blisko swojej pozyji docelowej
 				if(Math.Abs(transform.position.x - targetFieldPosition.x) < 1 && Math.Abs(transform.position.y - targetFieldPosition.y) < 1)
