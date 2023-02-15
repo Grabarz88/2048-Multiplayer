@@ -80,9 +80,8 @@ public class SpawnBlock : MonoBehaviour
     void Update()
     {
         // Debug.Log(blocks.Count);
-        
-        try
-        {
+        // try
+        // {
             blocks.TrimExcess();
             idleCounter = 0;
             finishedSearchingCounter = 0;
@@ -103,11 +102,12 @@ public class SpawnBlock : MonoBehaviour
 
             if(idleCounter == blocks.Count)
             {
+                CheckForGameOver();
                 foreach(GameObject block in blocks)
                 {
                     //Mówimy blokom, że mogą się zacząć szukać swoich nowych pozycji
                     BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-                    BlockBehaviourScript.executeSearching();
+                    BlockBehaviourScript.executeWaitingForDir();
                 }
             }
            
@@ -145,8 +145,8 @@ public class SpawnBlock : MonoBehaviour
                 }
                 SpawnNewBlock();
             }
-        }
-        catch{}
+        // }
+        // catch{}
     }
     
     public void SpawnNewBlock()
@@ -189,7 +189,7 @@ public class SpawnBlock : MonoBehaviour
                             blockSpawned = true;
                             
                             ClearAfterSpawn();
-                            CheckForGameOver();
+                            // CheckForGameOver();
                         }
                     }
 
@@ -208,9 +208,9 @@ public class SpawnBlock : MonoBehaviour
         }
     }
 
-    void CheckForGameOver()
+    public void CheckForGameOver()
     {
-        // Debug.Log("CheckForGameOver");
+        Debug.Log("CheckForGameOver");
         blocks.TrimExcess();
         int canMove = 0;
         foreach(GameObject block in blocks)
@@ -221,15 +221,15 @@ public class SpawnBlock : MonoBehaviour
                 BlockBehaviourScript nBBH = neighbourBlock.GetComponent<BlockBehaviourScript>();
                 if(BBH.value == nBBH.value)
                 {
-                    if(BBH.TableNumberX == nBBH.TableNumberX && BBH.TableNumberY == nBBH.TableNumberY+1){canMove++;}
-                    if(BBH.TableNumberY == nBBH.TableNumberY && BBH.TableNumberX == nBBH.TableNumberX+1){canMove++;}
+                    if(BBH.TableNumberX == nBBH.TableNumberX && BBH.TableNumberY == nBBH.TableNumberY+1){canMove++; Debug.Log("sąsiad"); Debug.Log(BBH.value);} 
+                    if(BBH.TableNumberY == nBBH.TableNumberY && BBH.TableNumberX == nBBH.TableNumberX+1){canMove++; Debug.Log("sąsiad"); Debug.Log(BBH.value);}
                 }
             }
         }
         foreach(GameObject field in fields)
         {
             FieldScript FS = field.GetComponent<FieldScript>();
-            if(FS.isTaken == false && FS.isWall == false){canMove++;}
+            if(FS.isTaken == false && FS.isWall == false){canMove++; Debug.Log("pusto");}
         }
         if(canMove == 0) 
         {
@@ -240,7 +240,6 @@ public class SpawnBlock : MonoBehaviour
 
     public void BlockLevelUp(int x, int y, int value) //#TODO This function can be optimized.
     {
-        Debug.Log("BlockLevelUp");
         if(value == 2){block = Instantiate(block4); ScoreCounterScript.AddPoints(4);}
         else if(value == 4){block = Instantiate(block8); ScoreCounterScript.AddPoints(8);}
         else if(value == 8){block = Instantiate(block16); ScoreCounterScript.AddPoints(16);}

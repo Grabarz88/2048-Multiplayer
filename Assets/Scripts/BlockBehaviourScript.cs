@@ -27,6 +27,7 @@ public class BlockBehaviourScript : MonoBehaviour
     [SerializeField] public int value;
     public string dir = "empty";
 	[SerializeField] public bool idle = true;
+	[SerializeField] public bool waintingForDir = false;
 	[SerializeField] public bool searching = false;
 	[SerializeField] public bool finishedSearching = false;
 	[SerializeField] public bool willMove = false;
@@ -47,7 +48,8 @@ public class BlockBehaviourScript : MonoBehaviour
     
     void Start()
     {
-    	FieldSpawner = GameObject.Find("FieldSpawner"); 
+    	dir = "empty";
+		FieldSpawner = GameObject.Find("FieldSpawner"); 
     	SpawnField = FieldSpawner.GetComponent<SpawnField>();
 		BlockSpawner = GameObject.Find("BlockSpawner"); 
 		SpawnBlock = BlockSpawner.GetComponent<SpawnBlock>();
@@ -84,10 +86,18 @@ public class BlockBehaviourScript : MonoBehaviour
 
 		if (isPauseActive == false)
 		{
-			if (Input.GetButtonDown("MoveRight")) { dir = "right"; }
-			if (Input.GetButtonDown("MoveLeft")) { dir = "left"; }
-			if (Input.GetButtonDown("MoveUp")) { dir = "up"; }
-			if (Input.GetButtonDown("MoveDown")) { dir = "down"; }
+			if(waintingForDir == true)
+			{
+				if (Input.GetButtonDown("MoveRight")) { dir = "right"; }
+				if (Input.GetButtonDown("MoveLeft")) { dir = "left"; }
+				if (Input.GetButtonDown("MoveUp")) { dir = "up"; }
+				if (Input.GetButtonDown("MoveDown")) { dir = "down"; }
+				if(dir != "empty") 
+				{
+					waintingForDir = false; 
+					searching = true;
+				}
+			}
 
 			if (searching == true)
 			{
@@ -129,8 +139,8 @@ public class BlockBehaviourScript : MonoBehaviour
 						{
 							//Pole jest zajęte
 							blocks = SpawnBlock.blocks;
-							try
-							{
+							// try
+							// {
 								foreach (GameObject block in blocks)
 								{
 									//Szukamy, który blok znajduje się na danym polu
@@ -142,7 +152,7 @@ public class BlockBehaviourScript : MonoBehaviour
 											//Znaleźliśmy blok zajmujący pole
 											if (NextBlockBehaviourScript.finishedSearching == true)
 											{
-												//Zajmujący pole blok, skończył szukać swojej pozycji
+												//Zajmujący pole blok, skończył szukanie swojej pozycji
 												if (NextBlockBehaviourScript.willBeDestroyed == true)
 												{
                                                     //Zajmujący pole blok zostanie zniszczony
@@ -162,7 +172,7 @@ public class BlockBehaviourScript : MonoBehaviour
 														
 														searching = false;
 														finishedSearching = true;
-														willMove = false;
+														willMove = true;
 														willBeDestroyed = true;
 														willBeLevelingUp = true;
 
@@ -179,8 +189,8 @@ public class BlockBehaviourScript : MonoBehaviour
 										}
 									}
 								}
-							}
-							catch { }
+							// }
+							// catch { }
 						}
 					}
 				}
@@ -188,21 +198,27 @@ public class BlockBehaviourScript : MonoBehaviour
 			else if(moving == true)
 			{
 				//Wykonujemy ruch
-				if(Math.Abs(transform.position.x - targetFieldPosition.x) < 1 && Math.Abs(transform.position.y - targetFieldPosition.y) < 1)
+				if(Math.Abs(transform.position.x - targetFieldPosition.x) < 0.4 && Math.Abs(transform.position.y - targetFieldPosition.y) < 0.4)
 				{
 					moving = false;
 					finishedMoving = true;
 				}
-				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.1f));
+				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.2f));
 			}
 		}
     }
 
 
-    public void executeSearching() //SpawnBlock wywołuje kiedy możemy szukać swojej pozycji, tak aby wszystkie bloki zrobiły to na raz
-    {
-		searching = true;
+    public void executeWaitingForDir()
+	{
+		waintingForDir = true;
 		idle = false;
+	}
+
+	public void executeSearching() //SpawnBlock wywołuje kiedy możemy szukać swojej pozycji, tak aby wszystkie bloki zrobiły to na raz
+    { //Po dodaniu executeWaitingForDir, ta funkcja nie będzie używana, bo bloki same będą ogłaszały, że już mogę
+		searching = true;
+		waintingForDir = false;
     }
 
     public void executeMove() //SpawnBlock wywołuje kiedy możemy się ruszyć, tak aby wszystkie bloki zrobiły to na raz
@@ -231,11 +247,11 @@ public class BlockBehaviourScript : MonoBehaviour
 	public void setPace() // Setting pace
 	{
 		
-		if (Math.Abs(targetFieldPosition.x - transform.position.x) > 1.5f)
+		if (Math.Abs(targetFieldPosition.x - transform.position.x) > 0.5f)
 			{
 				pace = Math.Abs(transform.position.x - targetFieldPosition.x);
 			}
-		if (Math.Abs(targetFieldPosition.y - transform.position.y) > 1.5f)
+		if (Math.Abs(targetFieldPosition.y - transform.position.y) > 0.5f)
 			{
 				pace = Math.Abs(transform.position.y - targetFieldPosition.y);
 			}
@@ -259,6 +275,8 @@ public class BlockBehaviourScript : MonoBehaviour
             }
         }
         this.gameObject.transform.position = new Vector2(positionX, positionY);
+
+		
 	}
 
     public void ReleaseOldField(int x, int y, string blockDir) //Ten x i y są niewykorzystane. To na pewno będzie działało?
@@ -296,18 +314,6 @@ public class BlockBehaviourScript : MonoBehaviour
 
 	private void OnDestroy() 
 	{
-		foreach (GameObject thisFieldToRelease in fields)
-		{
-			if(thisFieldToRelease != null) // Ten warunek jest zabezpieczeniem przed pojawianiem się błędów przy zamykaniu gry
-			{
-				FieldScript = thisFieldToRelease.gameObject.GetComponent<FieldScript>();
-			}
-			if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
-			{
-				FieldScript.isTaken = false;
-			}
-		}
-
 		if(willBeLevelingUp == true) 
 		{
 			SpawnBlock.BlockLevelUp(TableNumberX, TableNumberY, value);
