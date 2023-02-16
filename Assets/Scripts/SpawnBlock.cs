@@ -221,15 +221,15 @@ public class SpawnBlock : MonoBehaviour
                 BlockBehaviourScript nBBH = neighbourBlock.GetComponent<BlockBehaviourScript>();
                 if(BBH.value == nBBH.value)
                 {
-                    if(BBH.TableNumberX == nBBH.TableNumberX && BBH.TableNumberY == nBBH.TableNumberY+1){canMove++; Debug.Log("sąsiad"); Debug.Log(BBH.value);} 
-                    if(BBH.TableNumberY == nBBH.TableNumberY && BBH.TableNumberX == nBBH.TableNumberX+1){canMove++; Debug.Log("sąsiad"); Debug.Log(BBH.value);}
+                    if(BBH.TableNumberX == nBBH.TableNumberX && BBH.TableNumberY == nBBH.TableNumberY+1){canMove++;} 
+                    if(BBH.TableNumberY == nBBH.TableNumberY && BBH.TableNumberX == nBBH.TableNumberX+1){canMove++;}
                 }
             }
         }
         foreach(GameObject field in fields)
         {
             FieldScript FS = field.GetComponent<FieldScript>();
-            if(FS.isTaken == false && FS.isWall == false){canMove++; Debug.Log("pusto");}
+            if(FS.isTaken == false && FS.isWall == false){canMove++;}
         }
         if(canMove == 0) 
         {

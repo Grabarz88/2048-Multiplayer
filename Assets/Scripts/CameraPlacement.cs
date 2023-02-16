@@ -17,7 +17,17 @@ public class CameraPlacement : MonoBehaviour
         {
             CustomSetter = GameObject.Find("CustomSetter");
             transform.position = new Vector3 (CustomSetter.GetComponent<CustomSetterScript>().X*16, CustomSetter.GetComponent<CustomSetterScript>().Y*16, -10);
-            
+            if(CustomSetter.GetComponent<CustomSetterScript>().X >= 8 || CustomSetter.GetComponent<CustomSetterScript>().Y >= 8)
+            {
+                if(CustomSetter.GetComponent<CustomSetterScript>().X >= CustomSetter.GetComponent<CustomSetterScript>().Y)
+                {
+                    GetComponent<Camera>().orthographicSize = CustomSetter.GetComponent<CustomSetterScript>().X * 25f;
+                }
+                else
+                {
+                    GetComponent<Camera>().orthographicSize = CustomSetter.GetComponent<CustomSetterScript>().Y * 25f;
+                }
+            }
         }
         else
         {
