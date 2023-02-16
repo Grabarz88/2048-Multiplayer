@@ -11,6 +11,7 @@ public class ScoreCounterScript : MonoBehaviour
     [SerializeField] int highScore = 0;
     [SerializeField] Text textScore;
     [SerializeField] Text textHighScore;
+    [SerializeField] Text textGameOverScore;
     [SerializeField] GameObject ScorePanel;
     [SerializeField] GameObject highScorePanel;
     public RectTransform ScorePanelRectTransform;
@@ -56,6 +57,7 @@ public class ScoreCounterScript : MonoBehaviour
         }
   
         textScore.text = score.ToString();
+        textGameOverScore.text = score.ToString();
         
         adjustScoreFieldSize();
     }   
