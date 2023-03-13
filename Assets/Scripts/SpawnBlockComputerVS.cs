@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class SpawnBlock : MonoBehaviour
+public class SpawnBlockComputerVS : MonoBehaviour
 {
     public GameObject gameOverPanel;
     GameObject block;
@@ -48,7 +48,7 @@ public class SpawnBlock : MonoBehaviour
     {
         gameOverPanel.gameObject.SetActive(false);
         ScoreCounter = GameObject.Find("ScoreCounter");
-        ScoreCounterScript = ScoreCounter.GetComponent<ScoreCounterScript>();
+        ScoreCounterScript = ScoreCounter.GetComponent<ScoreCounterScript>();    
 
         SpawnField = FieldSpawner.GetComponent<SpawnField>();
         fields = SpawnField.fields;
@@ -206,6 +206,7 @@ public class SpawnBlock : MonoBehaviour
 
     public void CheckForGameOver()
     {
+        Debug.Log("CheckForGameOver");
         blocks.TrimExcess();
         int canMove = 0;
         foreach(GameObject block in blocks)
@@ -229,7 +230,7 @@ public class SpawnBlock : MonoBehaviour
         if(canMove == 0) 
         {
             Debug.Log("TRUE GAME OVER");
-            gameOverPanel.gameObject.SetActive(true);
+            // gameOverPanel.gameObject.SetActive(true);
         }
     }
 
@@ -262,7 +263,6 @@ public class SpawnBlock : MonoBehaviour
         // Debug.Log("RemoveBlockFromList");
         blocks.Remove(block);
     }
-
 }
 
 

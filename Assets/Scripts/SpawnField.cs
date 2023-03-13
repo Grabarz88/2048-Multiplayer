@@ -35,7 +35,7 @@ public class SpawnField : MonoBehaviour
        }
        int y = 0;
        int x = 0;
-       while (y < PodajSzerokoscPlanszy)
+       while (y < PodajWysokoscPlanszy)
        {
         while (x < PodajSzerokoscPlanszy)
         {

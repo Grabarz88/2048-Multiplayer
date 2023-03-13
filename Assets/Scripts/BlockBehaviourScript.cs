@@ -27,7 +27,7 @@ public class BlockBehaviourScript : MonoBehaviour
     [SerializeField] public int value;
     public string dir = "empty";
 	[SerializeField] public bool idle = true;
-	[SerializeField] public bool waintingForDir = false;
+	[SerializeField] public bool waitingForDir = false;
 	[SerializeField] public bool searching = false;
 	[SerializeField] public bool finishedSearching = false;
 	[SerializeField] public bool willMove = false;
@@ -86,7 +86,7 @@ public class BlockBehaviourScript : MonoBehaviour
 
 		if (isPauseActive == false)
 		{
-			if(waintingForDir == true)
+			if(waitingForDir == true)
 			{
 				if (Input.GetButtonDown("MoveRight")) { dir = "right"; }
 				if (Input.GetButtonDown("MoveLeft")) { dir = "left"; }
@@ -94,10 +94,11 @@ public class BlockBehaviourScript : MonoBehaviour
 				if (Input.GetButtonDown("MoveDown")) { dir = "down"; }
 				if(dir != "empty") 
 				{
-					waintingForDir = false; 
+					waitingForDir = false; 
 					searching = true;
 				}
 			}
+
 
 			if (searching == true)
 			{
@@ -211,14 +212,14 @@ public class BlockBehaviourScript : MonoBehaviour
 
     public void executeWaitingForDir()
 	{
-		waintingForDir = true;
+		waitingForDir = true;
 		idle = false;
 	}
 
 	public void executeSearching() //SpawnBlock wywołuje kiedy możemy szukać swojej pozycji, tak aby wszystkie bloki zrobiły to na raz
     { //Po dodaniu executeWaitingForDir, ta funkcja nie będzie używana, bo bloki same będą ogłaszały, że już mogę
 		searching = true;
-		waintingForDir = false;
+		waitingForDir = false;
     }
 
     public void executeMove() //SpawnBlock wywołuje kiedy możemy się ruszyć, tak aby wszystkie bloki zrobiły to na raz
