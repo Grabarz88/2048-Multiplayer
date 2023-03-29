@@ -29,7 +29,7 @@ public class LocalVesrusSetterScript : MonoBehaviour
     public void Player1NextColor()
     {
         Player1Color++;
-        if (Player1Color >= 7)
+        if (Player1Color >= 6)
         {
             Player1Color = 1;
         }
@@ -42,7 +42,7 @@ public class LocalVesrusSetterScript : MonoBehaviour
         Player1Color--;
         if (Player1Color <= 0)
         {
-            Player1Color = 6;
+            Player1Color = 5;
         }
         if(Player1Color == Player2Color){Player1Color --;}
         ChangePlayer1Color(Player1PanelSpr, Player1Color);
@@ -51,7 +51,7 @@ public class LocalVesrusSetterScript : MonoBehaviour
     public void Player2NextColor()
     {
         Player2Color++;
-        if (Player2Color >= 7)
+        if (Player2Color >= 6)
         {
             Player2Color = 1;
         }
@@ -64,7 +64,7 @@ public class LocalVesrusSetterScript : MonoBehaviour
         Player2Color--;
         if (Player2Color <= 0)
         {
-            Player2Color = 6;
+            Player2Color = 5;
         }
         if (Player2Color == Player1Color){Player2Color--;}
         ChangePlayer1Color(Player2PanelSpr, Player2Color);
@@ -76,9 +76,8 @@ public class LocalVesrusSetterScript : MonoBehaviour
         if(colorID == 1){PanelToChange.color = new Color32(119,221,250,255);} //blue
         else if(colorID == 2){PanelToChange.color = new Color32(242,118,140,255);} //red
         else if(colorID == 3){PanelToChange.color = new Color32(137,217,171,255);} //green
-        else if(colorID == 4){PanelToChange.color = new Color32(218,221,135,255);} //yellow
-        else if(colorID == 5){PanelToChange.color = new Color32(243,196,109,255);} //orange
-        else if(colorID == 6){PanelToChange.color = new Color32(236,123,222,255);} //pink    
+        else if(colorID == 4){PanelToChange.color = new Color32(236,123,222,255);} //pink  
+        else if(colorID == 5){PanelToChange.color = new Color32(104,105,104,255);} //silver 
     }    
 
     public void StartGame()

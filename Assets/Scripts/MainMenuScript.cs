@@ -15,6 +15,11 @@ public class MainMenuScript : MonoBehaviour
         SceneManager.LoadScene("CustomSettings");
     }
 
+    public void LocalVS()
+    {
+        SceneManager.LoadScene("VSSettings");
+    }
+
     public void Quit()
     {
         Application.Quit();

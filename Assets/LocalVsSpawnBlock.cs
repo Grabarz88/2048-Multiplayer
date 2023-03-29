@@ -61,17 +61,64 @@ public bool Waiting = false;
         block.gameObject.name = "block" + blockID;
         blockID++;
 
-        if(Player1Color == 1) //Ta funkcja zostanie kiedyś rozwinięta o inne kolory bloków
+        TurnColorImg = TurnColorPanel.gameObject.GetComponent<Image>();
+
+        if(Player1Color == 1) //Player 1 has blue blocks
         {
             block = Instantiate(BlueBlock2);
             P1Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
             block.gameObject.name = "block" + blockID;
+            TurnColorImg.color = new Color32(119,221,250,255);
+        }
+        else if(Player1Color == 2) //Player 1 has red blocks
+        {
+            block = Instantiate(RedBlock2);
+            P1Blocks.Add(block);
+            blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
+            block.gameObject.name = "block" + blockID;
+            TurnColorImg.color = new Color32(242,118,140,255);
+        }
+        else if(Player1Color == 3) //Player 1 has green blocks
+        {
+            block = Instantiate(GreenBlock2);
+            P1Blocks.Add(block);
+            blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
+            block.gameObject.name = "block" + blockID;
+            TurnColorImg.color = new Color32(137,217,171,255);
+        }
+        else if(Player1Color == 4) //Player 1 has pink blocks
+        {
+            block = Instantiate(PinkBlock2);
+            P1Blocks.Add(block);
+            blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
+            block.gameObject.name = "block" + blockID;
+            TurnColorImg.color = new Color32(236,123,222,255);
+        }
+        else if(Player1Color == 5) //Player 1 has silver blocks
+        {
+            block = Instantiate(SilverBlock2);
+            P1Blocks.Add(block);
+            blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
+            block.gameObject.name = "block" + blockID;
+            TurnColorImg.color = new Color32(104,105,104,255);
         }
         blockID++;
 
-        if(Player2Color == 2) //Ta funkcja zostanie kiedyś rozwinięta o inne kolory bloków
+        if(Player2Color == 1) //Player 1 has blue blocks
+        {
+            block = Instantiate(BlueBlock2);
+            P2Blocks.Add(block);
+            blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
+            block.gameObject.name = "block" + blockID;
+        }
+        else if(Player2Color == 2) //Player 1 has red blocks
         {
             block = Instantiate(RedBlock2);
             P2Blocks.Add(block);
@@ -79,10 +126,31 @@ public bool Waiting = false;
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
             block.gameObject.name = "block" + blockID;
         }
+        else if(Player2Color == 3) //Player 1 has green blocks
+        {
+            block = Instantiate(GreenBlock2);
+            P2Blocks.Add(block);
+            blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
+            block.gameObject.name = "block" + blockID;
+        }
+        else if(Player2Color == 4) //Player 1 has pink blocks
+        {
+            block = Instantiate(PinkBlock2);
+            P2Blocks.Add(block);
+            blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
+            block.gameObject.name = "block" + blockID;
+        }
+        else if(Player2Color == 5) //Player 1 has silver blocks
+        {
+            block = Instantiate(SilverBlock2);
+            P2Blocks.Add(block);
+            blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
+            block.gameObject.name = "block" + blockID;
+        }
         blockID++;
-
-        TurnColorImg = TurnColorPanel.gameObject.GetComponent<Image>();
-        TurnColorImg.color = new Color32(119,221,250,255);
 
     }
 
@@ -183,14 +251,22 @@ public bool Waiting = false;
             SpawnNewBlock();
             if(Player1Turn == true)
             {
-                TurnColorImg.color = new Color32(242,118,140,255);
+                if(Player2Color == 1){TurnColorImg.color = new Color32(119,221,250,255);}
+                else if(Player2Color == 2){TurnColorImg.color = new Color32(242,118,140,255);}
+                else if(Player2Color == 3){TurnColorImg.color = new Color32(137,217,171,255);}
+                else if(Player2Color == 4){TurnColorImg.color = new Color32(236,123,222,255);}
+                else if(Player2Color == 5){TurnColorImg.color = new Color32(104,105,104,255);}
                 Player1Turn = false;
                 Player2Turn = true;
                 Waiting = false;
             }
             else if (Player2Turn == true)
             {
-                TurnColorImg.color = new Color32(119,221,250,255);
+                if(Player1Color == 1){TurnColorImg.color = new Color32(119,221,250,255);}
+                else if(Player1Color == 2){TurnColorImg.color = new Color32(242,118,140,255);}
+                else if(Player1Color == 3){TurnColorImg.color = new Color32(137,217,171,255);}
+                else if(Player1Color == 4){TurnColorImg.color = new Color32(236,123,222,255);}
+                else if(Player1Color == 5){TurnColorImg.color = new Color32(104,105,104,255);}
                 Player2Turn = false;
                 Player1Turn = true;
                 Waiting = false;
@@ -325,7 +401,24 @@ public void SpawnNewBlock()
     }
 
 
-public void BlockLevelUp(int x, int y, int value, int owner) //#TODO This function can be optimized.
+
+public void RemoveBlockFromList(GameObject block)
+    {
+        // Debug.Log("RemoveBlockFromList");
+        blocks.Remove(block);
+    }
+
+    
+public void AnnounceGameOver(int winner)
+    {
+        gameOverPanel.gameObject.SetActive(true);
+        string whoWon = winner.ToString();
+        winnerAnnouncemenet.text = "Zwycięża Gracz " + whoWon;
+
+    }
+
+
+public void BlockLevelUp(int x, int y, long value, int owner) //#TODO This function can be optimized.
     {
         if(owner == 0)
         {
@@ -340,6 +433,10 @@ public void BlockLevelUp(int x, int y, int value, int owner) //#TODO This functi
             else if(value == 512){block = Instantiate(NeutralBlock1024);}
             else if(value == 1024){block = Instantiate(NeutralBlock2048);}
             else if(value == 2048){block = Instantiate(NeutralBlock4096);}   
+            else if(value == 4096){block = Instantiate(NeutralBlock8192);} 
+            else if(value == 8192){block = Instantiate(NeutralBlock16384);} 
+            else if(value == 16384){block = Instantiate(NeutralBlock32768);}
+            else if(value == 32768){block = Instantiate(NeutralBlock65536);}  
             blocks.Add(block);
             NeutralBlocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(x, y, 0); 
@@ -358,15 +455,13 @@ public void BlockLevelUp(int x, int y, int value, int owner) //#TODO This functi
                 else if(value == 256){block = Instantiate(BlueBlock512);}
                 else if(value == 512){block = Instantiate(BlueBlock1024);}
                 else if(value == 1024){block = Instantiate(BlueBlock2048);}
-                else if(value == 2048){block = Instantiate(BlueBlock4096);}   
-                blocks.Add(block);
-                P1Blocks.Add(block);
-                block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(x, y, 1); 
+                else if(value == 2048){block = Instantiate(BlueBlock4096);}  
+                else if(value == 4096){block = Instantiate(BlueBlock8192);} 
+                else if(value == 8192){block = Instantiate(BlueBlock16384);} 
+                else if(value == 16384){block = Instantiate(BlueBlock32768);}
+                else if(value == 32768){block = Instantiate(BlueBlock65536);}  
             }
-        }
-        else if (owner == 2)
-        {
-            if(Player2Color == 2)
+            else if(Player1Color == 2)
             {  
                 if(value == 2){block = Instantiate(RedBlock4);}
                 else if(value == 4){block = Instantiate(RedBlock8);}
@@ -378,11 +473,167 @@ public void BlockLevelUp(int x, int y, int value, int owner) //#TODO This functi
                 else if(value == 256){block = Instantiate(RedBlock512);}
                 else if(value == 512){block = Instantiate(RedBlock1024);}
                 else if(value == 1024){block = Instantiate(RedBlock2048);}
-                else if(value == 2048){block = Instantiate(RedBlock4096);}    
-                blocks.Add(block);
-                P2Blocks.Add(block);
-                block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(x, y, 2);
+                else if(value == 2048){block = Instantiate(RedBlock4096);}
+                else if(value == 4096){block = Instantiate(RedBlock8192);} 
+                else if(value == 8192){block = Instantiate(RedBlock16384);} 
+                else if(value == 16384){block = Instantiate(RedBlock32768);}
+                else if(value == 32768){block = Instantiate(RedBlock65536);}     
             }
+            else if(Player1Color == 3)
+            {  
+                if(value == 2){block = Instantiate(GreenBlock4);}
+                else if(value == 4){block = Instantiate(GreenBlock8);}
+                else if(value == 8){block = Instantiate(GreenBlock16);}
+                else if(value == 16){block = Instantiate(GreenBlock32);}
+                else if(value == 32){block = Instantiate(GreenBlock64);}
+                else if(value == 64){block = Instantiate(GreenBlock128);}
+                else if(value == 128){block = Instantiate(GreenBlock256);}
+                else if(value == 256){block = Instantiate(GreenBlock512);}
+                else if(value == 512){block = Instantiate(GreenBlock1024);}
+                else if(value == 1024){block = Instantiate(GreenBlock2048);}
+                else if(value == 2048){block = Instantiate(GreenBlock4096);}
+                else if(value == 4096){block = Instantiate(GreenBlock8192);} 
+                else if(value == 8192){block = Instantiate(GreenBlock16384);} 
+                else if(value == 16384){block = Instantiate(GreenBlock32768);}
+                else if(value == 32768){block = Instantiate(GreenBlock65536);}     
+            }
+            else if(Player1Color == 4)
+            {  
+                if(value == 2){block = Instantiate(PinkBlock4);}
+                else if(value == 4){block = Instantiate(PinkBlock8);}
+                else if(value == 8){block = Instantiate(PinkBlock16);}
+                else if(value == 16){block = Instantiate(PinkBlock32);}
+                else if(value == 32){block = Instantiate(PinkBlock64);}
+                else if(value == 64){block = Instantiate(PinkBlock128);}
+                else if(value == 128){block = Instantiate(PinkBlock256);}
+                else if(value == 256){block = Instantiate(PinkBlock512);}
+                else if(value == 512){block = Instantiate(PinkBlock1024);}
+                else if(value == 1024){block = Instantiate(PinkBlock2048);}
+                else if(value == 2048){block = Instantiate(PinkBlock4096);}
+                else if(value == 4096){block = Instantiate(PinkBlock8192);} 
+                else if(value == 8192){block = Instantiate(PinkBlock16384);} 
+                else if(value == 16384){block = Instantiate(PinkBlock32768);}
+                else if(value == 32768){block = Instantiate(PinkBlock65536);}     
+            }
+            else if(Player1Color == 5)
+            {  
+                if(value == 2){block = Instantiate(SilverBlock4);}
+                else if(value == 4){block = Instantiate(SilverBlock8);}
+                else if(value == 8){block = Instantiate(SilverBlock16);}
+                else if(value == 16){block = Instantiate(SilverBlock32);}
+                else if(value == 32){block = Instantiate(SilverBlock64);}
+                else if(value == 64){block = Instantiate(SilverBlock128);}
+                else if(value == 128){block = Instantiate(SilverBlock256);}
+                else if(value == 256){block = Instantiate(SilverBlock512);}
+                else if(value == 512){block = Instantiate(SilverBlock1024);}
+                else if(value == 1024){block = Instantiate(SilverBlock2048);}
+                else if(value == 2048){block = Instantiate(SilverBlock4096);}
+                else if(value == 4096){block = Instantiate(SilverBlock8192);} 
+                else if(value == 8192){block = Instantiate(SilverBlock16384);} 
+                else if(value == 16384){block = Instantiate(SilverBlock32768);}
+                else if(value == 32768){block = Instantiate(SilverBlock65536);}     
+            }
+            blocks.Add(block);
+            P1Blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(x, y, 1); 
+        }
+        else if (owner == 2)
+        {
+            if(Player2Color == 1)
+            {
+                if(value == 2){block = Instantiate(BlueBlock4);}
+                else if(value == 4){block = Instantiate(BlueBlock8);}
+                else if(value == 8){block = Instantiate(BlueBlock16);}
+                else if(value == 16){block = Instantiate(BlueBlock32);}
+                else if(value == 32){block = Instantiate(BlueBlock64);}
+                else if(value == 64){block = Instantiate(BlueBlock128);}
+                else if(value == 128){block = Instantiate(BlueBlock256);}
+                else if(value == 256){block = Instantiate(BlueBlock512);}
+                else if(value == 512){block = Instantiate(BlueBlock1024);}
+                else if(value == 1024){block = Instantiate(BlueBlock2048);}
+                else if(value == 2048){block = Instantiate(BlueBlock4096);}  
+                else if(value == 4096){block = Instantiate(BlueBlock8192);} 
+                else if(value == 8192){block = Instantiate(BlueBlock16384);} 
+                else if(value == 16384){block = Instantiate(BlueBlock32768);}
+                else if(value == 32768){block = Instantiate(BlueBlock65536);}  
+            }
+            else if(Player2Color == 2)
+            {  
+                if(value == 2){block = Instantiate(RedBlock4);}
+                else if(value == 4){block = Instantiate(RedBlock8);}
+                else if(value == 8){block = Instantiate(RedBlock16);}
+                else if(value == 16){block = Instantiate(RedBlock32);}
+                else if(value == 32){block = Instantiate(RedBlock64);}
+                else if(value == 64){block = Instantiate(RedBlock128);}
+                else if(value == 128){block = Instantiate(RedBlock256);}
+                else if(value == 256){block = Instantiate(RedBlock512);}
+                else if(value == 512){block = Instantiate(RedBlock1024);}
+                else if(value == 1024){block = Instantiate(RedBlock2048);}
+                else if(value == 2048){block = Instantiate(RedBlock4096);}
+                else if(value == 4096){block = Instantiate(RedBlock8192);} 
+                else if(value == 8192){block = Instantiate(RedBlock16384);} 
+                else if(value == 16384){block = Instantiate(RedBlock32768);}
+                else if(value == 32768){block = Instantiate(RedBlock65536);}     
+            }
+            else if(Player2Color == 3)
+            {  
+                if(value == 2){block = Instantiate(GreenBlock4);}
+                else if(value == 4){block = Instantiate(GreenBlock8);}
+                else if(value == 8){block = Instantiate(GreenBlock16);}
+                else if(value == 16){block = Instantiate(GreenBlock32);}
+                else if(value == 32){block = Instantiate(GreenBlock64);}
+                else if(value == 64){block = Instantiate(GreenBlock128);}
+                else if(value == 128){block = Instantiate(GreenBlock256);}
+                else if(value == 256){block = Instantiate(GreenBlock512);}
+                else if(value == 512){block = Instantiate(GreenBlock1024);}
+                else if(value == 1024){block = Instantiate(GreenBlock2048);}
+                else if(value == 2048){block = Instantiate(GreenBlock4096);}
+                else if(value == 4096){block = Instantiate(GreenBlock8192);} 
+                else if(value == 8192){block = Instantiate(GreenBlock16384);} 
+                else if(value == 16384){block = Instantiate(GreenBlock32768);}
+                else if(value == 32768){block = Instantiate(GreenBlock65536);}     
+            }
+            else if(Player2Color == 4)
+            {  
+                if(value == 2){block = Instantiate(PinkBlock4);}
+                else if(value == 4){block = Instantiate(PinkBlock8);}
+                else if(value == 8){block = Instantiate(PinkBlock16);}
+                else if(value == 16){block = Instantiate(PinkBlock32);}
+                else if(value == 32){block = Instantiate(PinkBlock64);}
+                else if(value == 64){block = Instantiate(PinkBlock128);}
+                else if(value == 128){block = Instantiate(PinkBlock256);}
+                else if(value == 256){block = Instantiate(PinkBlock512);}
+                else if(value == 512){block = Instantiate(PinkBlock1024);}
+                else if(value == 1024){block = Instantiate(PinkBlock2048);}
+                else if(value == 2048){block = Instantiate(PinkBlock4096);}
+                else if(value == 4096){block = Instantiate(PinkBlock8192);} 
+                else if(value == 8192){block = Instantiate(PinkBlock16384);} 
+                else if(value == 16384){block = Instantiate(PinkBlock32768);}
+                else if(value == 32768){block = Instantiate(PinkBlock65536);}     
+            }
+            else if(Player2Color == 5)
+            {  
+                if(value == 2){block = Instantiate(SilverBlock4);}
+                else if(value == 4){block = Instantiate(SilverBlock8);}
+                else if(value == 8){block = Instantiate(SilverBlock16);}
+                else if(value == 16){block = Instantiate(SilverBlock32);}
+                else if(value == 32){block = Instantiate(SilverBlock64);}
+                else if(value == 64){block = Instantiate(SilverBlock128);}
+                else if(value == 128){block = Instantiate(SilverBlock256);}
+                else if(value == 256){block = Instantiate(SilverBlock512);}
+                else if(value == 512){block = Instantiate(SilverBlock1024);}
+                else if(value == 1024){block = Instantiate(SilverBlock2048);}
+                else if(value == 2048){block = Instantiate(SilverBlock4096);}
+                else if(value == 4096){block = Instantiate(SilverBlock8192);} 
+                else if(value == 8192){block = Instantiate(SilverBlock16384);} 
+                else if(value == 16384){block = Instantiate(SilverBlock32768);}
+                else if(value == 32768){block = Instantiate(SilverBlock65536);}     
+            }
+            blocks.Add(block);
+            P2Blocks.Add(block);
+            block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(x, y, 2);
+
+
         }
 
         block.GetComponent<LocalVSBlockBehaviourScript>().dir = "empty";
@@ -391,25 +642,6 @@ public void BlockLevelUp(int x, int y, int value, int owner) //#TODO This functi
 
 
     }
-
-    public void RemoveBlockFromList(GameObject block)
-    {
-        // Debug.Log("RemoveBlockFromList");
-        blocks.Remove(block);
-    }
-
-    
-    public void AnnounceGameOver(int winner)
-    {
-        gameOverPanel.gameObject.SetActive(true);
-        string whoWon = winner.ToString();
-        winnerAnnouncemenet.text = "Zwycięża Gracz " + whoWon;
-
-    }
-
-
-
-
 
 
 
@@ -425,6 +657,11 @@ public void BlockLevelUp(int x, int y, int value, int owner) //#TODO This functi
     [SerializeField] GameObject NeutralBlock1024;
     [SerializeField] GameObject NeutralBlock2048;
     [SerializeField] GameObject NeutralBlock4096;
+    [SerializeField] GameObject NeutralBlock8192;
+    [SerializeField] GameObject NeutralBlock16384;
+    [SerializeField] GameObject NeutralBlock32768;
+    [SerializeField] GameObject NeutralBlock65536;
+    
 
     [SerializeField] GameObject BlueBlock2;
     [SerializeField] GameObject BlueBlock4;
@@ -438,6 +675,10 @@ public void BlockLevelUp(int x, int y, int value, int owner) //#TODO This functi
     [SerializeField] GameObject BlueBlock1024;
     [SerializeField] GameObject BlueBlock2048;
     [SerializeField] GameObject BlueBlock4096;
+    [SerializeField] GameObject BlueBlock8192;
+    [SerializeField] GameObject BlueBlock16384;
+    [SerializeField] GameObject BlueBlock32768;
+    [SerializeField] GameObject BlueBlock65536;
 
     [SerializeField] GameObject RedBlock2;
     [SerializeField] GameObject RedBlock4;
@@ -451,6 +692,66 @@ public void BlockLevelUp(int x, int y, int value, int owner) //#TODO This functi
     [SerializeField] GameObject RedBlock1024;
     [SerializeField] GameObject RedBlock2048;
     [SerializeField] GameObject RedBlock4096;
+    [SerializeField] GameObject RedBlock8192;
+    [SerializeField] GameObject RedBlock16384;
+    [SerializeField] GameObject RedBlock32768;
+    [SerializeField] GameObject RedBlock65536;
+
+    [SerializeField] GameObject GreenBlock2;
+    [SerializeField] GameObject GreenBlock4;
+    [SerializeField] GameObject GreenBlock8;
+    [SerializeField] GameObject GreenBlock16;
+    [SerializeField] GameObject GreenBlock32;
+    [SerializeField] GameObject GreenBlock64;
+    [SerializeField] GameObject GreenBlock128;
+    [SerializeField] GameObject GreenBlock256;
+    [SerializeField] GameObject GreenBlock512;
+    [SerializeField] GameObject GreenBlock1024;
+    [SerializeField] GameObject GreenBlock2048;
+    [SerializeField] GameObject GreenBlock4096;
+    [SerializeField] GameObject GreenBlock8192;
+    [SerializeField] GameObject GreenBlock16384;
+    [SerializeField] GameObject GreenBlock32768;
+    [SerializeField] GameObject GreenBlock65536;
+
+    [SerializeField] GameObject PinkBlock2;
+    [SerializeField] GameObject PinkBlock4;
+    [SerializeField] GameObject PinkBlock8;
+    [SerializeField] GameObject PinkBlock16;
+    [SerializeField] GameObject PinkBlock32;
+    [SerializeField] GameObject PinkBlock64;
+    [SerializeField] GameObject PinkBlock128;
+    [SerializeField] GameObject PinkBlock256;
+    [SerializeField] GameObject PinkBlock512;
+    [SerializeField] GameObject PinkBlock1024;
+    [SerializeField] GameObject PinkBlock2048;
+    [SerializeField] GameObject PinkBlock4096;
+    [SerializeField] GameObject PinkBlock8192;
+    [SerializeField] GameObject PinkBlock16384;
+    [SerializeField] GameObject PinkBlock32768;
+    [SerializeField] GameObject PinkBlock65536;
+
+    [SerializeField] GameObject SilverBlock2;
+    [SerializeField] GameObject SilverBlock4;
+    [SerializeField] GameObject SilverBlock8;
+    [SerializeField] GameObject SilverBlock16;
+    [SerializeField] GameObject SilverBlock32;
+    [SerializeField] GameObject SilverBlock64;
+    [SerializeField] GameObject SilverBlock128;
+    [SerializeField] GameObject SilverBlock256;
+    [SerializeField] GameObject SilverBlock512;
+    [SerializeField] GameObject SilverBlock1024;
+    [SerializeField] GameObject SilverBlock2048;
+    [SerializeField] GameObject SilverBlock4096;
+    [SerializeField] GameObject SilverBlock8192;
+    [SerializeField] GameObject SilverBlock16384;
+    [SerializeField] GameObject SilverBlock32768;
+    [SerializeField] GameObject SilverBlock65536;
+
+
+
+
+
 
 
 }

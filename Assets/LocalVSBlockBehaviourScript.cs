@@ -26,7 +26,7 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
     FieldScript FieldScript;
 
     [SerializeField] public int OwnerID;
-    [SerializeField] public int value;
+    [SerializeField] public long value;
     public string dir = "empty";
 	[SerializeField] public bool idle = true;
 	[SerializeField] public bool waitingForDir = false;
@@ -80,10 +80,16 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
 
             if(waitingForDir == true)
 			{
-				if (Input.GetButtonDown("MoveRight")) { dir = "right"; }
-				if (Input.GetButtonDown("MoveLeft")) { dir = "left"; }
-				if (Input.GetButtonDown("MoveUp")) { dir = "up"; }
-				if (Input.GetButtonDown("MoveDown")) { dir = "down"; }
+				if (SpawnBlock.Player1Turn == true && Input.GetButtonDown("D")) { dir = "right"; }
+				if (SpawnBlock.Player1Turn == true && Input.GetButtonDown("A")) { dir = "left"; }
+				if (SpawnBlock.Player1Turn == true && Input.GetButtonDown("W")) { dir = "up"; }
+				if (SpawnBlock.Player1Turn == true && Input.GetButtonDown("S")) { dir = "down"; }
+
+                if (SpawnBlock.Player2Turn == true && Input.GetButtonDown("MoveRight")) { dir = "right"; }
+				if (SpawnBlock.Player2Turn == true && Input.GetButtonDown("MoveLeft")) { dir = "left"; }
+				if (SpawnBlock.Player2Turn == true && Input.GetButtonDown("MoveUp")) { dir = "up"; }
+				if (SpawnBlock.Player2Turn == true && Input.GetButtonDown("MoveDown")) { dir = "down"; }
+
 				if(dir != "empty") 
 				{
 					waitingForDir = false; 
