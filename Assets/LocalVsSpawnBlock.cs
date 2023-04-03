@@ -9,7 +9,9 @@ public class LocalVsSpawnBlock : MonoBehaviour
 GameObject block;
 FieldScript FieldScript;
 SpawnField SpawnField;
+LocalVS_AI LocalVS_AI;
 [SerializeField] GameObject FieldSpawner;
+[SerializeField] GameObject AI_Object;
 public GameObject gameOverPanel;
 [SerializeField] Text winnerAnnouncemenet;
 [SerializeField] public GameObject TurnColorPanel;
@@ -26,7 +28,8 @@ public List<GameObject> NeutralBlocks;
 public bool Player1Turn = true;
 public bool Player2Turn = false;
 public bool Waiting = false;
-// bool EnemyIsComputer = true;
+public bool EnemyIsComputer = false;
+public bool AIThinks = false;
 
     int idleCounter;
     int finishedSearchingCounter;
@@ -47,12 +50,16 @@ public bool Waiting = false;
         GameObject ObjectToRememberColors = GameObject.Find("ObjectToRememberColors");
         Player1Color = ObjectToRememberColors.GetComponent<ScriptToRememberColors>().Player1ColorGetter();
         Player2Color = ObjectToRememberColors.GetComponent<ScriptToRememberColors>().Player2ColorGetter(); 
+        EnemyIsComputer = ObjectToRememberColors.GetComponent<ScriptToRememberColors>().EnemyIsComputer();
+        
 
         SpawnField = FieldSpawner.GetComponent<SpawnField>();
         fields = SpawnField.fields;
 
-        int randomX = Random.Range(2, 3);
-        int randomY = Random.Range(2, 3);
+        LocalVS_AI = AI_Object.GetComponent<LocalVS_AI>();   
+
+        int randomX = Random.Range(2, 4);
+        int randomY = Random.Range(2, 4);
 
         block = Instantiate(NeutralBlock2);
         NeutralBlocks.Add(block);
@@ -69,7 +76,7 @@ public bool Waiting = false;
             P1Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P1MainBlock";
             TurnColorImg.color = new Color32(119,221,250,255);
         }
         else if(Player1Color == 2) //Player 1 has red blocks
@@ -78,7 +85,7 @@ public bool Waiting = false;
             P1Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P1MainBlock";
             TurnColorImg.color = new Color32(242,118,140,255);
         }
         else if(Player1Color == 3) //Player 1 has green blocks
@@ -87,7 +94,7 @@ public bool Waiting = false;
             P1Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P1MainBlock";
             TurnColorImg.color = new Color32(137,217,171,255);
         }
         else if(Player1Color == 4) //Player 1 has pink blocks
@@ -96,7 +103,7 @@ public bool Waiting = false;
             P1Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P1MainBlock";
             TurnColorImg.color = new Color32(236,123,222,255);
         }
         else if(Player1Color == 5) //Player 1 has silver blocks
@@ -105,42 +112,42 @@ public bool Waiting = false;
             P1Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(1, 4, 1);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P1MainBlock";
             TurnColorImg.color = new Color32(104,105,104,255);
         }
         blockID++;
 
-        if(Player2Color == 1) //Player 1 has blue blocks
+        if(Player2Color == 1) //Player 2 has blue blocks
         {
             block = Instantiate(BlueBlock2);
             P2Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P2MainBlock";
         }
-        else if(Player2Color == 2) //Player 1 has red blocks
+        else if(Player2Color == 2) //Player 2 has red blocks
         {
             block = Instantiate(RedBlock2);
             P2Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P2MainBlock";
         }
-        else if(Player2Color == 3) //Player 1 has green blocks
+        else if(Player2Color == 3) //Player 2 has green blocks
         {
             block = Instantiate(GreenBlock2);
             P2Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P2MainBlock";
         }
-        else if(Player2Color == 4) //Player 1 has pink blocks
+        else if(Player2Color == 4) //Player 2 has pink blocks
         {
             block = Instantiate(PinkBlock2);
             P2Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P2MainBlock";
         }
         else if(Player2Color == 5) //Player 1 has silver blocks
         {
@@ -148,7 +155,7 @@ public bool Waiting = false;
             P2Blocks.Add(block);
             blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(4, 1, 2);
-            block.gameObject.name = "block" + blockID;
+            block.gameObject.name = "P2MainBlock";
         }
         blockID++;
 
@@ -157,121 +164,131 @@ public bool Waiting = false;
 
     void Update()
     {
-        blocks.TrimExcess();
-        idleCounter = 0;
-        finishedSearchingCounter = 0;
-        willMoveCounter = 0;
-        finishedMovingCounter = 0;
-        foreach(GameObject block in blocks)
-        {
-            if (block != null)
-            {
-                //Sprawdzamy statusy bloków
-                BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
-                if (BlockBehaviourScript.idle == true) {idleCounter++;}
-                if (BlockBehaviourScript.finishedSearching == true) {finishedSearchingCounter++;}
-                if (BlockBehaviourScript.willMove == true || BlockBehaviourScript.willBeDestroyed == true) {willMoveCounter++;}
-                if (BlockBehaviourScript.finishedMoving == true) {finishedMovingCounter++;}
-            }
-        }
-
-        if(idleCounter == blocks.Count)
-        {
-            CheckForGameOver();
+        
+        // if (AIThinks == false)
+        // {
+            blocks.TrimExcess();
+            idleCounter = 0;
+            finishedSearchingCounter = 0;
+            willMoveCounter = 0;
+            finishedMovingCounter = 0;
             foreach(GameObject block in blocks)
             {
-                //Mówimy blokom, że mogą się zacząć szukać swoich nowych pozycji
-                BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
-                if(Player1Turn == true && Waiting == false)
+                if (block != null)
                 {
-                    if(BlockBehaviourScript.OwnerID == 1 || BlockBehaviourScript.OwnerID == 0)
+                    //Sprawdzamy statusy bloków
+                    BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
+                    if (BlockBehaviourScript.idle == true) {idleCounter++;}
+                    if (BlockBehaviourScript.finishedSearching == true) {finishedSearchingCounter++;}
+                    if (BlockBehaviourScript.willMove == true || BlockBehaviourScript.willBeDestroyed == true) {willMoveCounter++;}
+                    if (BlockBehaviourScript.finishedMoving == true) {finishedMovingCounter++;}
+                }
+            }
+    
+            if(idleCounter == blocks.Count)
+            {
+                CheckForGameOver();
+                foreach(GameObject block in blocks)
+                {
+                    //Mówimy blokom, że mogą się zacząć szukać swoich nowych pozycji
+                    BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
+                    if(Player1Turn == true && Waiting == false)
                     {
-                        BlockBehaviourScript.executeWaitingForDir();
+                        if(BlockBehaviourScript.OwnerID == 1 || BlockBehaviourScript.OwnerID == 0)
+                        {
+                            BlockBehaviourScript.executeWaitingForDir();
+                        }
+                        
+                    }
+                    if (Player2Turn == true && Waiting == false)
+                    {
+                        if(BlockBehaviourScript.OwnerID == 2 || BlockBehaviourScript.OwnerID == 0)
+                        {
+                            BlockBehaviourScript.executeWaitingForDir();
+                        }                   
+                    }
+                }
+                Waiting = true;
+                if(Player2Turn == true)
+                {
+                    // AIThinks = true;
+                    LocalVS_AI.Player2IsMoving_AI();
+                }
+    
+            }
+            
+            if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count)) && willMoveCounter > 0)
+            {
+                foreach(GameObject block in blocks)
+                {
+                    //Mówimy blokom, że mogą zacząć wykonywać ruch
+                    BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
+                    if(Player1Turn == true)                
+                    {
+                        if(BlockBehaviourScript.OwnerID == 1 || BlockBehaviourScript.OwnerID == 0)
+                        {
+                            BlockBehaviourScript.executeMove();
+                        }
+                    }
+                    if (Player2Turn == true)
+                    {
+                        if(BlockBehaviourScript.OwnerID == 2 || BlockBehaviourScript.OwnerID == 0)
+                        {
+                            BlockBehaviourScript.executeMove();
+                        }                    
                     }
                     
                 }
-                if (Player2Turn == true && Waiting == false)
+            }
+            else if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count)) && willMoveCounter == 0)
+            {
+                foreach(GameObject block in blocks)
                 {
-                    if(BlockBehaviourScript.OwnerID == 2 || BlockBehaviourScript.OwnerID == 0)
-                    {
-                        BlockBehaviourScript.executeWaitingForDir();
-                    }                   
+                    BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
+                    BlockBehaviourScript.dir = "empty";
+                    BlockBehaviourScript.finishedSearching = false;
+                    BlockBehaviourScript.idle = true;
+                    Waiting = false;
+    
                 }
             }
-            Waiting = true;
-        }
-        
-        if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count)) && willMoveCounter > 0)
-        {
-            foreach(GameObject block in blocks)
+            
+            if((Player1Turn == true && finishedMovingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedMovingCounter == P2Blocks.Count + NeutralBlocks.Count))
             {
-                //Mówimy blokom, że mogą zacząć wykonywać ruch
-                BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
-                if(Player1Turn == true)                
+                foreach(GameObject block in blocks)
                 {
-                    if(BlockBehaviourScript.OwnerID == 1 || BlockBehaviourScript.OwnerID == 0)
-                    {
-                        BlockBehaviourScript.executeMove();
-                    }
+                    //Mówimy blokom, że skoro skończyły się ruszać to mogą się zniszczyć jeśli potrzebują i mają się przygotować do następnej kolejki
+                    BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
+                    BlockBehaviourScript.executeLevelUp();
+                    BlockBehaviourScript.finishedMoving = false;
+                    BlockBehaviourScript.idle = true;
+                    BlockBehaviourScript.dir = "empty";
                 }
-                if (Player2Turn == true)
+                SpawnNewBlock();
+                if(Player1Turn == true)
                 {
-                    if(BlockBehaviourScript.OwnerID == 2 || BlockBehaviourScript.OwnerID == 0)
-                    {
-                        BlockBehaviourScript.executeMove();
-                    }                    
+                    if(Player2Color == 1){TurnColorImg.color = new Color32(119,221,250,255);}
+                    else if(Player2Color == 2){TurnColorImg.color = new Color32(242,118,140,255);}
+                    else if(Player2Color == 3){TurnColorImg.color = new Color32(137,217,171,255);}
+                    else if(Player2Color == 4){TurnColorImg.color = new Color32(236,123,222,255);}
+                    else if(Player2Color == 5){TurnColorImg.color = new Color32(104,105,104,255);}
+                    Player1Turn = false;
+                    Player2Turn = true;
+                    Waiting = false;
                 }
-                
-            }
-        }
-        else if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count)) && willMoveCounter == 0)
-        {
-            foreach(GameObject block in blocks)
-            {
-                BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
-                BlockBehaviourScript.dir = "empty";
-                BlockBehaviourScript.finishedSearching = false;
-                BlockBehaviourScript.idle = true;
-                Waiting = false;
-
-            }
-        }
-        
-        if((Player1Turn == true && finishedMovingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedMovingCounter == P2Blocks.Count + NeutralBlocks.Count))
-        {
-            foreach(GameObject block in blocks)
-            {
-                //Mówimy blokom, że skoro skończyły się ruszać to mogą się zniszczyć jeśli potrzebują i mają się przygotować do następnej kolejki
-                BlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
-                BlockBehaviourScript.executeLevelUp();
-                BlockBehaviourScript.finishedMoving = false;
-                BlockBehaviourScript.idle = true;
-                BlockBehaviourScript.dir = "empty";
-            }
-            SpawnNewBlock();
-            if(Player1Turn == true)
-            {
-                if(Player2Color == 1){TurnColorImg.color = new Color32(119,221,250,255);}
-                else if(Player2Color == 2){TurnColorImg.color = new Color32(242,118,140,255);}
-                else if(Player2Color == 3){TurnColorImg.color = new Color32(137,217,171,255);}
-                else if(Player2Color == 4){TurnColorImg.color = new Color32(236,123,222,255);}
-                else if(Player2Color == 5){TurnColorImg.color = new Color32(104,105,104,255);}
-                Player1Turn = false;
-                Player2Turn = true;
-                Waiting = false;
-            }
-            else if (Player2Turn == true)
-            {
-                if(Player1Color == 1){TurnColorImg.color = new Color32(119,221,250,255);}
-                else if(Player1Color == 2){TurnColorImg.color = new Color32(242,118,140,255);}
-                else if(Player1Color == 3){TurnColorImg.color = new Color32(137,217,171,255);}
-                else if(Player1Color == 4){TurnColorImg.color = new Color32(236,123,222,255);}
-                else if(Player1Color == 5){TurnColorImg.color = new Color32(104,105,104,255);}
-                Player2Turn = false;
-                Player1Turn = true;
-                Waiting = false;
-            }
-        }       
+                else if (Player2Turn == true)
+                {
+                    if(Player1Color == 1){TurnColorImg.color = new Color32(119,221,250,255);}
+                    else if(Player1Color == 2){TurnColorImg.color = new Color32(242,118,140,255);}
+                    else if(Player1Color == 3){TurnColorImg.color = new Color32(137,217,171,255);}
+                    else if(Player1Color == 4){TurnColorImg.color = new Color32(236,123,222,255);}
+                    else if(Player1Color == 5){TurnColorImg.color = new Color32(104,105,104,255);}
+                    Player2Turn = false;
+                    Player1Turn = true;
+                    Waiting = false;
+                }
+            }       
+        // }
     }
 
 public void SpawnNewBlock()
@@ -302,7 +319,7 @@ public void SpawnNewBlock()
                         }
                         else if (FieldScript.isTaken == false)
                         {
-                            int randomBlock = Random.Range(1, 2);
+                            int randomBlock = Random.Range(1, 3);
                             if(randomBlock == 1) {block = Instantiate(NeutralBlock2);}
                             else if(randomBlock == 2) {block = Instantiate(NeutralBlock4);}
         
@@ -440,6 +457,10 @@ public void BlockLevelUp(int x, int y, long value, int owner) //#TODO This funct
             blocks.Add(block);
             NeutralBlocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(x, y, 0); 
+            block.GetComponent<LocalVSBlockBehaviourScript>().dir = "empty";
+            block.gameObject.name = "block" + blockID;
+            blockID++; 
+
         }
         if(owner == 1)
         {
@@ -536,6 +557,8 @@ public void BlockLevelUp(int x, int y, long value, int owner) //#TODO This funct
             blocks.Add(block);
             P1Blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(x, y, 1); 
+            block.gameObject.name = "P1MainBlock";
+            blockID++; 
         }
         else if (owner == 2)
         {
@@ -632,13 +655,11 @@ public void BlockLevelUp(int x, int y, long value, int owner) //#TODO This funct
             blocks.Add(block);
             P2Blocks.Add(block);
             block.GetComponent<LocalVSBlockBehaviourScript>().AfterSpawn(x, y, 2);
-
-
+            block.gameObject.name = "P2MainBlock";
+            blockID++; 
         }
 
-        block.GetComponent<LocalVSBlockBehaviourScript>().dir = "empty";
-        block.gameObject.name = "block" + blockID;
-        blockID++; 
+        
 
 
     }

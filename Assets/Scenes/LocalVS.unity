@@ -2118,6 +2118,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1404219611}
   m_CullTransparentMesh: 1
+--- !u!1 &1446913492
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1446913494}
+  - component: {fileID: 1446913493}
+  m_Layer: 0
+  m_Name: AI_Object
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1446913493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446913492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0013dc68b3512b94e822815c0d6e7abe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalVSBlockSpawner: {fileID: 0}
+  EnemyIsComputer: 0
+--- !u!4 &1446913494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446913492}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.2290124, y: -0.5746744, z: -4631.562}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1514795334
 GameObject:
   m_ObjectHideFlags: 0
@@ -2778,6 +2823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FieldSpawner: {fileID: 382835279}
+  AI_Object: {fileID: 1446913492}
   gameOverPanel: {fileID: 1241528127}
   winnerAnnouncemenet: {fileID: 2043263788}
   TurnColorPanel: {fileID: 1404219611}
@@ -2791,6 +2837,7 @@ MonoBehaviour:
   Player1Turn: 1
   Player2Turn: 0
   Waiting: 0
+  EnemyIsComputer: 0
   randomX: 0
   randomY: 0
   NeutralBlock2: {fileID: 6589286804816033412, guid: 057f2715bed3404419e95e8cd6e14464, type: 3}

@@ -12,8 +12,9 @@ public class LocalVesrusSetterScript : MonoBehaviour
     public int Player2Color = 2;
     [SerializeField] public GameObject Player1ColorPanel;
     [SerializeField] public GameObject Player2ColorPanel;
+    [SerializeField] Text EnemyIsComputerOrPlayer;
 
-    public bool Player2IsComputer = true; 
+    public bool Player2IsComputer = false; 
 
     [SerializeField] Image Player1PanelSpr;
     [SerializeField] Image Player2PanelSpr;
@@ -70,6 +71,20 @@ public class LocalVesrusSetterScript : MonoBehaviour
         ChangePlayer1Color(Player2PanelSpr, Player2Color);
     }
 
+    public void SwitchEnemyBetweenComputerAndPlayer()
+    {
+        if (Player2IsComputer == false)
+        {
+            Player2IsComputer = true;
+            EnemyIsComputerOrPlayer.text = "SI";
+        }
+        else if(Player2IsComputer == true)
+        {
+            Player2IsComputer = false;
+            EnemyIsComputerOrPlayer.text = "PLAYER";
+        }
+    }
+
 
     public void ChangePlayer1Color(Image PanelToChange, int colorID)
     {
@@ -85,6 +100,7 @@ public class LocalVesrusSetterScript : MonoBehaviour
         GameObject ObjectToRememberColors = GameObject.Find("ObjectToRememberColors");
         ObjectToRememberColors.GetComponent<ScriptToRememberColors>().Player1ColorSetter(Player1Color);
         ObjectToRememberColors.GetComponent<ScriptToRememberColors>().Player2ColorSetter(Player2Color);
+        ObjectToRememberColors.GetComponent<ScriptToRememberColors>().IsEnemyComputerSetter(Player2IsComputer);
         DontDestroyOnLoad(ObjectToRememberColors);
         SceneManager.LoadScene("LocalVS");
     }

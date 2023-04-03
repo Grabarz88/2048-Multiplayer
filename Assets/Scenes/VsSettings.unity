@@ -782,7 +782,8 @@ MonoBehaviour:
   Player2Color: 2
   Player1ColorPanel: {fileID: 479068880}
   Player2ColorPanel: {fileID: 493474107}
-  Player2IsComputer: 1
+  EnemyIsComputerOrPlayer: {fileID: 1762492027}
+  Player2IsComputer: 0
   Player1PanelSpr: {fileID: 0}
   Player2PanelSpr: {fileID: 0}
 --- !u!4 &999242243
@@ -1290,7 +1291,7 @@ GameObject:
   - component: {fileID: 1232906532}
   - component: {fileID: 1232906531}
   m_Layer: 5
-  m_Name: Player 2 Next
+  m_Name: Player2ChangeSI/PLAYER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1313,7 +1314,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 811.92, y: -247.67}
+  m_AnchoredPosition: {x: 811.92, y: -264.99}
   m_SizeDelta: {x: 101.88, y: 88.45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1232906531
@@ -1359,7 +1360,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1232906532}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 999242242}
+        m_TargetAssemblyTypeName: LocalVesrusSetterScript, Assembly-CSharp
+        m_MethodName: SwitchEnemyBetweenComputerAndPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1232906532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1495,6 +1508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player1ColorID: 0
   Player2ColorID: 0
+  IsEnemyComputer: 0
 --- !u!4 &1332363785
 Transform:
   m_ObjectHideFlags: 0
@@ -1755,8 +1769,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 581, y: -269.01}
-  m_SizeDelta: {x: 283.32, y: 131.12}
+  m_AnchoredPosition: {x: 562, y: -286.32}
+  m_SizeDelta: {x: 321.35, y: 131.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1762492027
 MonoBehaviour:
@@ -1785,13 +1799,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 7
     m_MaxSize: 70
-    m_Alignment: 0
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SI
+  m_Text: PLAYER
 --- !u!222 &1762492028
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class ScriptToRememberColors : MonoBehaviour
 
     public int Player1ColorID = 0;
     public int Player2ColorID = 0;
+    public bool IsEnemyComputer = false;
 
     public void Player1ColorSetter(int colorID)
     {
@@ -26,6 +27,15 @@ public class ScriptToRememberColors : MonoBehaviour
     public int Player2ColorGetter()
     {
         return Player2ColorID; 
+    }
+
+    public void IsEnemyComputerSetter(bool isHeComputer)
+    {
+        IsEnemyComputer = isHeComputer;
+    }
+    public bool EnemyIsComputer()
+    {
+        return IsEnemyComputer;
     }
 
 }

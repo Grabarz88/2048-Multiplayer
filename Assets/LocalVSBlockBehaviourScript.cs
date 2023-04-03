@@ -276,7 +276,7 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
 					moving = false;
 					finishedMoving = true;
 				}
-				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.2f));
+				transform.position = Vector2.MoveTowards(transform.position, targetFieldPosition, (pace * 0.1f));
 			}
 		}   
     }
