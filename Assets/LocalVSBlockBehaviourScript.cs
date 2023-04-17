@@ -45,8 +45,9 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
 	
 
 
-    public GameObject pauseButton;
+    public GameObject restartButton;
 	public GameObject exitButton;
+    public GameObject settingsButton;
     public bool isPauseActive = false;
 
 	Vector2 targetFieldPosition;
@@ -65,8 +66,12 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
         ObjectToRememberColors = GameObject.Find("ObjectToRememberColors");
         ScriptToRememberColors = ObjectToRememberColors.GetComponent<ScriptToRememberColors>();
         EnemyIsComputer = ScriptToRememberColors.EnemyIsComputer();
-		pauseButton = GameObject.Find("Restart");  
-		exitButton = GameObject.Find("Back"); 
+		GameObject settingsPanel = GameObject.Find("SettingsPanel");
+        // restartButton = settingsPanel.transform.FindChild("Restart").gameObject;
+        // exitButton = settingsPanel.transform.FindChild("Back").gameObject;
+        // restartButton = GameObject.Find("Restart");  
+		// exitButton = GameObject.Find("Back");
+        settingsButton = GameObject.Find("settings_button"); 
     }
 
 
@@ -74,7 +79,7 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
     {
         TableNumberX_toCheck = TableNumberX;
 		TableNumberY_toCheck = TableNumberY;
-		if(pauseButton.GetComponent<ShowRestartPanel>().isPauseActive || exitButton.GetComponent<ShowExitPanel>().isPauseActive)
+		if(restartButton.GetComponent<ShowRestartPanel>().isPauseActive || exitButton.GetComponent<ShowExitPanel>().isPauseActive)
 		{
 			isPauseActive = true;
 		}

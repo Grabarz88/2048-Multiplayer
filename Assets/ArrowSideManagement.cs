@@ -8,7 +8,6 @@ public class ArrowSideManagement : MonoBehaviour
 GameObject BlockSpawner;
 SpawnBlock SpawnBlock;
 public List<GameObject> blocks;
-string dir;
 
 void Start()
 {
@@ -18,39 +17,35 @@ void Start()
 
 public void changeDirForRight()
 {
-    dir ="right";
     sendDirToBlocks("right");
 }
 
 public void changeDirForLeft()
 {
-    dir ="left";
     sendDirToBlocks("left");
 }
 
 public void changeDirForUp()
 {
-    dir ="up";
     sendDirToBlocks("up");
 }
 
 public void changeDirForDown()
 {
-    dir ="down";
     sendDirToBlocks("down");
 }
 
-public void sendDirToBlocks(string direction)
+public void sendDirToBlocks(string dir)
 {
     blocks = SpawnBlock.blocks;
     blocks.TrimExcess();
     foreach(GameObject block in blocks)
     {
         BlockBehaviourScript BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-        if (direction == "right"){BlockBehaviourScript.dir = "right";}
-        else if (direction == "left"){BlockBehaviourScript.dir = "left";}  
-        else if (direction == "up"){BlockBehaviourScript.dir = "up";}  
-        else if (direction == "down"){BlockBehaviourScript.dir = "down";} 
+        if (dir == "right"){BlockBehaviourScript.dir = "right";}
+        else if (dir == "left"){BlockBehaviourScript.dir = "left";}  
+        else if (dir == "up"){BlockBehaviourScript.dir = "up";}  
+        else if (dir == "down"){BlockBehaviourScript.dir = "down";} 
     }
 }
 }

@@ -14,6 +14,7 @@ LocalVS_AI LocalVS_AI;
 [SerializeField] GameObject AI_Object;
 public GameObject gameOverPanel;
 [SerializeField] Text winnerAnnouncemenet;
+[SerializeField] Text TurnPlayerNumber;
 [SerializeField] public GameObject TurnColorPanel;
 [SerializeField] Image TurnColorImg;
 public LocalVSBlockBehaviourScript BlockBehaviourScript;
@@ -274,6 +275,7 @@ public bool AIThinks = false;
                     else if(Player2Color == 5){TurnColorImg.color = new Color32(104,105,104,255);}
                     Player1Turn = false;
                     Player2Turn = true;
+                    TurnPlayerNumber.text = "2";
                     Waiting = false;
                 }
                 else if (Player2Turn == true)
@@ -285,6 +287,7 @@ public bool AIThinks = false;
                     else if(Player1Color == 5){TurnColorImg.color = new Color32(104,105,104,255);}
                     Player2Turn = false;
                     Player1Turn = true;
+                    TurnPlayerNumber.text = "1";
                     Waiting = false;
                 }
             }       
