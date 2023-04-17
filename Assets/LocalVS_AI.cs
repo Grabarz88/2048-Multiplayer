@@ -62,24 +62,27 @@ public class LocalVS_AI : MonoBehaviour
             {
                 if(P1BBH.TableNumberY - P2BBH.TableNumberY == 0) //They are one the same Y axis. So we will be operating on fields from X axis
                 {
+                    // We check if blocks are neighbours to themselfs
                     int i = P1BBH.TableNumberX - P2BBH.TableNumberX;
                     if(i == 1)
                     {
                         dirIfYOuCanWin = "right";
-                        result = true;
+                        return true;
                     }
                     else if(i == -1)
                     {
                         dirIfYOuCanWin = "left";
-                        result = true;
+                        return true;
                     }
-                    else 
+                    else // There is at least one field between P1 and P2 block
                     {
-                        do
+                        fields = SpawnField.fields;
+                        fields.TrimExcess();
+                        
+                        if(i>0) // Case when the P1 block is on the right side of P2 block
                         {
-                            fields = SpawnField.fields;
-                            fields.TrimExcess();
-                            foreach(GameObject field in fields)
+                            i--;
+                            foreach (GameObject field in fields)
                             {
                                 FieldScript = field.GetComponent<FieldScript>();
                                 if(FieldScript.TableNumberY == P2BBH.TableNumberY && FieldScript.TableNumberX == P2BBH.TableNumberX + i)
@@ -89,154 +92,235 @@ public class LocalVS_AI : MonoBehaviour
                                         dirIfYOuCanWin = "null";
                                         return false;
                                     }
-                                }
+                                    else
+                                    {
+                                        dirIfYOuCanWin = "right";
+                                        result = true;
+                                    }
+                                }   
                             }
-                            if(i>0)
+                            if(i>1)
                             {
-                                dirIfYOuCanWin = "right";
                                 i--;
+                                foreach (GameObject field in fields)
+                                {
+                                    FieldScript = field.GetComponent<FieldScript>();
+                                    if(FieldScript.TableNumberY == P2BBH.TableNumberY && FieldScript.TableNumberX == P2BBH.TableNumberX + i)
+                                    {
+                                        if(FieldScript.isTaken)
+                                        {
+                                            return false;
+                                        }
+                                        else 
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            return result;
                             }
-                            if(i<0)
+                            else 
                             {
-                                dirIfYOuCanWin = "left";
-                                i++;
+                                return true;
                             }
-                            if (i == 1 || i == -1)
-                            {
-                                result = true;
-                            }
-
-                        }while(i>1 || i<-1);
-                        result = false; // bo nie wszystkie zwracają
-
-                    }
-                } 
-                else if(P1BBH.TableNumberX - P2BBH.TableNumberX == 0) //They are one the same X axis. So we will be operating on fields from Y axis
-                {
-                    int i = P1BBH.TableNumberY - P2BBH.TableNumberY;
-                    if(i == 1)
-                    {
-                        dirIfYOuCanWin = "up";
-                        result = true;
-                    }
-                    else if(i == -1)
-                    {
-                        dirIfYOuCanWin = "down";
-                        result = true;
-                    }
-                    else 
-                    {
-                        do
+                        return result;
+                        }
+                        else if(i<0) // Case when the P1 block is on the left side of P2 block
                         {
-                            fields = SpawnField.fields;
-                            fields.TrimExcess();
-                            foreach(GameObject field in fields)
+                            i++;
+                            foreach (GameObject field in fields)
                             {
                                 FieldScript = field.GetComponent<FieldScript>();
-                                if(FieldScript.TableNumberY == P2BBH.TableNumberY + i && FieldScript.TableNumberX == P2BBH.TableNumberX)
+                                if(FieldScript.TableNumberY == P2BBH.TableNumberY && FieldScript.TableNumberX == P2BBH.TableNumberX + i)
                                 {
                                     if(FieldScript.isTaken)
                                     {
                                         dirIfYOuCanWin = "null";
                                         return false;
                                     }
-                                }
+                                    else
+                                    {
+                                        dirIfYOuCanWin = "left";
+                                        result = true;
+                                    }
+                                }   
                             }
-                            if(i>0)
+                            if(i<-1)
                             {
-                                dirIfYOuCanWin = "up";
-                                i--;
-                            }
-                            if(i<0)
-                            {
-                                dirIfYOuCanWin = "down";
                                 i++;
+                                foreach (GameObject field in fields)
+                                {
+                                    FieldScript = field.GetComponent<FieldScript>();
+                                    if(FieldScript.TableNumberY == P2BBH.TableNumberY && FieldScript.TableNumberX == P2BBH.TableNumberX + i)
+                                    {
+                                        if(FieldScript.isTaken)
+                                        {
+                                            return false;
+                                        }
+                                        else 
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            return result;
                             }
-
-                        }while(i>1 || i<-1);
-                        if (i == 1 || i == -1)
+                            else 
                             {
-                                result = true;
+                                return true;
                             }
-
+                        return result;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    return result;
                     }
+                return result;
                 }
-                else 
+                else if(P1BBH.TableNumberX - P2BBH.TableNumberX == 0) //They are one the same X axis. So we will be operating on fields from Y axis
                 {
-                    result = false;
-                } 
-
+                    // We check if blocks are neighbours to themselfs
+                    int i = P1BBH.TableNumberY - P2BBH.TableNumberY;
+                    if(i == 1)
+                    {
+                        dirIfYOuCanWin = "up";
+                        return true;
+                    }
+                    else if(i == -1)
+                    {
+                        dirIfYOuCanWin = "down";
+                        return true;
+                    }
+                    else // There is at least one field between P1 and P2 block
+                    {
+                        fields = SpawnField.fields;
+                        fields.TrimExcess();
+                        
+                        if(i>0) // Case when the P1 block is higher than P2 block
+                        {
+                            i--;
+                            foreach (GameObject field in fields)
+                            {
+                                FieldScript = field.GetComponent<FieldScript>();
+                                if(FieldScript.TableNumberX == P2BBH.TableNumberX && FieldScript.TableNumberY == P2BBH.TableNumberY + i)
+                                {
+                                    if(FieldScript.isTaken)
+                                    {
+                                        dirIfYOuCanWin = "null";
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        dirIfYOuCanWin = "up";
+                                        result = true;
+                                    }
+                                }   
+                            }
+                            if(i>1)
+                            {
+                                i--;
+                                foreach (GameObject field in fields)
+                                {
+                                    FieldScript = field.GetComponent<FieldScript>();
+                                    if(FieldScript.TableNumberX == P2BBH.TableNumberX && FieldScript.TableNumberY == P2BBH.TableNumberY + i)
+                                    {
+                                        if(FieldScript.isTaken)
+                                        {
+                                            return false;
+                                        }
+                                        else 
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            return result;
+                            }
+                            else 
+                            {
+                                return true;
+                            }
+                        return result;
+                        }
+                        else if(i<0) // Case when the P1 block is lower P2 block
+                        {
+                            i++;
+                            foreach (GameObject field in fields)
+                            {
+                                FieldScript = field.GetComponent<FieldScript>();
+                                if(FieldScript.TableNumberX == P2BBH.TableNumberX && FieldScript.TableNumberY == P2BBH.TableNumberY + i)
+                                {
+                                    if(FieldScript.isTaken)
+                                    {
+                                        dirIfYOuCanWin = "null";
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        dirIfYOuCanWin = "down";
+                                        result = true;
+                                    }
+                                }   
+                            }
+                            if(i<-1)
+                            {
+                                i++;
+                                foreach (GameObject field in fields)
+                                {
+                                    FieldScript = field.GetComponent<FieldScript>();
+                                    if(FieldScript.TableNumberX == P2BBH.TableNumberX && FieldScript.TableNumberY == P2BBH.TableNumberY + i)
+                                    {
+                                        if(FieldScript.isTaken)
+                                        {
+                                            return false;
+                                        }
+                                        else 
+                                        {
+                                            return true;
+                                        }
+                                        return result;
+                                    }
+                                }
+                            return result;
+                            }
+                            else 
+                            {
+                                return true;
+                            }
+                        return result;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    return result;
+                    }
+                return result;
+                }
+                else
+                {
+                    return false;
+                }
+            return result;
             }
             else
             {
-                result = false;
+                return false;
             }
-            // ---------------------------- Tu miał być nowy koda. Do przemyślenia i wypracowania-------------
-            // int i = 1;
-            // bool winMoveFound = false;
-            // do 
-            // {
-            //     if(P1BBH.TableNumberX + i == P2BBH.TableNumberX && P1BBH.TableNumberY == P2BBH.TableNumberY)
-            //     {
-            //         int j = i-1;
-            //         int l = j;
-            //         do
-            //         {
-            //             fields = SpawnField.fields;
-            //             fields.TrimExcess();
-            //             foreach(GameObject field in fields)
-            //             {
-            //                 FieldScript = field.GetComponent<FieldScript>();
-            //                 if(FieldScript.TableNumberX == P1BBH.TableNumberX + j && FieldScript.TableNumberY == P1BBH.TableNumberY) 
-            //                 {
-            //                     if(FieldScript.isTaken == false)
-            //                     {
-            //                         l--;
-            //                     }
-            //                 }
-            //             }
-            //             if()
-            //             {
-            //                winMoveFound = true;
-            //                return true;
-            //             }
-            //         } while (j >= 1);
-            //         return true;
-            //     }
-            // } while(i <= 4);
-
-            //------------------------ Tu niżej był sgarszy kod-----------------------
-            // if(P1BBH.TableNumberX + 1 == P2BBH.TableNumberX && P1BBH.TableNumberY == P2BBH.TableNumberY)
-            // {
-            //     dirIfYOuCanWin = "left";
-            //     return true;
-            // }
-            // else if(P1BBH.TableNumberX - 1 == P2BBH.TableNumberX && P1BBH.TableNumberY == P2BBH.TableNumberY)
-            // {
-            //     dirIfYOuCanWin = "right";
-            //     return true;
-            // }
-            // else if(P1BBH.TableNumberX == P2BBH.TableNumberX && P1BBH.TableNumberY + 1 == P2BBH.TableNumberY)
-            // {
-            //     dirIfYOuCanWin = "down";
-            //     return true;
-            // }
-            // else if(P1BBH.TableNumberX == P2BBH.TableNumberX && P1BBH.TableNumberY - 1 == P2BBH.TableNumberY)
-            // {
-            //     dirIfYOuCanWin = "up";
-            //     return true;
-            // }
-            // else
-            // {
-            //     return false;
-            // }
+        return result;
         }
         else
         {
-            result = false;
+            return false;
         }
-        return result;
     }
+
+
+
+
+                           
     
     
 

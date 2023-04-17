@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class LocalVSBlockBehaviourScript : MonoBehaviour
 {
@@ -17,9 +18,11 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
 
     [SerializeField] GameObject FieldSpawner;
     [SerializeField] GameObject BlockSpawner;
+    [SerializeField] GameObject ObjectToRememberColors;
     SpawnField SpawnField;
     LocalVsSpawnBlock SpawnBlock;
     LocalVSBlockBehaviourScript NextBlockBehaviourScript;
+    ScriptToRememberColors ScriptToRememberColors;
 
     public List<GameObject> fields;
     public List<GameObject> blocks;
@@ -38,7 +41,7 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
     [SerializeField] public bool moving = false;
 	[SerializeField] public bool finishedMoving = false;
 	public float pace = 1; // This variable is used to ensure, all blocks begin and finish move in the exactly same time, nevertheless the distance from start to finish
-
+    public bool EnemyIsComputer;
 	
 
 
@@ -50,12 +53,18 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
 
     void Start()
     {
+        Scene scene = SceneManager.GetActiveScene();
+        if(scene.name == "VsSettings"){Destroy(gameObject);}
+        
         dir = "empty";
 		FieldSpawner = GameObject.Find("FieldSpawner"); 
     	SpawnField = FieldSpawner.GetComponent<SpawnField>();
+        fields = SpawnField.fields; 
 		BlockSpawner = GameObject.Find("LocalVSBlockSpawner"); 
 		SpawnBlock = BlockSpawner.GetComponent<LocalVsSpawnBlock>();
-    	fields = SpawnField.fields; 
+        ObjectToRememberColors = GameObject.Find("ObjectToRememberColors");
+        ScriptToRememberColors = ObjectToRememberColors.GetComponent<ScriptToRememberColors>();
+        EnemyIsComputer = ScriptToRememberColors.EnemyIsComputer();
 		pauseButton = GameObject.Find("Restart");  
 		exitButton = GameObject.Find("Back"); 
     }
@@ -80,15 +89,15 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
 
             if(waitingForDir == true)
 			{
-				if (SpawnBlock.Player1Turn == true && Input.GetButtonDown("D")) { dir = "right"; }
-				if (SpawnBlock.Player1Turn == true && Input.GetButtonDown("A")) { dir = "left"; }
-				if (SpawnBlock.Player1Turn == true && Input.GetButtonDown("W")) { dir = "up"; }
-				if (SpawnBlock.Player1Turn == true && Input.GetButtonDown("S")) { dir = "down"; }
+				if ((SpawnBlock.Player1Turn == true && Input.GetButtonDown("D")) || (EnemyIsComputer == true && Input.GetButtonDown("MoveRight"))) { dir = "right"; }
+				if ((SpawnBlock.Player1Turn == true && Input.GetButtonDown("A")) || (EnemyIsComputer == true && Input.GetButtonDown("MoveLeft"))) { dir = "left"; }
+				if ((SpawnBlock.Player1Turn == true && Input.GetButtonDown("W")) || (EnemyIsComputer == true && Input.GetButtonDown("MoveUp"))) { dir = "up"; }
+				if ((SpawnBlock.Player1Turn == true && Input.GetButtonDown("S")) || (EnemyIsComputer == true && Input.GetButtonDown("MoveDown"))) { dir = "down"; }
 
-                if (SpawnBlock.Player2Turn == true && Input.GetButtonDown("MoveRight")) { dir = "right"; }
-				if (SpawnBlock.Player2Turn == true && Input.GetButtonDown("MoveLeft")) { dir = "left"; }
-				if (SpawnBlock.Player2Turn == true && Input.GetButtonDown("MoveUp")) { dir = "up"; }
-				if (SpawnBlock.Player2Turn == true && Input.GetButtonDown("MoveDown")) { dir = "down"; }
+                if (SpawnBlock.Player2Turn == true && EnemyIsComputer == false && Input.GetButtonDown("MoveRight")) { dir = "right"; }
+				if (SpawnBlock.Player2Turn == true && EnemyIsComputer == false && Input.GetButtonDown("MoveLeft")) { dir = "left"; }
+				if (SpawnBlock.Player2Turn == true && EnemyIsComputer == false && Input.GetButtonDown("MoveUp")) { dir = "up"; }
+				if (SpawnBlock.Player2Turn == true && EnemyIsComputer == false && Input.GetButtonDown("MoveDown")) { dir = "down"; }
 
 				if(dir != "empty") 
 				{

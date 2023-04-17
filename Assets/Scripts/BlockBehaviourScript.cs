@@ -48,7 +48,8 @@ public class BlockBehaviourScript : MonoBehaviour
     
     void Start()
     {
-    	dir = "empty";
+    	
+		dir = "empty";
 		FieldSpawner = GameObject.Find("FieldSpawner"); 
     	SpawnField = FieldSpawner.GetComponent<SpawnField>();
 		BlockSpawner = GameObject.Find("BlockSpawner"); 
@@ -88,10 +89,10 @@ public class BlockBehaviourScript : MonoBehaviour
 		{
 			if(waitingForDir == true)
 			{
-				if (Input.GetButtonDown("MoveRight")) { dir = "right"; }
-				if (Input.GetButtonDown("MoveLeft")) { dir = "left"; }
-				if (Input.GetButtonDown("MoveUp")) { dir = "up"; }
-				if (Input.GetButtonDown("MoveDown")) { dir = "down"; }
+				if (Input.GetButtonDown("MoveRight") || Input.GetButtonDown("D")) { dir = "right"; }
+				if (Input.GetButtonDown("MoveLeft") || Input.GetButtonDown("A")) { dir = "left"; }
+				if (Input.GetButtonDown("MoveUp") || Input.GetButtonDown("W")) { dir = "up"; }
+				if (Input.GetButtonDown("MoveDown") || Input.GetButtonDown("S")) { dir = "down"; }
 				if(dir != "empty") 
 				{
 					waitingForDir = false; 
