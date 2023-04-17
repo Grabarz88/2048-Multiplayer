@@ -66,9 +66,10 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
         ObjectToRememberColors = GameObject.Find("ObjectToRememberColors");
         ScriptToRememberColors = ObjectToRememberColors.GetComponent<ScriptToRememberColors>();
         EnemyIsComputer = ScriptToRememberColors.EnemyIsComputer();
-		GameObject settingsPanel = GameObject.Find("SettingsPanel");
-        // restartButton = settingsPanel.transform.FindChild("Restart").gameObject;
-        // exitButton = settingsPanel.transform.FindChild("Back").gameObject;
+		GameObject Canvas = GameObject.Find("Canvas");
+        GameObject settingsPanel = Canvas.transform.FindChild("SettingsPanel").gameObject;
+        restartButton = settingsPanel.transform.FindChild("Restart").gameObject;
+        exitButton = settingsPanel.transform.FindChild("Back").gameObject;
         // restartButton = GameObject.Find("Restart");  
 		// exitButton = GameObject.Find("Back");
         settingsButton = GameObject.Find("settings_button"); 

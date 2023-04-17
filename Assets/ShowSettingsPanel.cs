@@ -7,12 +7,13 @@ public class ShowSettingsPanel : MonoBehaviour
     public GameObject settingsPanel;
     public bool isPauseActive = false;
     void Start()
-    {
+    {   
         settingsPanel.gameObject.SetActive(false);
     }
 
     public void SettingsPanel()
     {
+        Debug.Log("prrrrrt");
         isPauseActive = true;
         settingsPanel.gameObject.SetActive(true);
         
