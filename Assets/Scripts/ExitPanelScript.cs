@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ExitPanelScript : MonoBehaviour
 {
-    public GameObject ShowExitPanelButton;
+    public GameObject SettingsPanel;
     
     public void ExitYes()
     {
@@ -14,7 +14,7 @@ public class ExitPanelScript : MonoBehaviour
 
     public void ExitNo()
     {
-        ShowExitPanelButton.GetComponent<ShowExitPanel>().isPauseActive = false;
+        SettingsPanel.SetActive(true);
         gameObject.SetActive(false);
     }
 

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class RestartPanelScript : MonoBehaviour
 {
-    public GameObject ShowRestartPanelButton;
+    public GameObject SettingsPanel;
     
     public void RestartYes()
     {
@@ -14,7 +14,7 @@ public class RestartPanelScript : MonoBehaviour
 
     public void RestartNo()
     {
-        ShowRestartPanelButton.GetComponent<ShowRestartPanel>().isPauseActive = false;
+        SettingsPanel.SetActive(true);
         gameObject.SetActive(false);
     }
 

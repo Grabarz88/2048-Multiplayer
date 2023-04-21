@@ -13,9 +13,13 @@ public class ShowSettingsPanel : MonoBehaviour
 
     public void SettingsPanel()
     {
-        Debug.Log("prrrrrt");
         isPauseActive = true;
         settingsPanel.gameObject.SetActive(true);
         
+    }
+
+    void Update()
+    {
+        Debug.Log(isPauseActive);
     }
 }

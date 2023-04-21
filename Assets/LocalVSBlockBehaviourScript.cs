@@ -42,12 +42,11 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
 	[SerializeField] public bool finishedMoving = false;
 	public float pace = 1; // This variable is used to ensure, all blocks begin and finish move in the exactly same time, nevertheless the distance from start to finish
     public bool EnemyIsComputer;
-	
 
 
-    public GameObject restartButton;
-	public GameObject exitButton;
     public GameObject settingsButton;
+    ShowSettingsPanel ShowSettingsPanel;
+    
     public bool isPauseActive = false;
 
 	Vector2 targetFieldPosition;
@@ -66,13 +65,14 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
         ObjectToRememberColors = GameObject.Find("ObjectToRememberColors");
         ScriptToRememberColors = ObjectToRememberColors.GetComponent<ScriptToRememberColors>();
         EnemyIsComputer = ScriptToRememberColors.EnemyIsComputer();
-		GameObject Canvas = GameObject.Find("Canvas");
-        GameObject settingsPanel = Canvas.transform.FindChild("SettingsPanel").gameObject;
-        restartButton = settingsPanel.transform.FindChild("Restart").gameObject;
-        exitButton = settingsPanel.transform.FindChild("Back").gameObject;
+		// GameObject Canvas = GameObject.Find("Canvas");
+        // GameObject settingsPanel = Canvas.transform.Find("SettingsPanel").gameObject;
+        // restartButton = settingsPanel.transform.Find("Restart").gameObject;
+        // exitButton = settingsPanel.transform.Find("Back").gameObject;
         // restartButton = GameObject.Find("Restart");  
 		// exitButton = GameObject.Find("Back");
-        settingsButton = GameObject.Find("settings_button"); 
+        settingsButton = GameObject.Find("settings_button");
+        ShowSettingsPanel = settingsButton.GetComponent<ShowSettingsPanel>(); 
     }
 
 
@@ -80,7 +80,7 @@ public class LocalVSBlockBehaviourScript : MonoBehaviour
     {
         TableNumberX_toCheck = TableNumberX;
 		TableNumberY_toCheck = TableNumberY;
-		if(restartButton.GetComponent<ShowRestartPanel>().isPauseActive || exitButton.GetComponent<ShowExitPanel>().isPauseActive)
+		if(ShowSettingsPanel.isPauseActive == true)
 		{
 			isPauseActive = true;
 		}
