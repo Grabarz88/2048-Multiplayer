@@ -7,12 +7,24 @@ public class ArrowSideManagement : MonoBehaviour
     
 GameObject BlockSpawner;
 SpawnBlock SpawnBlock;
+LocalVsSpawnBlock LocalVsSpawnBlock;   
+BlockBehaviourScript BlockBehaviourScript;
+LocalVSBlockBehaviourScript LocalVSBlockBehaviourScript;
 public List<GameObject> blocks;
 
 void Start()
 {
     BlockSpawner = GameObject.Find("BlockSpawner");
-    SpawnBlock = BlockSpawner.GetComponent<SpawnBlock>(); 
+    if(BlockSpawner != null)
+    {
+        SpawnBlock = BlockSpawner.GetComponent<SpawnBlock>();
+    }
+    else 
+    {
+        BlockSpawner = GameObject.Find("LocalVSBlockSpawner");
+        LocalVsSpawnBlock = BlockSpawner.GetComponent<LocalVsSpawnBlock>();
+    }
+     
 }
 
 public void changeDirForRight()
@@ -37,15 +49,31 @@ public void changeDirForDown()
 
 public void sendDirToBlocks(string dir)
 {
-    blocks = SpawnBlock.blocks;
-    blocks.TrimExcess();
-    foreach(GameObject block in blocks)
+    if(SpawnBlock != null)
     {
-        BlockBehaviourScript BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
-        if (dir == "right"){BlockBehaviourScript.dir = "right";}
-        else if (dir == "left"){BlockBehaviourScript.dir = "left";}  
-        else if (dir == "up"){BlockBehaviourScript.dir = "up";}  
-        else if (dir == "down"){BlockBehaviourScript.dir = "down";} 
+        blocks = SpawnBlock.blocks;
+        foreach(GameObject block in blocks)
+        {
+            BlockBehaviourScript = block.GetComponent<BlockBehaviourScript>();
+            if (dir == "right"){BlockBehaviourScript.dir = "right";}
+            else if (dir == "left"){BlockBehaviourScript.dir = "left";}  
+            else if (dir == "up"){BlockBehaviourScript.dir = "up";}  
+            else if (dir == "down"){BlockBehaviourScript.dir = "down";} 
+        }
     }
+    else
+    {
+        blocks = LocalVsSpawnBlock.blocks;
+        foreach(GameObject block in blocks)
+        {
+            LocalVSBlockBehaviourScript = block.GetComponent<LocalVSBlockBehaviourScript>();
+            if (dir == "right"){LocalVSBlockBehaviourScript.dir = "right";}
+            else if (dir == "left"){LocalVSBlockBehaviourScript.dir = "left";}  
+            else if (dir == "up"){LocalVSBlockBehaviourScript.dir = "up";}  
+            else if (dir == "down"){LocalVSBlockBehaviourScript.dir = "down";} 
+        }
+    }
+    blocks.TrimExcess();
+
 }
 }
