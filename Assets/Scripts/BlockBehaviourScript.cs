@@ -40,8 +40,8 @@ public class BlockBehaviourScript : MonoBehaviour
 	
 
 
-    public GameObject pauseButton;
-	public GameObject exitButton;
+    public GameObject settingsButton;
+	ShowSettingsPanel ShowSettingsPanel;
     public bool isPauseActive = false;
 
 	Vector2 targetFieldPosition;
@@ -55,8 +55,8 @@ public class BlockBehaviourScript : MonoBehaviour
 		BlockSpawner = GameObject.Find("BlockSpawner"); 
 		SpawnBlock = BlockSpawner.GetComponent<SpawnBlock>();
     	fields = SpawnField.fields; 
-		pauseButton = GameObject.Find("Restart");  
-		exitButton = GameObject.Find("Back");  
+		settingsButton = GameObject.Find("settings_button");  
+		ShowSettingsPanel = settingsButton.GetComponent<ShowSettingsPanel>();
 	
 
 		if (this.gameObject.name == "block0")
@@ -75,7 +75,7 @@ public class BlockBehaviourScript : MonoBehaviour
     {
 		TableNumberX_toCheck = TableNumberX;
 		TableNumberY_toCheck = TableNumberY;
-		if(pauseButton.GetComponent<ShowRestartPanel>().isPauseActive || exitButton.GetComponent<ShowExitPanel>().isPauseActive)
+		if(ShowSettingsPanel.isPauseActive)
 		{
 			isPauseActive = true;
 		}
