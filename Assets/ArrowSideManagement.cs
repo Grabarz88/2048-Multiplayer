@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class ArrowSideManagement : MonoBehaviour
 {
-    
+
+
+[SerializeField] GameObject FieldSpawner;
+[SerializeField] SpawnField SpawnField;
+[SerializeField] GameObject CustomSetter;
+[SerializeField] GameObject RightArrow;
+[SerializeField] GameObject LeftArrow;
+[SerializeField] GameObject UpArrow;
+[SerializeField] GameObject DownArrow;
 GameObject BlockSpawner;
 SpawnBlock SpawnBlock;
 LocalVsSpawnBlock LocalVsSpawnBlock;   
@@ -23,6 +31,24 @@ void Start()
     {
         BlockSpawner = GameObject.Find("LocalVSBlockSpawner");
         LocalVsSpawnBlock = BlockSpawner.GetComponent<LocalVsSpawnBlock>();
+    }
+
+
+    if(GameObject.Find("CustomSetter"))
+    {
+        // RightArrow.GetComponent<RectTransform>().position = new Vector3(0, 0 ,0);
+        CustomSetter = GameObject.Find("CustomSetter");
+        int X = (CustomSetter.GetComponent<CustomSetterScript>().X);
+        int Y = (CustomSetter.GetComponent<CustomSetterScript>().Y);
+        if(X>6 || Y>6)
+        {
+            //Tutaj popracować nad tym. Dodać jakąś operację modulo
+            RightArrow.GetComponent<RectTransform>().position = new Vector3((X-1)*32+3  , (Y-1)*16 ,0);
+            LeftArrow.GetComponent<RectTransform>().position = new Vector3(-3, (Y-1)*16, 0);
+            UpArrow.GetComponent<RectTransform>().position = new Vector3((X-1)*16, (Y-1)*32+3 ,0);
+            DownArrow.GetComponent<RectTransform>().position = new Vector3((X-1)*16, -2 ,0);
+            
+        }
     }
      
 }
