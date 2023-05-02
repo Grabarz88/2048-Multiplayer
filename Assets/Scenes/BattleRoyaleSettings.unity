@@ -2069,7 +2069,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 799452889}
-  - component: {fileID: 799452888}
   - component: {fileID: 799452890}
   m_Layer: 0
   m_Name: ObjectToRememberColors
@@ -2078,21 +2077,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &799452888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 799452887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb6caa9a624692d4389c259b32c9b965, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Player1ColorID: 0
-  Player2ColorID: 0
-  IsEnemyComputer: 0
 --- !u!4 &799452889
 Transform:
   m_ObjectHideFlags: 0
@@ -2139,6 +2123,10 @@ MonoBehaviour:
   Player2IsComputerOrPlayer: {fileID: 1953418262}
   Player3IsComputerOrPlayer: {fileID: 142040926}
   Player4IsComputerOrPlayer: {fileID: 981276794}
+  isPlayer1Playing: 1
+  isPlayer2Playing: 1
+  isPlayer3Playing: 0
+  isPlayer4Playing: 0
   isPlayer1Computer: 0
   isPlayer2Computer: 0
   isPlayer3Computer: 0
@@ -5384,9 +5372,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1420456785}
-        m_TargetAssemblyTypeName: LocalVesrusSetterScript, Assembly-CSharp
-        m_MethodName: StartGame
+      - m_Target: {fileID: 799452890}
+        m_TargetAssemblyTypeName: ScriptToRememberBRColors, Assembly-CSharp
+        m_MethodName: StartBR
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

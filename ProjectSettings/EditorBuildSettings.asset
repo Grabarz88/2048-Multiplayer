@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LocalVS.unity
     guid: c9cfdd6f437adfb4ca7ed3d1b7ce3fa6
+  - enabled: 1
+    path: Assets/Scenes/BattleRoyaleSettings.unity
+    guid: 6f9d293c1eca2ba4a96a9ce6d0372e0c
+  - enabled: 1
+    path: Assets/Scenes/LocalBR.unity
+    guid: 8f2a6413b449ee04996cd395628d06ee
   m_configObjects: {}

@@ -18,8 +18,5 @@ public class ShowSettingsPanel : MonoBehaviour
         
     }
 
-    void Update()
-    {
-        Debug.Log(isPauseActive);
-    }
+   
 }

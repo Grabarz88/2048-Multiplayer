@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ScriptToRememberBRColors : MonoBehaviour
 {
@@ -28,6 +29,10 @@ public class ScriptToRememberBRColors : MonoBehaviour
     [SerializeField] Text Player2IsComputerOrPlayer;
     [SerializeField] Text Player3IsComputerOrPlayer;
     [SerializeField] Text Player4IsComputerOrPlayer;
+    public bool isPlayer1Playing = true;
+    public bool isPlayer2Playing = true;
+    public bool isPlayer3Playing = false;
+    public bool isPlayer4Playing = false;
     public bool isPlayer1Computer = false;
     public bool isPlayer2Computer = false;
     public bool isPlayer3Computer = false;
@@ -57,6 +62,7 @@ public class ScriptToRememberBRColors : MonoBehaviour
             Player1Panel.gameObject.SetActive(true);
             ActivePanelsCount++;
             Player1NextColor();
+            isPlayer1Playing = true;
         }
         else
         {
@@ -65,6 +71,7 @@ public class ScriptToRememberBRColors : MonoBehaviour
                 Player1Panel.gameObject.SetActive(false);
                 ActivePanelsCount--;
                 Player1Color = 0;
+                isPlayer1Playing = false;
             }
         }
     }
@@ -76,6 +83,7 @@ public class ScriptToRememberBRColors : MonoBehaviour
             Player2Panel.gameObject.SetActive(true);
             ActivePanelsCount++;
             Player2NextColor();
+            isPlayer2Playing = true;
         }
         else
         {
@@ -84,6 +92,7 @@ public class ScriptToRememberBRColors : MonoBehaviour
                 Player2Panel.gameObject.SetActive(false);
                 ActivePanelsCount--;
                 Player2Color = 0;
+                isPlayer2Playing = false;
             }
         }
     }
@@ -95,6 +104,7 @@ public class ScriptToRememberBRColors : MonoBehaviour
             Player3Panel.gameObject.SetActive(true);
             ActivePanelsCount++;
             Player3NextColor();
+            isPlayer3Playing = true;
         }
         else
         {
@@ -103,6 +113,7 @@ public class ScriptToRememberBRColors : MonoBehaviour
                 Player3Panel.gameObject.SetActive(false);
                 ActivePanelsCount--;
                 Player3Color = 0;
+                isPlayer3Playing = false;
             }
         }
     }
@@ -114,6 +125,7 @@ public class ScriptToRememberBRColors : MonoBehaviour
             Player4Panel.gameObject.SetActive(true);
             ActivePanelsCount++;
             Player4NextColor();
+            isPlayer4Playing = true;
         }
         else
         {
@@ -122,6 +134,7 @@ public class ScriptToRememberBRColors : MonoBehaviour
                 Player4Panel.gameObject.SetActive(false);
                 ActivePanelsCount--;
                 Player4Color = 0;
+                isPlayer4Playing = false;
             }
         }
     }
@@ -323,6 +336,11 @@ public class ScriptToRememberBRColors : MonoBehaviour
         else if(colorID == 3){PanelToChange.color = new Color32(137,217,171,255);} //green
         else if(colorID == 4){PanelToChange.color = new Color32(236,123,222,255);} //pink  
         else if(colorID == 5){PanelToChange.color = new Color32(104,105,104,255);} //silver 
-    }    
+    }   
+
+    public void StartBR()
+    {
+        SceneManager.LoadScene("LocalBR");
+    } 
 
 }
