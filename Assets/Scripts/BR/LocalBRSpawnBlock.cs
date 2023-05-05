@@ -7,7 +7,7 @@ public class LocalBRSpawnBlock : MonoBehaviour
 {
 GameObject block;
 FieldScript FieldScript;
-SpawnFieldBR SpawnFieldBR;
+SpawnFieldBR SpawnField;
 [SerializeField] GameObject FieldSpawner;
 public GameObject gameOverPanel;
 [SerializeField] Text winnerAnnouncemenet;
@@ -28,9 +28,12 @@ public List<GameObject> blocks;
 public List<GameObject> P1Blocks;
 public List<GameObject> P2Blocks;
 public List<GameObject> P3Blocks;
-
 public List<GameObject> P4Blocks;
 public List<GameObject> NeutralBlocks;
+public List<GameObject> P1Fields;
+public List<GameObject> P2Fields;
+public List<GameObject> P3Fields;
+public List<GameObject> P4Fields;
 public bool Player1Turn = true;
 public bool Player2Turn = false;
 public bool Player3Turn = false;
@@ -63,51 +66,50 @@ void Start()
     isPlayer2Playing = ScriptToRememberColors.isPlayer2Playing;
     isPlayer3Playing = ScriptToRememberColors.isPlayer3Playing;
     isPlayer4Playing = ScriptToRememberColors.isPlayer4Playing;
+    SpawnField = FieldSpawner.GetComponent<SpawnFieldBR>();
+    fields = SpawnField.fields;
     if(isPlayer1Playing == true)
     {
+        P1Fields = SpawnField.P1Fields;
         Player1Color = ScriptToRememberColors.Player1Color;
-        InstantiateThisColorWithThisOwner(Player1Color, 2, 1);
         randomX = Random.Range(1, 5);
         randomY = Random.Range(1, 5);
-        block = GameObject.Find("block" + (blockID-1));
-        BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
-        BlockBehaviourScript.AfterSpawn(randomX, randomY);
+        InstantiateThisColorWithThisOwner(Player1Color, 2, 1, randomX, randomY);
+        LookForPlaceToSpawnBlockAndPlaceIt(1);
+        
     }
     if(isPlayer2Playing == true)
     {
+        P2Fields = SpawnField.P2Fields;
         Player2Color = ScriptToRememberColors.Player2Color;
-        InstantiateThisColorWithThisOwner(Player2Color, 2, 2);
         randomX = Random.Range(1, 5);
         randomX = randomX + 36;
         randomY = Random.Range(1, 5);
         randomY = randomY + 36;
-        block = GameObject.Find("block" + (blockID-1));
-        BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
-        BlockBehaviourScript.AfterSpawn(randomX, randomY);
+        InstantiateThisColorWithThisOwner(Player2Color, 2, 2, randomX, randomY);
+        LookForPlaceToSpawnBlockAndPlaceIt(2);
     }
     if(isPlayer3Playing == true)
     {
+        P3Fields = SpawnField.P3Fields;
         Player3Color = ScriptToRememberColors.Player3Color;
-        InstantiateThisColorWithThisOwner(Player3Color, 2, 3);
         randomX = Random.Range(1, 5);
         randomX = randomX + 72;
         randomY = Random.Range(1, 5);
         randomY = randomY + 72;
-        block = GameObject.Find("block" + (blockID-1));
-        BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
-        BlockBehaviourScript.AfterSpawn(randomX, randomY);
+        InstantiateThisColorWithThisOwner(Player3Color, 2, 3, randomX, randomY);
+        LookForPlaceToSpawnBlockAndPlaceIt(3);
     }
     if(isPlayer4Playing == true)
     {
+        P4Fields = SpawnField.P4Fields;
         Player4Color = ScriptToRememberColors.Player4Color;
-        InstantiateThisColorWithThisOwner(Player4Color, 2, 4);
         randomX = Random.Range(1, 5);
         randomX = randomX + 108;
         randomY = Random.Range(1, 5);
         randomY = randomY + 108;
-        block = GameObject.Find("block" + (blockID-1));
-        BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
-        BlockBehaviourScript.AfterSpawn(randomX, randomY);
+        InstantiateThisColorWithThisOwner(Player4Color, 2, 4, randomX, randomY);
+        LookForPlaceToSpawnBlockAndPlaceIt(4);
     }
 
 }
@@ -134,7 +136,6 @@ void Update()
 
     if(idleCounter == blocks.Count)
     {
-       Debug.Log("Wszystkie są Idle");
         // CheckForGameOver();
         foreach(GameObject block in blocks)
         {
@@ -243,6 +244,7 @@ void Update()
                 // TurnColorImg.color = Player2Color;
                 Player1Turn = false;
                 Player2Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(2);
                 // TurnPlayerNumber.text = "2";
                 Waiting = false;
             }
@@ -251,6 +253,7 @@ void Update()
                 // TurnColorImg.color = Player3Color;
                 Player1Turn = false;
                 Player3Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(3);
                 // TurnPlayerNumber.text = "3";
                 Waiting = false;
             }
@@ -259,17 +262,20 @@ void Update()
                 // TurnColorImg.color = Player4Color;
                 Player1Turn = false;
                 Player4Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(4);
                 // TurnPlayerNumber.text = "4";
                 Waiting = false;
             }
         }
         else if (Player2Turn == true)
         {
+            
             if(isPlayer3Playing)
             {
                 // TurnColorImg.color = Player3Color;
                 Player2Turn = false;
                 Player3Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(3);
                 // TurnPlayerNumber.text = "3";
                 Waiting = false;
             }
@@ -278,6 +284,7 @@ void Update()
                 // TurnColorImg.color = Player4Color;
                 Player2Turn = false;
                 Player4Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(4);
                 // TurnPlayerNumber.text = "4";
                 Waiting = false;
             }
@@ -286,17 +293,20 @@ void Update()
                 // TurnColorImg.color = Player1Color;
                 Player2Turn = false;
                 Player1Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(1);
                 // TurnPlayerNumber.text = "1";
                 Waiting = false;
             }
         }
         else if (Player3Turn == true)
         {
+            
             if(isPlayer4Playing)
             {
                 // TurnColorImg.color = Player4Color;
                 Player3Turn = false;
                 Player4Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(4);
                 // TurnPlayerNumber.text = "4";
                 Waiting = false;
             }
@@ -305,6 +315,7 @@ void Update()
                 // TurnColorImg.color = Player1Color;
                 Player3Turn = false;
                 Player1Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(1);
                 // TurnPlayerNumber.text = "1";
                 Waiting = false;
             }
@@ -313,17 +324,20 @@ void Update()
                 // TurnColorImg.color = Player2Color;
                 Player3Turn = false;
                 Player2Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(2);
                 // TurnPlayerNumber.text = "2";
                 Waiting = false;
             }
         }
         else if (Player4Turn == true)
         {
+            
             if(isPlayer1Playing)
             {
                 // TurnColorImg.color = Player1Color;
                 Player4Turn = false;
                 Player1Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(1);
                 // TurnPlayerNumber.text = "1";
                 Waiting = false;
             }
@@ -332,6 +346,7 @@ void Update()
                 // TurnColorImg.color = Player2Color;
                 Player4Turn = false;
                 Player2Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(2);
                 // TurnPlayerNumber.text = "2";
                 Waiting = false;
             }
@@ -340,6 +355,7 @@ void Update()
                 // TurnColorImg.color = Player3Color;
                 Player4Turn = false;
                 Player3Turn = true;
+                LookForPlaceToSpawnBlockAndPlaceIt(3);
                 // TurnPlayerNumber.text = "3";
                 Waiting = false;
             }
@@ -349,7 +365,7 @@ void Update()
 
 
 
-public void InstantiateThisColorWithThisOwner(int color, int value, int owner)
+public void InstantiateThisColorWithThisOwner(int color, long value, int owner, int X, int Y)
 {
     if(isPreparingFaze)
     {
@@ -368,8 +384,10 @@ public void InstantiateThisColorWithThisOwner(int color, int value, int owner)
         else if(owner == 3){P3Blocks.Add(block);}
         else if(owner == 4){P4Blocks.Add(block);}
         block.gameObject.GetComponent<LocalBRBlockBehaviourScript>().OwnerID = owner;
+        block.gameObject.GetComponent<LocalBRBlockBehaviourScript>().AfterSpawn(X, Y);
         block.gameObject.name = "block" + blockID;
         blockID++;
+
     }
     else if(isBRFaze)
     {
@@ -377,8 +395,82 @@ public void InstantiateThisColorWithThisOwner(int color, int value, int owner)
     }
 }
 
+public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
+{
+    Debug.Log("elo");
+    int fieldCounter = 0;
+    int fieldOfPlayer = 0;
+    int playerFieldCorrection = 0;
+    int color = 0;
+    bool blockSpawned = false;
 
-public void BlockLevelUp(int x, int y, int value) //#TODO This function can be optimized.
+    if(owner == 1)
+    {
+        fieldOfPlayer = P1Fields.Count;
+        Debug.Log(fieldOfPlayer);
+        playerFieldCorrection = 0;
+        color = Player1Color;
+
+    }
+    else if(owner == 2)
+    {
+        fieldOfPlayer = P2Fields.Count;
+        playerFieldCorrection = 36;
+        color = Player2Color;
+    }
+    else if(owner == 3)
+    {
+        fieldOfPlayer = P3Fields.Count;
+        playerFieldCorrection = 72;
+        color = Player3Color;
+    }
+    else if(owner == 4)
+    {
+        fieldOfPlayer = P4Fields.Count;
+        playerFieldCorrection = 108;
+        color = Player4Color;   
+    }
+
+    while (fieldCounter < fieldOfPlayer && blockSpawned == false)
+        {
+            int randomPosition = Random.Range(playerFieldCorrection, playerFieldCorrection+fieldOfPlayer-1);
+            
+            
+            FieldScript = fields[randomPosition].GetComponent<FieldScript>();
+            if (FieldScript.checkedForSpawnPurpose == false)
+            {
+                if (FieldScript.isWall == true)
+                {
+                    fieldCounter++;
+                    FieldScript.checkedForSpawnPurpose = true;
+                }
+                else if (FieldScript.isWall == false)
+                {
+                    if(FieldScript.isTaken == true)
+                    {
+                        fieldCounter++;
+                        FieldScript.checkedForSpawnPurpose = true;
+                    }
+                    else if (FieldScript.isTaken == false)
+                    {
+
+                        InstantiateThisColorWithThisOwner(color, 2, owner, FieldScript.TableNumberX, FieldScript.TableNumberY);
+                      
+                        
+                        blockSpawned = true;
+                        
+                        // ClearAfterSpawn();
+                        // CheckForGameOver();
+                    }
+                }
+
+            }
+            
+        }
+}
+
+
+public void BlockLevelUp(long value, int owner, int x, int y) //#TODO This function can be optimized.
     {
         // if(value == 2){block = Instantiate(block4); ScoreCounterScript.AddPoints(4);}
         // else if(value == 4){block = Instantiate(block8); ScoreCounterScript.AddPoints(8);}
@@ -391,139 +483,21 @@ public void BlockLevelUp(int x, int y, int value) //#TODO This function can be o
         // else if(value == 512){block = Instantiate(block1024); ScoreCounterScript.AddPoints(1024);}
         // else if(value == 1024){block = Instantiate(block2048); ScoreCounterScript.AddPoints(2048);}
         // else if(value == 2048){block = Instantiate(block4096); ScoreCounterScript.AddPoints(4096);}
-        
-        // InstantiateThisColorWithThisOwner();
-        blocks.Add(block);
-        block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
-        block.GetComponent<BlockBehaviourScript>().dir = "empty";
-        block.gameObject.name = "block" + blockID;
-        blockID++; 
+        int color = 0   ;
+        if(owner == 1){color = Player1Color;}
+        else if(owner == 2){color = Player2Color;}
+        else if(owner == 3){color = Player3Color;}
+        else if(owner == 4){color = Player4Color;}
+        value = value*2;
+        InstantiateThisColorWithThisOwner(color, value, owner, x, y);
+        // blocks.Add(block);
+        // block.GetComponent<BlockBehaviourScript>().AfterSpawn(x, y);
+        // block.GetComponent<BlockBehaviourScript>().dir = "empty";
+        // block.gameObject.name = "block" + blockID;
+        // blockID++; 
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-[SerializeField] GameObject NeutralBlock2;
-[SerializeField] GameObject NeutralBlock4;
-[SerializeField] GameObject NeutralBlock8;
-[SerializeField] GameObject NeutralBlock16;
-[SerializeField] GameObject NeutralBlock32;
-[SerializeField] GameObject NeutralBlock64;
-[SerializeField] GameObject NeutralBlock128;
-[SerializeField] GameObject NeutralBlock256;
-[SerializeField] GameObject NeutralBlock512;
-[SerializeField] GameObject NeutralBlock1024;
-[SerializeField] GameObject NeutralBlock2048;
-[SerializeField] GameObject NeutralBlock4096;
-[SerializeField] GameObject NeutralBlock8192;
-[SerializeField] GameObject NeutralBlock16384;
-[SerializeField] GameObject NeutralBlock32768;
-[SerializeField] GameObject NeutralBlock65536;
-
-
-[SerializeField] GameObject BlueBlock2;
-[SerializeField] GameObject BlueBlock4;
-[SerializeField] GameObject BlueBlock8;
-[SerializeField] GameObject BlueBlock16;
-[SerializeField] GameObject BlueBlock32;
-[SerializeField] GameObject BlueBlock64;
-[SerializeField] GameObject BlueBlock128;
-[SerializeField] GameObject BlueBlock256;
-[SerializeField] GameObject BlueBlock512;
-[SerializeField] GameObject BlueBlock1024;
-[SerializeField] GameObject BlueBlock2048;
-[SerializeField] GameObject BlueBlock4096;
-[SerializeField] GameObject BlueBlock8192;
-[SerializeField] GameObject BlueBlock16384;
-[SerializeField] GameObject BlueBlock32768;
-[SerializeField] GameObject BlueBlock65536;
-
-[SerializeField] GameObject RedBlock2;
-[SerializeField] GameObject RedBlock4;
-[SerializeField] GameObject RedBlock8;
-[SerializeField] GameObject RedBlock16;
-[SerializeField] GameObject RedBlock32;
-[SerializeField] GameObject RedBlock64;
-[SerializeField] GameObject RedBlock128;
-[SerializeField] GameObject RedBlock256;
-[SerializeField] GameObject RedBlock512;
-[SerializeField] GameObject RedBlock1024;
-[SerializeField] GameObject RedBlock2048;
-[SerializeField] GameObject RedBlock4096;
-[SerializeField] GameObject RedBlock8192;
-[SerializeField] GameObject RedBlock16384;
-[SerializeField] GameObject RedBlock32768;
-[SerializeField] GameObject RedBlock65536;
-
-[SerializeField] GameObject GreenBlock2;
-[SerializeField] GameObject GreenBlock4;
-[SerializeField] GameObject GreenBlock8;
-[SerializeField] GameObject GreenBlock16;
-[SerializeField] GameObject GreenBlock32;
-[SerializeField] GameObject GreenBlock64;
-[SerializeField] GameObject GreenBlock128;
-[SerializeField] GameObject GreenBlock256;
-[SerializeField] GameObject GreenBlock512;
-[SerializeField] GameObject GreenBlock1024;
-[SerializeField] GameObject GreenBlock2048;
-[SerializeField] GameObject GreenBlock4096;
-[SerializeField] GameObject GreenBlock8192;
-[SerializeField] GameObject GreenBlock16384;
-[SerializeField] GameObject GreenBlock32768;
-[SerializeField] GameObject GreenBlock65536;
-
-[SerializeField] GameObject PinkBlock2;
-[SerializeField] GameObject PinkBlock4;
-[SerializeField] GameObject PinkBlock8;
-[SerializeField] GameObject PinkBlock16;
-[SerializeField] GameObject PinkBlock32;
-[SerializeField] GameObject PinkBlock64;
-[SerializeField] GameObject PinkBlock128;
-[SerializeField] GameObject PinkBlock256;
-[SerializeField] GameObject PinkBlock512;
-[SerializeField] GameObject PinkBlock1024;
-[SerializeField] GameObject PinkBlock2048;
-[SerializeField] GameObject PinkBlock4096;
-[SerializeField] GameObject PinkBlock8192;
-[SerializeField] GameObject PinkBlock16384;
-[SerializeField] GameObject PinkBlock32768;
-[SerializeField] GameObject PinkBlock65536;
-
-[SerializeField] GameObject SilverBlock2;
-[SerializeField] GameObject SilverBlock4;
-[SerializeField] GameObject SilverBlock8;
-[SerializeField] GameObject SilverBlock16;
-[SerializeField] GameObject SilverBlock32;
-[SerializeField] GameObject SilverBlock64;
-[SerializeField] GameObject SilverBlock128;
-[SerializeField] GameObject SilverBlock256;
-[SerializeField] GameObject SilverBlock512;
-[SerializeField] GameObject SilverBlock1024;
-[SerializeField] GameObject SilverBlock2048;
-[SerializeField] GameObject SilverBlock4096;
-[SerializeField] GameObject SilverBlock8192;
-[SerializeField] GameObject SilverBlock16384;
-[SerializeField] GameObject SilverBlock32768;
-[SerializeField] GameObject SilverBlock65536;
-
-
 
 
 

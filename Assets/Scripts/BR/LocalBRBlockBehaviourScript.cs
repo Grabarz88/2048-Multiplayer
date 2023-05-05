@@ -156,8 +156,9 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                     if (TableNumberX_toCheck == NextBlockBehaviourScript.TableNumberX && TableNumberY_toCheck == NextBlockBehaviourScript.TableNumberY && block != this.gameObject)
                                     {
                                         //Znaleźliśmy blok zajmujący pole
-                                        if((OwnerID !=0 && NextBlockBehaviourScript.OwnerID == 0) || (OwnerID == 0))
+                                        if((OwnerID !=0 && NextBlockBehaviourScript.OwnerID == 0) || (OwnerID == 0) || (OwnerID == NextBlockBehaviourScript.OwnerID))
                                         {
+                                            //Blok zajmujący pole jest NEUTRALNY lub nasz lub my jesteśmy blokiem neutralnym
                                             if (NextBlockBehaviourScript.finishedSearching == true)
                                             {
                                                 //Zajmujący pole blok, skończył szukanie swojej pozycji
@@ -185,8 +186,9 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                                         willBeLevelingUp = true;
 
                                                         NextBlockBehaviourScript.willBeDestroyed = true;
-                                                        if(NextBlockBehaviourScript.OwnerID != 0)
+                                                        if(OwnerID == 0 && NextBlockBehaviourScript.OwnerID != 0)
                                                         {
+                                                            //Jestem neutralnym blokiem, który zderzył się z blokiem ruszającego się gracza o tej samej wartościu lub jesteśmy oboje blokami ruszającego się gracza
                                                             OwnerID = NextBlockBehaviourScript.OwnerID;
                                                             SpawnBlock.NeutralBlocks.Remove(this.gameObject);
                                                             if(OwnerID == 1)
@@ -196,6 +198,14 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                                             else if(OwnerID == 2)
                                                             {
                                                                 SpawnBlock.P2Blocks.Add(this.gameObject);
+                                                            }
+                                                            else if(OwnerID == 3)
+                                                            {
+                                                                SpawnBlock.P3Blocks.Add(this.gameObject);
+                                                            }
+                                                            else if(OwnerID == 4)
+                                                            {
+                                                                SpawnBlock.P4Blocks.Add(this.gameObject);
                                                             }
                                                             
                                                         }
@@ -217,59 +227,77 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                         }
                                         else if(NextBlockBehaviourScript.OwnerID != OwnerID && NextBlockBehaviourScript.OwnerID != 0 && OwnerID != 0)
                                         {
-                                            //Nastąpiło zderzenie z blokiem przeciwnika
-                                            if(NextBlockBehaviourScript.value > value)
+                                            if(NextBlockBehaviourScript.finishedSearching == true || NextBlockBehaviourScript.idle == true)
                                             {
-                                                //Nie przesuwamy bloku przeciwnika, tylko się zatrzymujemy na nim
-                                                searching = false;
-                                                finishedSearching = true;
-                                            }
-                                            if(NextBlockBehaviourScript.value == value)
-                                            {
-                                                
-                                                // if(OwnerID == 1)
-                                                // {
-                                                //     SpawnBlock.P1Blocks.Add(block);
-                                                // }
-                                                // if(OwnerID == 2)
-                                                // {
-                                                //     SpawnBlock.P2Blocks.Add(block);
-                                                // }
-                                                // if(NextBlockBehaviourScript.OwnerID == 0)
-                                                // {
-                                                //     SpawnBlock.NeutralBlocks.Remove(block);
-                                                // }
-                                                // else if(NextBlockBehaviourScript.OwnerID == 1)
-                                                // {
-                                                //     SpawnBlock.P1Blocks.Remove(block);
-                                                // }
-                                                // else if(NextBlockBehaviourScript.OwnerID == 2)
-                                                // {
-                                                //     SpawnBlock.P2Blocks.Remove(block);
-                                                // }
-                                                
-                                                // NextBlockBehaviourScript.OwnerID = OwnerID;
-                                                // NextBlockBehaviourScript.dir = dir;
-                                                // NextBlockBehaviourScript.idle = false;
-                                                // NextBlockBehaviourScript.searching = true;                   
-                                                searching = false;
-                                                finishedSearching = true;
+                                                //Nastąpiło zderzenie z blokiem przeciwnika
+                                                if(NextBlockBehaviourScript.value > value)
+                                                {
+                                                    //Nie przesuwamy bloku przeciwnika, tylko się zatrzymujemy na nim
+                                                    searching = false;
+                                                    finishedSearching = true;
+                                                }
+                                                if(NextBlockBehaviourScript.value == value)
+                                                {
+                                                    //Łączymy się z blokiem przeciwnika
+                                                    
+                                                    if(OwnerID == 1)
+                                                    {
+                                                        SpawnBlock.P1Blocks.Add(block);
+                                                    }
+                                                    else if(OwnerID == 2)
+                                                    {
+                                                        SpawnBlock.P2Blocks.Add(block);
+                                                    }
+                                                    else if(OwnerID == 3)
+                                                    {
+                                                        SpawnBlock.P3Blocks.Add(block);
+                                                    }
+                                                    else if(OwnerID == 4)
+                                                    {
+                                                        SpawnBlock.P4Blocks.Add(block);
+                                                    }
 
-                                            }
-                                            if(NextBlockBehaviourScript.value < value)
-                                            {
 
-				                                transform.position = new Vector2(FieldScript.positionX, FieldScript.positionY);
-                                                Destroy(block);
-                                                // SpawnBlock.AnnounceGameOver(OwnerID);
-                                                // Debug.Log("Wygrywa gracz " + OwnerID);
-                                                // if(NextBlockBehaviourScript.finishedSearching == false)
-                                                // {
-                                                //     NextBlockBehaviourScript.dir = dir;
-                                                //     NextBlockBehaviourScript.idle = false;
-                                                //     NextBlockBehaviourScript.searching = true;
-                                                // }
-                                                
+                                                    if(NextBlockBehaviourScript.OwnerID == 0)
+                                                    {
+                                                        SpawnBlock.NeutralBlocks.Remove(block);
+                                                    }
+                                                    else if(NextBlockBehaviourScript.OwnerID == 1)
+                                                    {
+                                                        SpawnBlock.P1Blocks.Remove(block);
+                                                    }
+                                                    else if(NextBlockBehaviourScript.OwnerID == 2)
+                                                    {
+                                                        SpawnBlock.P2Blocks.Remove(block);
+                                                    }
+                                                    else if(NextBlockBehaviourScript.OwnerID == 3)
+                                                    {
+                                                        SpawnBlock.P3Blocks.Remove(block);
+                                                    }
+                                                    else if(NextBlockBehaviourScript.OwnerID == 4)
+                                                    {
+                                                        SpawnBlock.P4Blocks.Remove(block);
+                                                    }
+                                                    
+                                                    NextBlockBehaviourScript.OwnerID = OwnerID;
+                                                    NextBlockBehaviourScript.dir = dir;
+                                                    NextBlockBehaviourScript.idle = false;
+                                                    NextBlockBehaviourScript.finishedSearching = true;       
+                                                    NextBlockBehaviourScript.willBeDestroyed = true;            
+                                                    searching = false;
+                                                    finishedSearching = true;
+                                                    willBeDestroyed = true;
+                                                    willBeLevelingUp = true;
+
+                                                }
+                                                if(NextBlockBehaviourScript.value < value)
+                                                {
+                                                    
+                                                    searching = false;
+                                                    finishedSearching = false;
+                                                    NextBlockBehaviourScript.willBeDestroyed = true;
+                                                    
+                                                }
                                             }
                                         }
                                     }
@@ -398,7 +426,7 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
 	{
 		if(willBeLevelingUp == true) 
 		{
-			// SpawnBlock.BlockLevelUp(TableNumberX, TableNumberY, value, OwnerID);
+			SpawnBlock.BlockLevelUp(value, OwnerID, TableNumberX, TableNumberY);
 		}
 		SpawnBlock.blocks.Remove(gameObject);
         if(OwnerID == 0)
