@@ -172,6 +172,10 @@ MonoBehaviour:
   PodajSzerokoscPlanszy: 0
   PodajWysokoscPlanszy: 0
   fields: []
+  P1Fields: []
+  P2Fields: []
+  P3Fields: []
+  P4Fields: []
 --- !u!1 &861818027
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,142 +268,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1224282799}
-  - component: {fileID: 1224282798}
+  - component: {fileID: 1224282800}
   m_Layer: 0
-  m_Name: LocalVSBlockSpawner (1)
+  m_Name: BlockSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1224282798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1224282797}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceacb27faa75296479ae86bde717ff0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FieldSpawner: {fileID: 254141490}
-  AI_Object: {fileID: 0}
-  gameOverPanel: {fileID: 0}
-  winnerAnnouncemenet: {fileID: 0}
-  TurnPlayerNumber: {fileID: 0}
-  TurnColorPanel: {fileID: 0}
-  TurnColorImg: {fileID: 0}
-  BlockBehaviourScript: {fileID: 0}
-  fields: []
-  blocks: []
-  P1Blocks: []
-  P2Blocks: []
-  NeutralBlocks: []
-  Player1Turn: 1
-  Player2Turn: 0
-  Waiting: 0
-  EnemyIsComputer: 0
-  AIThinks: 0
-  randomX: 0
-  randomY: 0
-  NeutralBlock2: {fileID: 6589286804816033412, guid: 057f2715bed3404419e95e8cd6e14464, type: 3}
-  NeutralBlock4: {fileID: 7902884296304945890, guid: 305c47122e8e0e941890ce1e18985160, type: 3}
-  NeutralBlock8: {fileID: 1813732036364847119, guid: 120dc0da8753f76499fc069a2d0216b4, type: 3}
-  NeutralBlock16: {fileID: 6277606956834312290, guid: 52f1982467bc3c0449afbc8cd5e1afb7, type: 3}
-  NeutralBlock32: {fileID: 305319925729589384, guid: b6f06a70d5c33b54695c881175028098, type: 3}
-  NeutralBlock64: {fileID: 6028761620582251617, guid: d3e53ecc9a45495469586d525ac4955a, type: 3}
-  NeutralBlock128: {fileID: 8466471447412519223, guid: 056eac5a0a0b4fc4ebefd82bb669a680, type: 3}
-  NeutralBlock256: {fileID: 1978934703934068695, guid: 0f7bbf28467d09d44ac12a8bab5bc5c7, type: 3}
-  NeutralBlock512: {fileID: 1565937099040524399, guid: 3a64a9ad9c57ad34981212906fb9101b, type: 3}
-  NeutralBlock1024: {fileID: 5203971079844152554, guid: b8fb1f1523629ef49b5595d6a0a1225f, type: 3}
-  NeutralBlock2048: {fileID: 1958134596041625368, guid: 5198dbb1bbfbb3145938eb0743ea4325, type: 3}
-  NeutralBlock4096: {fileID: 6124621406495016946, guid: fd38458df3a1eaa4c8e332e999cd4212, type: 3}
-  NeutralBlock8192: {fileID: 4038344002317318137, guid: 9fe215ba22b161542863cc4aab711397, type: 3}
-  NeutralBlock16384: {fileID: 7677510595922579774, guid: c394c2cc9b8c38d4d9679820bf5e9b3c, type: 3}
-  NeutralBlock32768: {fileID: 4694635772095969761, guid: 1be8f38af6d04fd45ac4c60c41abff81, type: 3}
-  NeutralBlock65536: {fileID: 8540361579420868051, guid: 0825cf90ec1e9544ea19fcb451d1fd3a, type: 3}
-  BlueBlock2: {fileID: 3252702417166263141, guid: b880fbd670f50144291b52730223bfec, type: 3}
-  BlueBlock4: {fileID: 1388048664376338451, guid: 6034c465f83412246bea1151015f334d, type: 3}
-  BlueBlock8: {fileID: 345311335318054657, guid: d0b9ded4edd6eb840b8dff5d761e4131, type: 3}
-  BlueBlock16: {fileID: 4995353713766565902, guid: d9fca031e502dd146bf4d0dc7e837972, type: 3}
-  BlueBlock32: {fileID: 6894265621219120499, guid: 0245deb80ff04574197bbfee4f2286a4, type: 3}
-  BlueBlock64: {fileID: 2371401030638941751, guid: 9aed6426cdfcb624d8e55960b7e925a9, type: 3}
-  BlueBlock128: {fileID: 161482045965298198, guid: 604d44c02d111ad48823e63455267292, type: 3}
-  BlueBlock256: {fileID: 6476217668714409501, guid: 9e515197238f07b4986e5f8059719de7, type: 3}
-  BlueBlock512: {fileID: 6672432674453740300, guid: cecd966d4884e7d4e941ed39321a394e, type: 3}
-  BlueBlock1024: {fileID: 7201140024910751021, guid: ffbda4b3a3f0d384dbc0b51e55a5d4bb, type: 3}
-  BlueBlock2048: {fileID: 3780546296343516396, guid: 5512035ec9af009438d8975e688b306a, type: 3}
-  BlueBlock4096: {fileID: 1761399124203174187, guid: 85c877322359f2a4493a02ab3aac5cba, type: 3}
-  BlueBlock8192: {fileID: 8839223391300677750, guid: a95065233dde60540892e1f19ee80249, type: 3}
-  BlueBlock16384: {fileID: 9163780047336544069, guid: 3a1e571bf682e2349bdb546b88747af5, type: 3}
-  BlueBlock32768: {fileID: 3596960355002997776, guid: d675f0b42f7534c4cbd8684fe187fb54, type: 3}
-  BlueBlock65536: {fileID: 4042113201408756214, guid: 8a89751f193ca8749a08f8ef1016561f, type: 3}
-  RedBlock2: {fileID: 3329046936976994004, guid: bcd06f319c6ac204cab3b21c14206c41, type: 3}
-  RedBlock4: {fileID: 5644103039233111076, guid: 604673ba4e96d2145af2f2a0fcc2c54b, type: 3}
-  RedBlock8: {fileID: 1717542730208260825, guid: 830eb1f54b38f244487c39db901e65b9, type: 3}
-  RedBlock16: {fileID: 8319176420628512342, guid: d6e9baaddf831394a86f4db2fe9a42f2, type: 3}
-  RedBlock32: {fileID: 4419995711249764795, guid: cbbcca10a1398bd419c76df91aded047, type: 3}
-  RedBlock64: {fileID: 7443174566269553084, guid: aa564a2ea1bd6204cba38b241f8ee984, type: 3}
-  RedBlock128: {fileID: 5161150186198112046, guid: f2c32367e9bacce4f8d3cce6d97c4024, type: 3}
-  RedBlock256: {fileID: 8579771012287831267, guid: 01d15a9fd863fb5439fa7f36672eddc3, type: 3}
-  RedBlock512: {fileID: 8821767157877282233, guid: 0f47c0e29677791489fc0271a5ef6c44, type: 3}
-  RedBlock1024: {fileID: 66609176344432868, guid: f7ee5a35f866fc04689367d4213954b8, type: 3}
-  RedBlock2048: {fileID: 1418034200459144589, guid: 8d677d7b63f7c4048a467e8a5344ed4e, type: 3}
-  RedBlock4096: {fileID: 2302814426686328967, guid: 339a6dc59614b4e459617e809a3727fb, type: 3}
-  RedBlock8192: {fileID: 8028311414608685012, guid: aa79ffb60634cae47bed1e1842850b0e, type: 3}
-  RedBlock16384: {fileID: 6958758776316641795, guid: 4054aeac4dd060943bcd9beb1175a18e, type: 3}
-  RedBlock32768: {fileID: 7552580398590945756, guid: 34f71fd30b30f204b912419377d59d21, type: 3}
-  RedBlock65536: {fileID: 930078838170463516, guid: 2434cf7a4866b404ba934f488af13551, type: 3}
-  GreenBlock2: {fileID: 4034311675858583161, guid: c10fe29d4eeba2346a5ee018182651db, type: 3}
-  GreenBlock4: {fileID: 7498669489198338879, guid: 47eeb8fba7575264581c6a8464d7f428, type: 3}
-  GreenBlock8: {fileID: 2982089969268643679, guid: eec4fda2d2fc8f14eadca7718f121a22, type: 3}
-  GreenBlock16: {fileID: 8131204287275349383, guid: 2792778e0c64cff429dd07460721d30a, type: 3}
-  GreenBlock32: {fileID: 6078647221513650327, guid: e78f46f8867c47e4995d8a55145254ec, type: 3}
-  GreenBlock64: {fileID: 8399298583409575866, guid: 6253d797b306cc74aa7978fe5713c43c, type: 3}
-  GreenBlock128: {fileID: 5423453748983217175, guid: c834343a6fc074f40a907bedd7be44d3, type: 3}
-  GreenBlock256: {fileID: 5125404900597438420, guid: 973f3ea29af0de84d83541f6f00b515a, type: 3}
-  GreenBlock512: {fileID: 8445773061225174663, guid: 64e57b81decdc164abd92a4548a22657, type: 3}
-  GreenBlock1024: {fileID: 3296333608604498502, guid: f2f33f4ec61c9554c9a98cb8f2791ece, type: 3}
-  GreenBlock2048: {fileID: 8847679593530449553, guid: 1bc4f4749fb5df540ac83fbe66e0fae8, type: 3}
-  GreenBlock4096: {fileID: 8816085610572408821, guid: 086185599aeb0b04fa2843dabde8d735, type: 3}
-  GreenBlock8192: {fileID: 3378405263425966130, guid: 6230d25f4132a164cbb52e666d2b7a6e, type: 3}
-  GreenBlock16384: {fileID: 614686193178063078, guid: 57e4f4ff50ac52941af2387d6048e53c, type: 3}
-  GreenBlock32768: {fileID: 5498612025923879264, guid: cc4f31bfe1d902b46862b0b3d8b8c0a6, type: 3}
-  GreenBlock65536: {fileID: 1620049744025997687, guid: 1719df009b1e1f94abc2c9902508f2bd, type: 3}
-  PinkBlock2: {fileID: 7698549240403775586, guid: cfef7b4c621f7094da0a77583d0a5b83, type: 3}
-  PinkBlock4: {fileID: 8473074966935661151, guid: 2c2a2c4e6966bfb46beea204946be5e2, type: 3}
-  PinkBlock8: {fileID: 6915914431454113368, guid: b847b83c2bf99c747a5d9624b9a2c220, type: 3}
-  PinkBlock16: {fileID: 6214398955872764502, guid: 1fd7a607d7858274ba76777373af73f1, type: 3}
-  PinkBlock32: {fileID: 3044300288904389751, guid: fe4df83c6dafcc5448494ba29278323a, type: 3}
-  PinkBlock64: {fileID: 6615940776105622684, guid: 482f88734befbef4e912863bd2240634, type: 3}
-  PinkBlock128: {fileID: 2740535357326785695, guid: 5c7bacc07d26e594aa7bae54bb157b21, type: 3}
-  PinkBlock256: {fileID: 5792802401957543812, guid: d35e864ab29f96d4a83b937fd63b2146, type: 3}
-  PinkBlock512: {fileID: 75577063547408176, guid: cd8aecd97941e1449897a583175d20db, type: 3}
-  PinkBlock1024: {fileID: 8539775278523665213, guid: e67c91a37d1b0ae46a82d8e0b4252a1b, type: 3}
-  PinkBlock2048: {fileID: 23986248203338408, guid: 0b80dcdce6833584ea8648f8a40a6d73, type: 3}
-  PinkBlock4096: {fileID: 6408189298358693128, guid: 5328199d2086ea14c88ac1590056b03a, type: 3}
-  PinkBlock8192: {fileID: 138130278780167813, guid: 7de36d55761b3de429d3ac261c19c203, type: 3}
-  PinkBlock16384: {fileID: 8033222180879930958, guid: 1da8edca8cacb884bb1d189ff3f145f0, type: 3}
-  PinkBlock32768: {fileID: 6092990190755645019, guid: c8c0b88eb26becc4391f11699179afaf, type: 3}
-  PinkBlock65536: {fileID: 291156004850614676, guid: 5f5d8fb4791bac042998ab37d55b035e, type: 3}
-  SilverBlock2: {fileID: 3370589791112687077, guid: 1898dd41523b739498db1d391d701c17, type: 3}
-  SilverBlock4: {fileID: 6434137311851713662, guid: bfda176eb67fe054fb2bb5dc57e92a2b, type: 3}
-  SilverBlock8: {fileID: 6595694179154712808, guid: c8e04163bd6265a4b9a07630a12003b7, type: 3}
-  SilverBlock16: {fileID: 4893836063078709052, guid: e38baaef892c3f64fa19cbf9124c6edb, type: 3}
-  SilverBlock32: {fileID: 634439529141592988, guid: 473c94446316d0744918b90e7eaed4a6, type: 3}
-  SilverBlock64: {fileID: 5178028543647142557, guid: 486b2ac399e042549bc5ed9b64a7748b, type: 3}
-  SilverBlock128: {fileID: 2873730692010391736, guid: c2fc4b252b3ae9c4da84b154f9871cbb, type: 3}
-  SilverBlock256: {fileID: 7549419556960741194, guid: e20a20f1fc619474fb4e7cd13bb823b5, type: 3}
-  SilverBlock512: {fileID: 3377503219200413414, guid: fc305317df7b51e44a6e1b9fa29d251a, type: 3}
-  SilverBlock1024: {fileID: 3450450644528601291, guid: 4670f635a36650540a5130ee056f1ea7, type: 3}
-  SilverBlock2048: {fileID: 3541294209432080882, guid: 6a0600b8e2cc9b84797c9d09473ea467, type: 3}
-  SilverBlock4096: {fileID: 6017462083918575695, guid: 3d2ab22b7a9839149b20122ea880c95b, type: 3}
-  SilverBlock8192: {fileID: 8474537926744595702, guid: 53b91bf898b307948ae3c232cbc7995b, type: 3}
-  SilverBlock16384: {fileID: 2623294100923058341, guid: 38bca01be9e208744ab0a3d751a5ea4f, type: 3}
-  SilverBlock32768: {fileID: 1686997437409807920, guid: 6bf21ed122778394fa87243b0b814c1a, type: 3}
-  SilverBlock65536: {fileID: 3332445527445629864, guid: b22ef48970e2c4d4bb3c9102facab712, type: 3}
 --- !u!4 &1224282799
 Transform:
   m_ObjectHideFlags: 0
@@ -414,3 +290,138 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1224282800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224282797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab3415b6d4ffc434eae3109412ef7c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FieldSpawner: {fileID: 254141490}
+  gameOverPanel: {fileID: 0}
+  winnerAnnouncemenet: {fileID: 0}
+  TurnPlayerNumber: {fileID: 0}
+  TurnColorPanel: {fileID: 0}
+  TurnColorImg: {fileID: 0}
+  BlockBehaviourScript: {fileID: 0}
+  fields: []
+  blocks: []
+  P1Blocks: []
+  P2Blocks: []
+  P3Blocks: []
+  P4Blocks: []
+  NeutralBlocks: []
+  Player1Turn: 1
+  Player2Turn: 0
+  Player3Turn: 0
+  Player4Turn: 0
+  Waiting: 0
+  isPlayer1Playing: 0
+  isPlayer2Playing: 0
+  isPlayer3Playing: 0
+  isPlayer4Playing: 0
+  isPreparingFaze: 1
+  isBRFaze: 0
+  randomX: 0
+  randomY: 0
+  NeutralBlock2: {fileID: 0}
+  NeutralBlock4: {fileID: 0}
+  NeutralBlock8: {fileID: 0}
+  NeutralBlock16: {fileID: 0}
+  NeutralBlock32: {fileID: 0}
+  NeutralBlock64: {fileID: 0}
+  NeutralBlock128: {fileID: 0}
+  NeutralBlock256: {fileID: 0}
+  NeutralBlock512: {fileID: 0}
+  NeutralBlock1024: {fileID: 0}
+  NeutralBlock2048: {fileID: 0}
+  NeutralBlock4096: {fileID: 0}
+  NeutralBlock8192: {fileID: 0}
+  NeutralBlock16384: {fileID: 0}
+  NeutralBlock32768: {fileID: 0}
+  NeutralBlock65536: {fileID: 0}
+  BlueBlock2: {fileID: 0}
+  BlueBlock4: {fileID: 0}
+  BlueBlock8: {fileID: 0}
+  BlueBlock16: {fileID: 0}
+  BlueBlock32: {fileID: 0}
+  BlueBlock64: {fileID: 0}
+  BlueBlock128: {fileID: 0}
+  BlueBlock256: {fileID: 0}
+  BlueBlock512: {fileID: 0}
+  BlueBlock1024: {fileID: 0}
+  BlueBlock2048: {fileID: 0}
+  BlueBlock4096: {fileID: 0}
+  BlueBlock8192: {fileID: 0}
+  BlueBlock16384: {fileID: 0}
+  BlueBlock32768: {fileID: 0}
+  BlueBlock65536: {fileID: 0}
+  RedBlock2: {fileID: 0}
+  RedBlock4: {fileID: 0}
+  RedBlock8: {fileID: 0}
+  RedBlock16: {fileID: 0}
+  RedBlock32: {fileID: 0}
+  RedBlock64: {fileID: 0}
+  RedBlock128: {fileID: 0}
+  RedBlock256: {fileID: 0}
+  RedBlock512: {fileID: 0}
+  RedBlock1024: {fileID: 0}
+  RedBlock2048: {fileID: 0}
+  RedBlock4096: {fileID: 0}
+  RedBlock8192: {fileID: 0}
+  RedBlock16384: {fileID: 0}
+  RedBlock32768: {fileID: 0}
+  RedBlock65536: {fileID: 0}
+  GreenBlock2: {fileID: 0}
+  GreenBlock4: {fileID: 0}
+  GreenBlock8: {fileID: 0}
+  GreenBlock16: {fileID: 0}
+  GreenBlock32: {fileID: 0}
+  GreenBlock64: {fileID: 0}
+  GreenBlock128: {fileID: 0}
+  GreenBlock256: {fileID: 0}
+  GreenBlock512: {fileID: 0}
+  GreenBlock1024: {fileID: 0}
+  GreenBlock2048: {fileID: 0}
+  GreenBlock4096: {fileID: 0}
+  GreenBlock8192: {fileID: 0}
+  GreenBlock16384: {fileID: 0}
+  GreenBlock32768: {fileID: 0}
+  GreenBlock65536: {fileID: 0}
+  PinkBlock2: {fileID: 0}
+  PinkBlock4: {fileID: 0}
+  PinkBlock8: {fileID: 0}
+  PinkBlock16: {fileID: 0}
+  PinkBlock32: {fileID: 0}
+  PinkBlock64: {fileID: 0}
+  PinkBlock128: {fileID: 0}
+  PinkBlock256: {fileID: 0}
+  PinkBlock512: {fileID: 0}
+  PinkBlock1024: {fileID: 0}
+  PinkBlock2048: {fileID: 0}
+  PinkBlock4096: {fileID: 0}
+  PinkBlock8192: {fileID: 0}
+  PinkBlock16384: {fileID: 0}
+  PinkBlock32768: {fileID: 0}
+  PinkBlock65536: {fileID: 0}
+  SilverBlock2: {fileID: 0}
+  SilverBlock4: {fileID: 0}
+  SilverBlock8: {fileID: 0}
+  SilverBlock16: {fileID: 0}
+  SilverBlock32: {fileID: 0}
+  SilverBlock64: {fileID: 0}
+  SilverBlock128: {fileID: 0}
+  SilverBlock256: {fileID: 0}
+  SilverBlock512: {fileID: 0}
+  SilverBlock1024: {fileID: 0}
+  SilverBlock2048: {fileID: 0}
+  SilverBlock4096: {fileID: 0}
+  SilverBlock8192: {fileID: 0}
+  SilverBlock16384: {fileID: 0}
+  SilverBlock32768: {fileID: 0}
+  SilverBlock65536: {fileID: 0}

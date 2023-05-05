@@ -11,6 +11,10 @@ public class SpawnFieldBR : MonoBehaviour
     [SerializeField] public int PodajWysokoscPlanszy;
 
     public List<GameObject> fields = new List<GameObject>();
+    public List<GameObject> P1Fields = new List<GameObject>();
+    public List<GameObject> P2Fields = new List<GameObject>();
+    public List<GameObject> P3Fields = new List<GameObject>();
+    public List<GameObject> P4Fields = new List<GameObject>();
 
     GameObject ObjectToRememberColors;
     ScriptToRememberBRColors ScriptToRememberBRColors;
@@ -33,6 +37,7 @@ public class SpawnFieldBR : MonoBehaviour
                     {
                         GameObject aField = Instantiate(wall);
                         fields.Add(aField);
+                        P1Fields.Add(aField);
                         aField.GetComponent<FieldScript>().TableNumberSetter(x, y);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32-100, y*32+100);
                         x++; 
@@ -42,6 +47,7 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aField = Instantiate(field);
                         GameObject aFieldBackground = Instantiate(fieldBackground, new Vector3(x*32-100, y*32+100, 1), Quaternion.identity);
                         fields.Add(aField);
+                        P1Fields.Add(aField);
                         aField.GetComponent<FieldScript>().TableNumberSetter(x, y);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32-100, y*32+100);
                         x++; 
@@ -64,6 +70,7 @@ public class SpawnFieldBR : MonoBehaviour
                     {
                         GameObject aField = Instantiate(wall);
                         fields.Add(aField);
+                        P2Fields.Add(aField);
                         aField.GetComponent<FieldScript>().TableNumberSetter(x+36, y+36);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32+100, y*32+100);
                         x++; 
@@ -73,6 +80,7 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aField = Instantiate(field);
                         GameObject aFieldBackground = Instantiate(fieldBackground, new Vector3(x*32+100, y*32+100, 1), Quaternion.identity);
                         fields.Add(aField);
+                        P2Fields.Add(aField);
                         aField.GetComponent<FieldScript>().TableNumberSetter(x+36, y+36);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32+100, y*32+100);
                         x++; 
@@ -96,6 +104,7 @@ public class SpawnFieldBR : MonoBehaviour
                     {
                         GameObject aField = Instantiate(wall);
                         fields.Add(aField);
+                        P3Fields.Add(aField);
                         aField.GetComponent<FieldScript>().TableNumberSetter(x+72, y+72);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32-100, y*32-100);
                         x++; 
@@ -105,6 +114,7 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aField = Instantiate(field);
                         GameObject aFieldBackground = Instantiate(fieldBackground, new Vector3(x*32-100, y*32-100, 1), Quaternion.identity);
                         fields.Add(aField);
+                        P3Fields.Add(aField);
                         aField.GetComponent<FieldScript>().TableNumberSetter(x+72, y+72);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32-100, y*32-100);
                         x++; 
@@ -127,7 +137,8 @@ public class SpawnFieldBR : MonoBehaviour
                     {
                         GameObject aField = Instantiate(wall);
                         fields.Add(aField);
-                        aField.GetComponent<FieldScript>().TableNumberSetter(x+104, y+104);
+                        P4Fields.Add(aField);
+                        aField.GetComponent<FieldScript>().TableNumberSetter(x+108, y+108);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32+100, y*32-100);
                         x++; 
                     }
@@ -136,7 +147,8 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aField = Instantiate(field);
                         GameObject aFieldBackground = Instantiate(fieldBackground, new Vector3(x*32+100, y*32-100, 1), Quaternion.identity);
                         fields.Add(aField);
-                        aField.GetComponent<FieldScript>().TableNumberSetter(x+104, y+104);
+                        P4Fields.Add(aField);
+                        aField.GetComponent<FieldScript>().TableNumberSetter(x+108, y+108);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32+100, y*32-100);
                         x++; 
                     }
