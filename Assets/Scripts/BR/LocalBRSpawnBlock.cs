@@ -57,6 +57,10 @@ public int randomX;
 public int randomY;
 public int fieldIndicator = 0;
 
+int player2FieldCorrection = 0;
+int player3FieldCorrection = 0;
+int player4FieldCorrection = 0;
+
 
 
 void Start()
@@ -79,7 +83,8 @@ void Start()
         randomY = Random.Range(1, 5);
         InstantiateThisColorWithThisOwner(Player1Color, 2, 1, randomX, randomY);
         LookForPlaceToSpawnBlockAndPlaceIt(1);
-        fieldIndicator = fieldIndicator + 36;
+        fieldIndicator = 6;
+        Debug.Log("P1 Block spawned on: " + randomX + "  " + randomY);
         
     }
     if(isPlayer2Playing == true)
@@ -91,31 +96,37 @@ void Start()
         randomY = Random.Range(1, 5);
         randomY = randomY + fieldIndicator;
         InstantiateThisColorWithThisOwner(Player2Color, 2, 2, randomX, randomY);
-        LookForPlaceToSpawnBlockAndPlaceIt(2);
-        fieldIndicator = fieldIndicator + 36;
+        // LookForPlaceToSpawnBlockAndPlaceIt(2);
+        player2FieldCorrection = fieldIndicator*6;
+        fieldIndicator = fieldIndicator + 6;
+        Debug.Log("P2 Block spawned on: " + randomX + "  " + randomY);
     }
     if(isPlayer3Playing == true)
     {
         P3Fields = SpawnField.P3Fields;
         Player3Color = ScriptToRememberColors.Player3Color;
+        randomX = Random.Range(1, 5);
         randomX = randomX + fieldIndicator;
-        randomX = randomX + 72;
+        randomY = Random.Range(1, 5);
         randomY = randomY + fieldIndicator;
-        randomY = randomY + 72;
         InstantiateThisColorWithThisOwner(Player3Color, 2, 3, randomX, randomY);
-        LookForPlaceToSpawnBlockAndPlaceIt(3);
-        fieldIndicator = fieldIndicator + 36;
+        // LookForPlaceToSpawnBlockAndPlaceIt(3);
+        player3FieldCorrection = fieldIndicator*6;
+        fieldIndicator = fieldIndicator + 6;
+        Debug.Log("P3 Block spawned on: " + randomX + "  " + randomY);
     }
     if(isPlayer4Playing == true)
     {
         P4Fields = SpawnField.P4Fields;
         Player4Color = ScriptToRememberColors.Player4Color;
+        randomX = Random.Range(1, 5);
         randomX = randomX + fieldIndicator;
-        randomX = randomX + 108;
+        randomY = Random.Range(1, 5);
         randomY = randomY + fieldIndicator;
-        randomY = randomY + 108;
         InstantiateThisColorWithThisOwner(Player4Color, 2, 4, randomX, randomY);
-        LookForPlaceToSpawnBlockAndPlaceIt(4);
+        // LookForPlaceToSpawnBlockAndPlaceIt(4);
+        player4FieldCorrection = fieldIndicator*6;
+        Debug.Log("P4 Block spawned on: " + randomX + "  " + randomY);
     }
 
 }
@@ -403,7 +414,6 @@ public void InstantiateThisColorWithThisOwner(int color, long value, int owner, 
 
 public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
 {
-    Debug.Log("elo");
     int fieldCounter = 0;
     int fieldOfPlayer = 0;
     int playerFieldCorrection = 0;
@@ -413,7 +423,6 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
     if(owner == 1)
     {
         fieldOfPlayer = P1Fields.Count;
-        Debug.Log(fieldOfPlayer);
         playerFieldCorrection = 0;
         color = Player1Color;
 
@@ -421,19 +430,19 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
     else if(owner == 2)
     {
         fieldOfPlayer = P2Fields.Count;
-        playerFieldCorrection = 36;
+        playerFieldCorrection = player2FieldCorrection;
         color = Player2Color;
     }
     else if(owner == 3)
     {
         fieldOfPlayer = P3Fields.Count;
-        playerFieldCorrection = 72;
+        playerFieldCorrection = player3FieldCorrection;
         color = Player3Color;
     }
     else if(owner == 4)
     {
         fieldOfPlayer = P4Fields.Count;
-        playerFieldCorrection = 108;
+        playerFieldCorrection = player4FieldCorrection;
         color = Player4Color;   
     }
 
@@ -465,7 +474,7 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                         
                         blockSpawned = true;
                         
-                        // ClearAfterSpawn();
+                        ClearAfterSpawn();
                         // CheckForGameOver();
                     }
                 }
@@ -474,6 +483,16 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
             
         }
 }
+
+void ClearAfterSpawn()
+    {
+        // Debug.Log("ClearAfterSpawn");
+        foreach (GameObject field in fields)
+        {
+           FieldScript = field.gameObject.GetComponent<FieldScript>();
+           FieldScript.checkedForSpawnPurpose = false;
+        }
+    }
 
 
 public void BlockLevelUp(long value, int owner, int x, int y) //#TODO This function can be optimized.

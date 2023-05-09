@@ -9,6 +9,7 @@ public class SpawnFieldBR : MonoBehaviour
     [SerializeField] GameObject fieldBackground;
     [SerializeField] public int PodajSzerokoscPlanszy;
     [SerializeField] public int PodajWysokoscPlanszy;
+    public int fieldIndicator = 0;
 
     public List<GameObject> fields = new List<GameObject>();
     public List<GameObject> P1Fields = new List<GameObject>();
@@ -56,6 +57,7 @@ public class SpawnFieldBR : MonoBehaviour
             x = 0;
             y++;
             }
+            fieldIndicator = 6;
         }
 
         if(ScriptToRememberBRColors.isPlayer2Playing == true)
@@ -71,7 +73,7 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aField = Instantiate(wall);
                         fields.Add(aField);
                         P2Fields.Add(aField);
-                        aField.GetComponent<FieldScript>().TableNumberSetter(x+36, y+36);
+                        aField.GetComponent<FieldScript>().TableNumberSetter(x+fieldIndicator, y+fieldIndicator);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32+100, y*32+100);
                         x++; 
                     }
@@ -81,7 +83,7 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aFieldBackground = Instantiate(fieldBackground, new Vector3(x*32+100, y*32+100, 1), Quaternion.identity);
                         fields.Add(aField);
                         P2Fields.Add(aField);
-                        aField.GetComponent<FieldScript>().TableNumberSetter(x+36, y+36);
+                        aField.GetComponent<FieldScript>().TableNumberSetter(x+fieldIndicator, y+fieldIndicator);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32+100, y*32+100);
                         x++; 
                     }
@@ -89,6 +91,7 @@ public class SpawnFieldBR : MonoBehaviour
             x = 0;
             y++;
             }
+            fieldIndicator = fieldIndicator + 6;
         }
 
 
@@ -105,7 +108,7 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aField = Instantiate(wall);
                         fields.Add(aField);
                         P3Fields.Add(aField);
-                        aField.GetComponent<FieldScript>().TableNumberSetter(x+72, y+72);
+                        aField.GetComponent<FieldScript>().TableNumberSetter(x+fieldIndicator, y+fieldIndicator);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32-100, y*32-100);
                         x++; 
                     }
@@ -115,7 +118,7 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aFieldBackground = Instantiate(fieldBackground, new Vector3(x*32-100, y*32-100, 1), Quaternion.identity);
                         fields.Add(aField);
                         P3Fields.Add(aField);
-                        aField.GetComponent<FieldScript>().TableNumberSetter(x+72, y+72);
+                        aField.GetComponent<FieldScript>().TableNumberSetter(x+fieldIndicator, y+fieldIndicator);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32-100, y*32-100);
                         x++; 
                     }
@@ -123,6 +126,7 @@ public class SpawnFieldBR : MonoBehaviour
             x = 0;
             y++;
             }
+            fieldIndicator = fieldIndicator + 6;
         }
 
         if(ScriptToRememberBRColors.isPlayer4Playing == true)
@@ -138,7 +142,7 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aField = Instantiate(wall);
                         fields.Add(aField);
                         P4Fields.Add(aField);
-                        aField.GetComponent<FieldScript>().TableNumberSetter(x+108, y+108);
+                        aField.GetComponent<FieldScript>().TableNumberSetter(x+fieldIndicator, y+fieldIndicator);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32+100, y*32-100);
                         x++; 
                     }
@@ -148,7 +152,7 @@ public class SpawnFieldBR : MonoBehaviour
                         GameObject aFieldBackground = Instantiate(fieldBackground, new Vector3(x*32+100, y*32-100, 1), Quaternion.identity);
                         fields.Add(aField);
                         P4Fields.Add(aField);
-                        aField.GetComponent<FieldScript>().TableNumberSetter(x+108, y+108);
+                        aField.GetComponent<FieldScript>().TableNumberSetter(x+fieldIndicator, y+fieldIndicator);
                         aField.GetComponent<FieldScript>().PositionSetter(x*32+100, y*32-100);
                         x++; 
                     }
