@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5845276213392984358}
   - component: {fileID: 5845276213392984357}
-  - component: {fileID: 2121714413360375459}
   - component: {fileID: 3026378173694826360}
   m_Layer: 0
   m_Name: 4n
@@ -84,45 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2121714413360375459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5845276213392984356}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce74877d8c7ac02418f6a78b24548e66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TableNumberX: 0
-  TableNumberY: 0
-  TableNumberX_toCheck: 0
-  TableNumberY_toCheck: 0
-  positionX: 0
-  positionY: 0
-  FieldSpawner: {fileID: 0}
-  BlockSpawner: {fileID: 0}
-  ObjectToRememberColors: {fileID: 0}
-  fields: []
-  blocks: []
-  OwnerID: 0
-  value: 4
-  dir: empty
-  idle: 1
-  waitingForDir: 0
-  searching: 0
-  finishedSearching: 0
-  willMove: 0
-  willBeDestroyed: 0
-  willBeLevelingUp: 0
-  moving: 0
-  finishedMoving: 0
-  pace: 1
-  EnemyIsComputer: 0
-  settingsButton: {fileID: 0}
-  isPauseActive: 0
 --- !u!114 &3026378173694826360
 MonoBehaviour:
   m_ObjectHideFlags: 0

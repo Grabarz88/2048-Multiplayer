@@ -55,6 +55,7 @@ int finishedMovingCounter;
 
 public int randomX;
 public int randomY;
+public int fieldIndicator = 0;
 
 
 
@@ -68,6 +69,8 @@ void Start()
     isPlayer4Playing = ScriptToRememberColors.isPlayer4Playing;
     SpawnField = FieldSpawner.GetComponent<SpawnFieldBR>();
     fields = SpawnField.fields;
+    randomX = Random.Range(1, 5);
+    randomY = Random.Range(1, 5);
     if(isPlayer1Playing == true)
     {
         P1Fields = SpawnField.P1Fields;
@@ -76,6 +79,7 @@ void Start()
         randomY = Random.Range(1, 5);
         InstantiateThisColorWithThisOwner(Player1Color, 2, 1, randomX, randomY);
         LookForPlaceToSpawnBlockAndPlaceIt(1);
+        fieldIndicator = fieldIndicator + 36;
         
     }
     if(isPlayer2Playing == true)
@@ -83,30 +87,32 @@ void Start()
         P2Fields = SpawnField.P2Fields;
         Player2Color = ScriptToRememberColors.Player2Color;
         randomX = Random.Range(1, 5);
-        randomX = randomX + 36;
+        randomX = randomX + fieldIndicator;
         randomY = Random.Range(1, 5);
-        randomY = randomY + 36;
+        randomY = randomY + fieldIndicator;
         InstantiateThisColorWithThisOwner(Player2Color, 2, 2, randomX, randomY);
         LookForPlaceToSpawnBlockAndPlaceIt(2);
+        fieldIndicator = fieldIndicator + 36;
     }
     if(isPlayer3Playing == true)
     {
         P3Fields = SpawnField.P3Fields;
         Player3Color = ScriptToRememberColors.Player3Color;
-        randomX = Random.Range(1, 5);
+        randomX = randomX + fieldIndicator;
         randomX = randomX + 72;
-        randomY = Random.Range(1, 5);
+        randomY = randomY + fieldIndicator;
         randomY = randomY + 72;
         InstantiateThisColorWithThisOwner(Player3Color, 2, 3, randomX, randomY);
         LookForPlaceToSpawnBlockAndPlaceIt(3);
+        fieldIndicator = fieldIndicator + 36;
     }
     if(isPlayer4Playing == true)
     {
         P4Fields = SpawnField.P4Fields;
         Player4Color = ScriptToRememberColors.Player4Color;
-        randomX = Random.Range(1, 5);
+        randomX = randomX + fieldIndicator;
         randomX = randomX + 108;
-        randomY = Random.Range(1, 5);
+        randomY = randomY + fieldIndicator;
         randomY = randomY + 108;
         InstantiateThisColorWithThisOwner(Player4Color, 2, 4, randomX, randomY);
         LookForPlaceToSpawnBlockAndPlaceIt(4);
