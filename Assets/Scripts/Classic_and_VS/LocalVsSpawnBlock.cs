@@ -415,7 +415,6 @@ public void SpawnNewBlock()
         }
         if(canMove == 0) 
         {
-            Debug.Log("TRUE GAME OVER");
             gameOverPanel.gameObject.SetActive(true);
         }
     }

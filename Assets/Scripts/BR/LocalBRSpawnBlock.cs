@@ -82,9 +82,8 @@ void Start()
         randomX = Random.Range(1, 5);
         randomY = Random.Range(1, 5);
         InstantiateThisColorWithThisOwner(Player1Color, 2, 1, randomX, randomY);
-        LookForPlaceToSpawnBlockAndPlaceIt(1);
         fieldIndicator = 6;
-        Debug.Log("P1 Block spawned on: " + randomX + "  " + randomY);
+        LookForPlaceToSpawnBlockAndPlaceIt(1);
         
     }
     if(isPlayer2Playing == true)
@@ -96,10 +95,9 @@ void Start()
         randomY = Random.Range(1, 5);
         randomY = randomY + fieldIndicator;
         InstantiateThisColorWithThisOwner(Player2Color, 2, 2, randomX, randomY);
-        // LookForPlaceToSpawnBlockAndPlaceIt(2);
         player2FieldCorrection = fieldIndicator*6;
         fieldIndicator = fieldIndicator + 6;
-        Debug.Log("P2 Block spawned on: " + randomX + "  " + randomY);
+        LookForPlaceToSpawnBlockAndPlaceIt(2);
     }
     if(isPlayer3Playing == true)
     {
@@ -110,10 +108,9 @@ void Start()
         randomY = Random.Range(1, 5);
         randomY = randomY + fieldIndicator;
         InstantiateThisColorWithThisOwner(Player3Color, 2, 3, randomX, randomY);
-        // LookForPlaceToSpawnBlockAndPlaceIt(3);
         player3FieldCorrection = fieldIndicator*6;
         fieldIndicator = fieldIndicator + 6;
-        Debug.Log("P3 Block spawned on: " + randomX + "  " + randomY);
+        LookForPlaceToSpawnBlockAndPlaceIt(3);
     }
     if(isPlayer4Playing == true)
     {
@@ -124,9 +121,8 @@ void Start()
         randomY = Random.Range(1, 5);
         randomY = randomY + fieldIndicator;
         InstantiateThisColorWithThisOwner(Player4Color, 2, 4, randomX, randomY);
-        // LookForPlaceToSpawnBlockAndPlaceIt(4);
         player4FieldCorrection = fieldIndicator*6;
-        Debug.Log("P4 Block spawned on: " + randomX + "  " + randomY);
+        LookForPlaceToSpawnBlockAndPlaceIt(4);
     }
 
 }
@@ -475,7 +471,7 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                         blockSpawned = true;
                         
                         ClearAfterSpawn();
-                        // CheckForGameOver();
+                        CheckForGameOver(owner);
                     }
                 }
 
@@ -491,6 +487,46 @@ void ClearAfterSpawn()
         {
            FieldScript = field.gameObject.GetComponent<FieldScript>();
            FieldScript.checkedForSpawnPurpose = false;
+        }
+    }
+
+    public void CheckForGameOver(int player) // TĄ FUNKCJĘ TRZEBA W CAŁOŚCI PRZEROBIĆ
+    {
+        if(isPreparingFaze)
+        {
+            blocks.TrimExcess();
+            List<GameObject> blocksToCheck = null;
+            List<GameObject> fieldsToCheck = null;
+            if(player == 1) {blocksToCheck = P1Blocks; fieldsToCheck = P1Fields;}
+            if(player == 2) {blocksToCheck = P2Blocks; fieldsToCheck = P2Fields;}
+            if(player == 3) {blocksToCheck = P3Blocks; fieldsToCheck = P3Fields;}
+            if(player == 4) {blocksToCheck = P4Blocks; fieldsToCheck = P4Fields;}
+            int canMove = 0;
+            foreach(GameObject block in blocksToCheck)
+            {
+                LocalBRBlockBehaviourScript BBH = block.GetComponent<LocalBRBlockBehaviourScript>();
+                foreach (GameObject neighbourBlock in blocksToCheck)
+                {
+                    LocalBRBlockBehaviourScript nBBH = neighbourBlock.GetComponent<LocalBRBlockBehaviourScript>();
+                    if(BBH.value == nBBH.value)
+                    {
+                        if(BBH.TableNumberX == nBBH.TableNumberX && BBH.TableNumberY == nBBH.TableNumberY+1){canMove++;} 
+                        if(BBH.TableNumberY == nBBH.TableNumberY && BBH.TableNumberX == nBBH.TableNumberX+1){canMove++;}
+                    }
+                }
+            }
+            
+            
+            foreach(GameObject field in fieldsToCheck)
+            {
+                FieldScript FS = field.GetComponent<FieldScript>();
+                if(FS.isTaken == false && FS.isWall == false){canMove++;}
+            }
+            if(canMove == 0) 
+            {
+                // gameOverPanel.gameObject.SetActive(true);
+                Debug.Log("GameOver for player: " + player);
+            }
         }
     }
 
