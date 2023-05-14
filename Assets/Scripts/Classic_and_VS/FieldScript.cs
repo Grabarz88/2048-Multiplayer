@@ -14,12 +14,18 @@ public class FieldScript : MonoBehaviour
     [SerializeField] public bool isTaken;
     [SerializeField] public bool isWall;
 
+    [SerializeField] public GameObject FieldSpawner;
+    SpawnFieldBR SpawnField;
+
     public bool checkedForSpawnPurpose = false;
     
     void Start() 
     {        
         // BlockSpawner = GameObject.Find("BlockSpawner"); 
         // Pamiętaj tu zmienić na BlockSpawner(clone) jak już zrobisz jakieś menu albo coś    
+        FieldSpawner = GameObject.Find("FieldSpawner");
+        SpawnField = FieldSpawner.GetComponent<SpawnFieldBR>();
+
     }
 
 
@@ -38,6 +44,10 @@ public class FieldScript : MonoBehaviour
         
     }
     
+    public void OnDestroy()
+    {
+        SpawnField.fields.Remove(this.gameObject);
+    }
     
 
 

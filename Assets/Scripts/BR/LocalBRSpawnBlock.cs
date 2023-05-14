@@ -8,6 +8,7 @@ public class LocalBRSpawnBlock : MonoBehaviour
 GameObject block;
 FieldScript FieldScript;
 SpawnFieldBR SpawnField;
+[SerializeField] GameObject Camera;
 [SerializeField] GameObject FieldSpawner;
 public GameObject gameOverPanel;
 [SerializeField] Text winnerAnnouncemenet;
@@ -61,6 +62,7 @@ int player2FieldCorrection = 0;
 int player3FieldCorrection = 0;
 int player4FieldCorrection = 0;
 
+int turnsToStartBR = 0;
 
 
 void Start()
@@ -77,6 +79,7 @@ void Start()
     randomY = Random.Range(1, 5);
     if(isPlayer1Playing == true)
     {
+        turnsToStartBR = turnsToStartBR + 21;
         P1Fields = SpawnField.P1Fields;
         Player1Color = ScriptToRememberColors.Player1Color;
         randomX = Random.Range(1, 5);
@@ -88,6 +91,7 @@ void Start()
     }
     if(isPlayer2Playing == true)
     {
+        turnsToStartBR = turnsToStartBR + 21;
         P2Fields = SpawnField.P2Fields;
         Player2Color = ScriptToRememberColors.Player2Color;
         randomX = Random.Range(1, 5);
@@ -101,6 +105,7 @@ void Start()
     }
     if(isPlayer3Playing == true)
     {
+        turnsToStartBR = turnsToStartBR + 21;
         P3Fields = SpawnField.P3Fields;
         Player3Color = ScriptToRememberColors.Player3Color;
         randomX = Random.Range(1, 5);
@@ -114,6 +119,7 @@ void Start()
     }
     if(isPlayer4Playing == true)
     {
+        turnsToStartBR = turnsToStartBR + 21;
         P4Fields = SpawnField.P4Fields;
         Player4Color = ScriptToRememberColors.Player4Color;
         randomX = Random.Range(1, 5);
@@ -472,6 +478,17 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                         
                         ClearAfterSpawn();
                         CheckForGameOver(owner);
+                        turnsToStartBR--;
+                        Debug.Log(turnsToStartBR);
+                        if(turnsToStartBR == 0)
+                        {
+                            Debug.Log("BR START");
+                            isPreparingFaze = false;
+                            SpawnField.initiateBRFaze();
+                            Camera.GetComponent<CameraBRScript>().MoveForBR();
+                            MoveBlocksForBRPlaces();
+                            // isBRFaze = true;
+                        }
                     }
                 }
 
@@ -544,6 +561,7 @@ public void BlockLevelUp(long value, int owner, int x, int y) //#TODO This funct
         // else if(value == 512){block = Instantiate(block1024); ScoreCounterScript.AddPoints(1024);}
         // else if(value == 1024){block = Instantiate(block2048); ScoreCounterScript.AddPoints(2048);}
         // else if(value == 2048){block = Instantiate(block4096); ScoreCounterScript.AddPoints(4096);}
+        // Debug.Log(value + " " + owner + " " + x + " " + y);
         int color = 0   ;
         if(owner == 1){color = Player1Color;}
         else if(owner == 2){color = Player2Color;}
@@ -560,6 +578,53 @@ public void BlockLevelUp(long value, int owner, int x, int y) //#TODO This funct
 
     }
 
-
+public void MoveBlocksForBRPlaces()
+{
+    int x = 0;
+    int y = 0;
+    
+    foreach(GameObject P1Block in P1Blocks)
+    {
+        LocalBRBlockBehaviourScript BBH = P1Block.GetComponent<LocalBRBlockBehaviourScript>();
+        x = BBH.TableNumberX;
+        y = BBH.TableNumberY + 16;
+        BBH.RefreshFields();
+        BBH.AfterSpawn(x, y);
+    }
+    foreach(GameObject P2Block in P2Blocks)
+    {
+        LocalBRBlockBehaviourScript BBH = P2Block.GetComponent<LocalBRBlockBehaviourScript>();
+        if(BBH.TableNumberX >=1 && BBH.TableNumberX <=4){x = BBH.TableNumberX + 16;}
+        else if(BBH.TableNumberX >=7 && BBH.TableNumberX <=10){x = BBH.TableNumberX + 10;}
+        if(BBH.TableNumberY >= 1 && BBH.TableNumberY <= 4){y = BBH.TableNumberY + 16;}
+        else if(BBH.TableNumberY >=7 && BBH.TableNumberY <=10){y = BBH.TableNumberY + 10;}
+        BBH.RefreshFields();
+        BBH.AfterSpawn(x, y);
+    }
+    foreach(GameObject P3Block in P3Blocks)
+    {
+        LocalBRBlockBehaviourScript BBH = P3Block.GetComponent<LocalBRBlockBehaviourScript>();
+        if(BBH.TableNumberX >=1 && BBH.TableNumberX <=4){x = BBH.TableNumberX;}
+        else if(BBH.TableNumberX >=7 && BBH.TableNumberX <=10){x = BBH.TableNumberX -6;}
+        else if(BBH.TableNumberX >=13 && BBH.TableNumberX <=16){x = BBH.TableNumberX -12;}
+        if(BBH.TableNumberY >= 1 && BBH.TableNumberY <= 4){y = BBH.TableNumberY;}
+        else if(BBH.TableNumberY >=7 && BBH.TableNumberY <=10){y = BBH.TableNumberY - 6;}
+        else if(BBH.TableNumberY >=13 && BBH.TableNumberY <=16){y = BBH.TableNumberY -12;}
+        BBH.RefreshFields();
+        BBH.AfterSpawn(x, y);
+    }
+    foreach(GameObject P4Block in P4Blocks)
+    {
+        LocalBRBlockBehaviourScript BBH = P4Block.GetComponent<LocalBRBlockBehaviourScript>();
+        if(BBH.TableNumberX >=7 && BBH.TableNumberX <=10){x = BBH.TableNumberX +10;}
+        else if(BBH.TableNumberX >=13 && BBH.TableNumberX <=16){x = BBH.TableNumberX +4;}
+        else if(BBH.TableNumberX >=19 && BBH.TableNumberX <=22){x = BBH.TableNumberX -2;}
+        if(BBH.TableNumberY >=7 && BBH.TableNumberY <=10){y = BBH.TableNumberY - 6;}
+        else if(BBH.TableNumberY >=13 && BBH.TableNumberY <=16){y = BBH.TableNumberY -12;}
+        else if(BBH.TableNumberY >=19 && BBH.TableNumberY <=22){y = BBH.TableNumberY -18;}
+        BBH.RefreshFields();
+        BBH.AfterSpawn(x, y);
+    }
+}
 
 }

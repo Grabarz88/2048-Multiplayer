@@ -171,7 +171,9 @@ MonoBehaviour:
   fieldBackground: {fileID: 1561928674711511128, guid: 3401ec140b808fd44a7afe6c0e9caa81, type: 3}
   PodajSzerokoscPlanszy: 0
   PodajWysokoscPlanszy: 0
+  fieldIndicator: 0
   fields: []
+  fieldsBackground: []
   P1Fields: []
   P2Fields: []
   P3Fields: []
@@ -187,6 +189,7 @@ GameObject:
   - component: {fileID: 861818030}
   - component: {fileID: 861818029}
   - component: {fileID: 861818028}
+  - component: {fileID: 861818031}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -259,6 +262,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &861818031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861818027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c750b7434d40e1248b6309c540651ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1224282797
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,6 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab3415b6d4ffc434eae3109412ef7c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Camera: {fileID: 861818027}
   FieldSpawner: {fileID: 254141490}
   gameOverPanel: {fileID: 0}
   winnerAnnouncemenet: {fileID: 0}
@@ -316,6 +332,10 @@ MonoBehaviour:
   P3Blocks: []
   P4Blocks: []
   NeutralBlocks: []
+  P1Fields: []
+  P2Fields: []
+  P3Fields: []
+  P4Fields: []
   Player1Turn: 1
   Player2Turn: 0
   Player3Turn: 0
@@ -329,99 +349,4 @@ MonoBehaviour:
   isBRFaze: 0
   randomX: 0
   randomY: 0
-  NeutralBlock2: {fileID: 0}
-  NeutralBlock4: {fileID: 0}
-  NeutralBlock8: {fileID: 0}
-  NeutralBlock16: {fileID: 0}
-  NeutralBlock32: {fileID: 0}
-  NeutralBlock64: {fileID: 0}
-  NeutralBlock128: {fileID: 0}
-  NeutralBlock256: {fileID: 0}
-  NeutralBlock512: {fileID: 0}
-  NeutralBlock1024: {fileID: 0}
-  NeutralBlock2048: {fileID: 0}
-  NeutralBlock4096: {fileID: 0}
-  NeutralBlock8192: {fileID: 0}
-  NeutralBlock16384: {fileID: 0}
-  NeutralBlock32768: {fileID: 0}
-  NeutralBlock65536: {fileID: 0}
-  BlueBlock2: {fileID: 0}
-  BlueBlock4: {fileID: 0}
-  BlueBlock8: {fileID: 0}
-  BlueBlock16: {fileID: 0}
-  BlueBlock32: {fileID: 0}
-  BlueBlock64: {fileID: 0}
-  BlueBlock128: {fileID: 0}
-  BlueBlock256: {fileID: 0}
-  BlueBlock512: {fileID: 0}
-  BlueBlock1024: {fileID: 0}
-  BlueBlock2048: {fileID: 0}
-  BlueBlock4096: {fileID: 0}
-  BlueBlock8192: {fileID: 0}
-  BlueBlock16384: {fileID: 0}
-  BlueBlock32768: {fileID: 0}
-  BlueBlock65536: {fileID: 0}
-  RedBlock2: {fileID: 0}
-  RedBlock4: {fileID: 0}
-  RedBlock8: {fileID: 0}
-  RedBlock16: {fileID: 0}
-  RedBlock32: {fileID: 0}
-  RedBlock64: {fileID: 0}
-  RedBlock128: {fileID: 0}
-  RedBlock256: {fileID: 0}
-  RedBlock512: {fileID: 0}
-  RedBlock1024: {fileID: 0}
-  RedBlock2048: {fileID: 0}
-  RedBlock4096: {fileID: 0}
-  RedBlock8192: {fileID: 0}
-  RedBlock16384: {fileID: 0}
-  RedBlock32768: {fileID: 0}
-  RedBlock65536: {fileID: 0}
-  GreenBlock2: {fileID: 0}
-  GreenBlock4: {fileID: 0}
-  GreenBlock8: {fileID: 0}
-  GreenBlock16: {fileID: 0}
-  GreenBlock32: {fileID: 0}
-  GreenBlock64: {fileID: 0}
-  GreenBlock128: {fileID: 0}
-  GreenBlock256: {fileID: 0}
-  GreenBlock512: {fileID: 0}
-  GreenBlock1024: {fileID: 0}
-  GreenBlock2048: {fileID: 0}
-  GreenBlock4096: {fileID: 0}
-  GreenBlock8192: {fileID: 0}
-  GreenBlock16384: {fileID: 0}
-  GreenBlock32768: {fileID: 0}
-  GreenBlock65536: {fileID: 0}
-  PinkBlock2: {fileID: 0}
-  PinkBlock4: {fileID: 0}
-  PinkBlock8: {fileID: 0}
-  PinkBlock16: {fileID: 0}
-  PinkBlock32: {fileID: 0}
-  PinkBlock64: {fileID: 0}
-  PinkBlock128: {fileID: 0}
-  PinkBlock256: {fileID: 0}
-  PinkBlock512: {fileID: 0}
-  PinkBlock1024: {fileID: 0}
-  PinkBlock2048: {fileID: 0}
-  PinkBlock4096: {fileID: 0}
-  PinkBlock8192: {fileID: 0}
-  PinkBlock16384: {fileID: 0}
-  PinkBlock32768: {fileID: 0}
-  PinkBlock65536: {fileID: 0}
-  SilverBlock2: {fileID: 0}
-  SilverBlock4: {fileID: 0}
-  SilverBlock8: {fileID: 0}
-  SilverBlock16: {fileID: 0}
-  SilverBlock32: {fileID: 0}
-  SilverBlock64: {fileID: 0}
-  SilverBlock128: {fileID: 0}
-  SilverBlock256: {fileID: 0}
-  SilverBlock512: {fileID: 0}
-  SilverBlock1024: {fileID: 0}
-  SilverBlock2048: {fileID: 0}
-  SilverBlock4096: {fileID: 0}
-  SilverBlock8192: {fileID: 0}
-  SilverBlock16384: {fileID: 0}
-  SilverBlock32768: {fileID: 0}
-  SilverBlock65536: {fileID: 0}
+  fieldIndicator: 0

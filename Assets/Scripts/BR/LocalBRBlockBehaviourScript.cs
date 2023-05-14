@@ -116,7 +116,8 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
 
 				foreach (GameObject field in fields)
 				{
-					
+					fields.TrimExcess();
+        fields = SpawnField.fields; 
 					FieldScript = field.GetComponent<FieldScript>();
 					
 					if (FieldScript.TableNumberX == TableNumberX_toCheck && FieldScript.TableNumberY == TableNumberY_toCheck)
@@ -420,6 +421,12 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
             FieldScript = nextField.gameObject.GetComponent<FieldScript>();
             if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY){FieldScript.isTaken = true;}
         }
+    }
+
+    public void RefreshFields()
+    {
+        fields.TrimExcess();
+        fields = SpawnField.fields; 
     }
 
 	private void OnDestroy() 
