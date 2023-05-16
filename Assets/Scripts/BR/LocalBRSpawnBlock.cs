@@ -189,12 +189,19 @@ void Update()
                     BlockBehaviourScript.executeWaitingForDir();
                 }                   
             }
+            if(Waiting == false)
+            {
+                if(BlockBehaviourScript.OwnerID == 0)
+                {
+                    BlockBehaviourScript.executeWaitingForDir();
+                }
+            }
         }
         Waiting = true;
 
     }
     
-    if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count) || (Player3Turn == true && finishedSearchingCounter == P3Blocks.Count) || (Player4Turn == true && finishedSearchingCounter == P4Blocks.Count)) && willMoveCounter > 0)
+    if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count) || (Player3Turn == true && finishedSearchingCounter == P3Blocks.Count + NeutralBlocks.Count) || (Player4Turn == true && finishedSearchingCounter == P4Blocks.Count + NeutralBlocks.Count)) && willMoveCounter > 0)
     {
         foreach(GameObject block in blocks)
         {
@@ -228,10 +235,14 @@ void Update()
                     BlockBehaviourScript.executeMove();
                 }                    
             }
-            
+
+            if(BlockBehaviourScript.OwnerID == 0)
+            {
+                BlockBehaviourScript.executeMove();
+            } 
         }
     }
-    else if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count) || (Player3Turn == true && finishedSearchingCounter == P3Blocks.Count) || (Player4Turn == true && finishedSearchingCounter == P4Blocks.Count)) && willMoveCounter == 0)
+    else if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count) || (Player3Turn == true && finishedSearchingCounter == P3Blocks.Count + NeutralBlocks.Count) || (Player4Turn == true && finishedSearchingCounter == P4Blocks.Count + NeutralBlocks.Count)) && willMoveCounter == 0)
     {
         foreach(GameObject block in blocks)
         {
@@ -244,7 +255,7 @@ void Update()
         }
     }
     
-    if((Player1Turn == true && finishedMovingCounter == P1Blocks.Count) || (Player2Turn == true && finishedMovingCounter == P2Blocks.Count) || (Player3Turn == true && finishedMovingCounter == P3Blocks.Count) || (Player4Turn == true && finishedMovingCounter == P4Blocks.Count))
+    if((Player1Turn == true && finishedMovingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedMovingCounter == P2Blocks.Count + NeutralBlocks.Count) || (Player3Turn == true && finishedMovingCounter == P3Blocks.Count + NeutralBlocks.Count) || (Player4Turn == true && finishedMovingCounter == P4Blocks.Count + NeutralBlocks.Count))
     {
         foreach(GameObject block in blocks)
         {
@@ -386,32 +397,26 @@ void Update()
 
 public void InstantiateThisColorWithThisOwner(int color, long value, int owner, int X, int Y)
 {
-    // if(isPreparingFaze)
-    // {
-        string value_string;
-        string color_string = "n";
-        value_string = value.ToString();
-        if(color == 1){color_string = "b";}
-        else if(color == 2){color_string = "r";}
-        else if(color == 3){color_string = "g";}
-        else if(color == 4){color_string = "p";}
-        else if(color == 5){color_string = "s";}
-        GameObject block = (GameObject)Instantiate(Resources.Load("Local/BR/" + value_string + color_string));
-        blocks.Add(block);
-        if(owner == 1){P1Blocks.Add(block);}
-        else if(owner == 2){P2Blocks.Add(block);}
-        else if(owner == 3){P3Blocks.Add(block);}
-        else if(owner == 4){P4Blocks.Add(block);}
-        block.gameObject.GetComponent<LocalBRBlockBehaviourScript>().OwnerID = owner;
-        block.gameObject.GetComponent<LocalBRBlockBehaviourScript>().AfterSpawn(X, Y);
-        block.gameObject.name = "block" + blockID;
-        blockID++;
-
-    // }
-    // else if(isBRFaze)
-    // {
-
-    // }
+    string value_string;
+    string color_string = "n";
+    value_string = value.ToString();
+    if(color == 0){color_string = "n";}
+    else if(color == 1){color_string = "b";}
+    else if(color == 2){color_string = "r";}
+    else if(color == 3){color_string = "g";}
+    else if(color == 4){color_string = "p";}
+    else if(color == 5){color_string = "s";}
+    GameObject block = (GameObject)Instantiate(Resources.Load("Local/BR/" + value_string + color_string));
+    blocks.Add(block);
+    if(owner == 0){NeutralBlocks.Add(block);}
+    else if(owner == 1){P1Blocks.Add(block);}
+    else if(owner == 2){P2Blocks.Add(block);}
+    else if(owner == 3){P3Blocks.Add(block);}
+    else if(owner == 4){P4Blocks.Add(block);}
+    block.gameObject.GetComponent<LocalBRBlockBehaviourScript>().OwnerID = owner;
+    block.gameObject.GetComponent<LocalBRBlockBehaviourScript>().AfterSpawn(X, Y);
+    block.gameObject.name = "block" + blockID;
+    blockID++;
 }
 
 public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
@@ -490,7 +495,7 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                             SpawnField.initiateBRFaze();
                             Camera.GetComponent<CameraBRScript>().MoveForBR();
                             MoveBlocksForBRPlaces();
-                            // isBRFaze = true;
+                            isBRFaze = true;
                         }
                     }
                 }
@@ -501,7 +506,53 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
     }
     else if(isBRFaze)
     {
-        Debug.Log("tu kiedyś coś postawię");
+        int fieldCounter = 0;
+        int fieldOfPlayer = 0;
+        int color = 0;
+        bool blockSpawned = false;
+        
+        while (fieldCounter < fields.Count && blockSpawned == false)
+        {
+            int randomPosition = Random.Range(0, fields.Count-1);
+            
+            
+            FieldScript = fields[randomPosition].GetComponent<FieldScript>();
+            if (FieldScript.checkedForSpawnPurpose == false)
+            {
+                if (FieldScript.isWall == true)
+                {
+                    fieldCounter++;
+                    FieldScript.checkedForSpawnPurpose = true;
+                }
+                else if (FieldScript.isWall == false)
+                {
+                    if(FieldScript.isTaken == true)
+                    {
+                        fieldCounter++;
+                        FieldScript.checkedForSpawnPurpose = true;
+                    }
+                    else if (FieldScript.isTaken == false)
+                    {
+
+                        InstantiateThisColorWithThisOwner(0, 2, 0, FieldScript.TableNumberX, FieldScript.TableNumberY);
+                      
+                        
+                        blockSpawned = true;
+                        
+                        ClearAfterSpawn();
+                        // CheckForGameOver(owner);
+                        turnsToStartBR--;
+                        Debug.Log(turnsToStartBR);
+                       
+                    }
+                }
+
+            }
+           
+
+        
+
+        }
     }
     
 }
