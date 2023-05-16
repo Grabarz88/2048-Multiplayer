@@ -386,8 +386,8 @@ void Update()
 
 public void InstantiateThisColorWithThisOwner(int color, long value, int owner, int X, int Y)
 {
-    if(isPreparingFaze)
-    {
+    // if(isPreparingFaze)
+    // {
         string value_string;
         string color_string = "n";
         value_string = value.ToString();
@@ -407,15 +407,18 @@ public void InstantiateThisColorWithThisOwner(int color, long value, int owner, 
         block.gameObject.name = "block" + blockID;
         blockID++;
 
-    }
-    else if(isBRFaze)
-    {
-        
-    }
+    // }
+    // else if(isBRFaze)
+    // {
+
+    // }
 }
 
 public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
 {
+    
+    if(isPreparingFaze)
+    {
     int fieldCounter = 0;
     int fieldOfPlayer = 0;
     int playerFieldCorrection = 0;
@@ -495,6 +498,12 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
             }
             
         }
+    }
+    else if(isBRFaze)
+    {
+        Debug.Log("tu kiedyś coś postawię");
+    }
+    
 }
 
 void ClearAfterSpawn()
@@ -562,7 +571,7 @@ public void BlockLevelUp(long value, int owner, int x, int y) //#TODO This funct
         // else if(value == 1024){block = Instantiate(block2048); ScoreCounterScript.AddPoints(2048);}
         // else if(value == 2048){block = Instantiate(block4096); ScoreCounterScript.AddPoints(4096);}
         // Debug.Log(value + " " + owner + " " + x + " " + y);
-        int color = 0   ;
+        int color = 0;
         if(owner == 1){color = Player1Color;}
         else if(owner == 2){color = Player2Color;}
         else if(owner == 3){color = Player3Color;}

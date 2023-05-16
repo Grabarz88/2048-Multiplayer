@@ -73,6 +73,7 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
     
     void Update()
     {
+        
         TableNumberX_toCheck = TableNumberX;
 		TableNumberY_toCheck = TableNumberY;
 		// if(ShowSettingsPanel.isPauseActive == true)
@@ -116,8 +117,6 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
 
 				foreach (GameObject field in fields)
 				{
-					fields.TrimExcess();
-        fields = SpawnField.fields; 
 					FieldScript = field.GetComponent<FieldScript>();
 					
 					if (FieldScript.TableNumberX == TableNumberX_toCheck && FieldScript.TableNumberY == TableNumberY_toCheck)
@@ -228,7 +227,9 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                         }
                                         else if(NextBlockBehaviourScript.OwnerID != OwnerID && NextBlockBehaviourScript.OwnerID != 0 && OwnerID != 0)
                                         {
-                                            if(NextBlockBehaviourScript.finishedSearching == true || NextBlockBehaviourScript.idle == true)
+                                            Debug.Log("to się dzieje");
+                                            //Zderzenie między blokami dwóch graczy.
+                                            if((NextBlockBehaviourScript.finishedSearching == true || NextBlockBehaviourScript.idle == true) && NextBlockBehaviourScript.willBeDestroyed == false)
                                             {
                                                 //Nastąpiło zderzenie z blokiem przeciwnika
                                                 if(NextBlockBehaviourScript.value > value)
@@ -239,63 +240,78 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                                 }
                                                 if(NextBlockBehaviourScript.value == value)
                                                 {
-                                                    //Łączymy się z blokiem przeciwnika
+                                                    // Łączymy się z blokiem przeciwnika
                                                     
-                                                    if(OwnerID == 1)
-                                                    {
-                                                        SpawnBlock.P1Blocks.Add(block);
-                                                    }
-                                                    else if(OwnerID == 2)
-                                                    {
-                                                        SpawnBlock.P2Blocks.Add(block);
-                                                    }
-                                                    else if(OwnerID == 3)
-                                                    {
-                                                        SpawnBlock.P3Blocks.Add(block);
-                                                    }
-                                                    else if(OwnerID == 4)
-                                                    {
-                                                        SpawnBlock.P4Blocks.Add(block);
-                                                    }
+                                                    // if(OwnerID == 1)
+                                                    // {
+                                                    //     SpawnBlock.P1Blocks.Add(block);
+                                                    // }
+                                                    // else if(OwnerID == 2)
+                                                    // {
+                                                    //     SpawnBlock.P2Blocks.Add(block);
+                                                    // }
+                                                    // else if(OwnerID == 3)
+                                                    // {
+                                                    //     SpawnBlock.P3Blocks.Add(block);
+                                                    // }
+                                                    // else if(OwnerID == 4)
+                                                    // {
+                                                    //     SpawnBlock.P4Blocks.Add(block);
+                                                    // }
 
 
-                                                    if(NextBlockBehaviourScript.OwnerID == 0)
-                                                    {
-                                                        SpawnBlock.NeutralBlocks.Remove(block);
-                                                    }
-                                                    else if(NextBlockBehaviourScript.OwnerID == 1)
-                                                    {
-                                                        SpawnBlock.P1Blocks.Remove(block);
-                                                    }
-                                                    else if(NextBlockBehaviourScript.OwnerID == 2)
-                                                    {
-                                                        SpawnBlock.P2Blocks.Remove(block);
-                                                    }
-                                                    else if(NextBlockBehaviourScript.OwnerID == 3)
-                                                    {
-                                                        SpawnBlock.P3Blocks.Remove(block);
-                                                    }
-                                                    else if(NextBlockBehaviourScript.OwnerID == 4)
-                                                    {
-                                                        SpawnBlock.P4Blocks.Remove(block);
-                                                    }
+                                                    // if(NextBlockBehaviourScript.OwnerID == 0)
+                                                    // {
+                                                    //     SpawnBlock.NeutralBlocks.Remove(block);
+                                                    // }
+                                                    // else if(NextBlockBehaviourScript.OwnerID == 1)
+                                                    // {
+                                                    //     SpawnBlock.P1Blocks.Remove(block);
+                                                    // }
+                                                    // else if(NextBlockBehaviourScript.OwnerID == 2)
+                                                    // {
+                                                    //     SpawnBlock.P2Blocks.Remove(block);
+                                                    // }
+                                                    // else if(NextBlockBehaviourScript.OwnerID == 3)
+                                                    // {
+                                                    //     SpawnBlock.P3Blocks.Remove(block);
+                                                    // }
+                                                    // else if(NextBlockBehaviourScript.OwnerID == 4)
+                                                    // {
+                                                    //     SpawnBlock.P4Blocks.Remove(block);
+                                                    // }
                                                     
-                                                    NextBlockBehaviourScript.OwnerID = OwnerID;
-                                                    NextBlockBehaviourScript.dir = dir;
-                                                    NextBlockBehaviourScript.idle = false;
-                                                    NextBlockBehaviourScript.finishedSearching = true;       
-                                                    NextBlockBehaviourScript.willBeDestroyed = true;            
+                                                    // NextBlockBehaviourScript.OwnerID = OwnerID;
+                                                    // NextBlockBehaviourScript.dir = dir;
+                                                    // NextBlockBehaviourScript.idle = false;
+                                                    // NextBlockBehaviourScript.finishedSearching = true;       
+                                                    targetFieldPosition = new Vector2(FieldScript.positionX, FieldScript.positionY);
+                                                    setPace();
+                                                    TableNumberX = TableNumberX_toCheck;
+                                                    TableNumberY = TableNumberY_toCheck;
+                                                    ReleaseOldField(TableNumberX, TableNumberY, dir);
+
+                                                            
                                                     searching = false;
                                                     finishedSearching = true;
                                                     willBeDestroyed = true;
                                                     willBeLevelingUp = true;
+                                                    NextBlockBehaviourScript.willBeDestroyed = true;  
+                                                    
+
 
                                                 }
                                                 if(NextBlockBehaviourScript.value < value)
                                                 {
-                                                    
+                                                    targetFieldPosition = new Vector2(FieldScript.positionX, FieldScript.positionY);
+                                                    setPace();
+                                                    TableNumberX = TableNumberX_toCheck;
+                                                    TableNumberY = TableNumberY_toCheck;
+                                                    ReleaseOldField(TableNumberX, TableNumberY, dir);
+                                                
                                                     searching = false;
-                                                    finishedSearching = false;
+                                                    finishedSearching = true;
+                                                    willMove = true;
                                                     NextBlockBehaviourScript.willBeDestroyed = true;
                                                     
                                                 }
