@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LocalBRSpawnBlock : MonoBehaviour
 {
@@ -12,11 +13,13 @@ SpawnFieldBR SpawnField;
 [SerializeField] GameObject FieldSpawner;
 public GameObject gameOverPanel;
 [SerializeField] Text winnerAnnouncemenet;
-[SerializeField] Text TurnPlayerNumber;
+[SerializeField] TextMeshProUGUI TurnPlayerNumber;
 [SerializeField] public GameObject TurnColorPanel;
 [SerializeField] Image TurnColorImg;
+[SerializeField] GameObject UI_Controller;
 GameObject ObjectToRememberColors;
 ScriptToRememberBRColors ScriptToRememberColors;
+public UIControlling_BRLocal UIControlling;
 public LocalBRBlockBehaviourScript BlockBehaviourScript;
 
 int blockID = 0;
@@ -62,11 +65,14 @@ int player2FieldCorrection = 0;
 int player3FieldCorrection = 0;
 int player4FieldCorrection = 0;
 
-int turnsToStartBR = 0;
+public int activePlayersCounter = 0;
+public int turnsToStartBR = 0;
 
 
 void Start()
 {
+    UIControlling = UI_Controller.GetComponent<UIControlling_BRLocal>();
+    TurnColorImg = TurnColorPanel.gameObject.GetComponent<Image>();
     ObjectToRememberColors = GameObject.Find("ObjectToRememberColors");
     ScriptToRememberColors = ObjectToRememberColors.GetComponent<ScriptToRememberBRColors>();
     isPlayer1Playing = ScriptToRememberColors.isPlayer1Playing;
@@ -86,7 +92,9 @@ void Start()
         randomY = Random.Range(1, 5);
         InstantiateThisColorWithThisOwner(Player1Color, 2, 1, randomX, randomY);
         fieldIndicator = 6;
+        activePlayersCounter++;
         LookForPlaceToSpawnBlockAndPlaceIt(1);
+        ChangePanelColor(Player1Color);
         
     }
     if(isPlayer2Playing == true)
@@ -101,6 +109,7 @@ void Start()
         InstantiateThisColorWithThisOwner(Player2Color, 2, 2, randomX, randomY);
         player2FieldCorrection = fieldIndicator*6;
         fieldIndicator = fieldIndicator + 6;
+        activePlayersCounter++;
         LookForPlaceToSpawnBlockAndPlaceIt(2);
     }
     if(isPlayer3Playing == true)
@@ -115,6 +124,7 @@ void Start()
         InstantiateThisColorWithThisOwner(Player3Color, 2, 3, randomX, randomY);
         player3FieldCorrection = fieldIndicator*6;
         fieldIndicator = fieldIndicator + 6;
+        activePlayersCounter++;
         LookForPlaceToSpawnBlockAndPlaceIt(3);
     }
     if(isPlayer4Playing == true)
@@ -128,9 +138,13 @@ void Start()
         randomY = randomY + fieldIndicator;
         InstantiateThisColorWithThisOwner(Player4Color, 2, 4, randomX, randomY);
         player4FieldCorrection = fieldIndicator*6;
+        activePlayersCounter++;
         LookForPlaceToSpawnBlockAndPlaceIt(4);
     }
 
+    UIControlling.activePlayersCounter = activePlayersCounter;
+    UIControlling.ChangeTurnNumber(turnsToStartBR);
+    
 }
 
 void Update()
@@ -148,7 +162,7 @@ void Update()
             BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
             if (BlockBehaviourScript.idle == true) {idleCounter++;}
             if (BlockBehaviourScript.finishedSearching == true) {finishedSearchingCounter++;}
-            if (BlockBehaviourScript.willMove == true || BlockBehaviourScript.willBeDestroyed == true) {willMoveCounter++;}
+            if (BlockBehaviourScript.willMove == true  || BlockBehaviourScript.willBeDestroyed == true) {willMoveCounter++;}
             if (BlockBehaviourScript.finishedMoving == true) {finishedMovingCounter++;}
         }
     }
@@ -275,7 +289,8 @@ void Update()
                 Player1Turn = false;
                 Player2Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(2);
-                // TurnPlayerNumber.text = "2";
+                ChangePanelColor(Player2Color);
+                TurnPlayerNumber.text = "Player 2";
                 Waiting = false;
             }
             else if(isPlayer3Playing)
@@ -284,7 +299,8 @@ void Update()
                 Player1Turn = false;
                 Player3Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(3);
-                // TurnPlayerNumber.text = "3";
+                ChangePanelColor(Player3Color);
+                TurnPlayerNumber.text = "Player 3";
                 Waiting = false;
             }
             else if(isPlayer4Playing)
@@ -293,7 +309,8 @@ void Update()
                 Player1Turn = false;
                 Player4Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(4);
-                // TurnPlayerNumber.text = "4";
+                ChangePanelColor(Player4Color);
+                TurnPlayerNumber.text = "Player 4";
                 Waiting = false;
             }
         }
@@ -306,7 +323,8 @@ void Update()
                 Player2Turn = false;
                 Player3Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(3);
-                // TurnPlayerNumber.text = "3";
+                ChangePanelColor(Player3Color);
+                TurnPlayerNumber.text = "Player 3";
                 Waiting = false;
             }
             else if(isPlayer4Playing)
@@ -315,7 +333,8 @@ void Update()
                 Player2Turn = false;
                 Player4Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(4);
-                // TurnPlayerNumber.text = "4";
+                ChangePanelColor(Player4Color);
+                TurnPlayerNumber.text = "Player 4";
                 Waiting = false;
             }
             else if(isPlayer1Playing)
@@ -324,7 +343,8 @@ void Update()
                 Player2Turn = false;
                 Player1Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(1);
-                // TurnPlayerNumber.text = "1";
+                ChangePanelColor(Player1Color);
+                TurnPlayerNumber.text = "Player 1";
                 Waiting = false;
             }
         }
@@ -337,7 +357,8 @@ void Update()
                 Player3Turn = false;
                 Player4Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(4);
-                // TurnPlayerNumber.text = "4";
+                ChangePanelColor(Player4Color);
+                TurnPlayerNumber.text = "Player 4";
                 Waiting = false;
             }
             else if(isPlayer1Playing)
@@ -346,7 +367,8 @@ void Update()
                 Player3Turn = false;
                 Player1Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(1);
-                // TurnPlayerNumber.text = "1";
+                ChangePanelColor(Player1Color);
+                TurnPlayerNumber.text = " Player 1";
                 Waiting = false;
             }
             else if(isPlayer2Playing)
@@ -355,7 +377,8 @@ void Update()
                 Player3Turn = false;
                 Player2Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(2);
-                // TurnPlayerNumber.text = "2";
+                ChangePanelColor(Player2Color);
+                TurnPlayerNumber.text = "Player 2";
                 Waiting = false;
             }
         }
@@ -368,7 +391,8 @@ void Update()
                 Player4Turn = false;
                 Player1Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(1);
-                // TurnPlayerNumber.text = "1";
+                ChangePanelColor(Player1Color);
+                TurnPlayerNumber.text = "Player 1";
                 Waiting = false;
             }
             else if(isPlayer2Playing)
@@ -377,7 +401,8 @@ void Update()
                 Player4Turn = false;
                 Player2Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(2);
-                // TurnPlayerNumber.text = "2";
+                ChangePanelColor(Player2Color);
+                TurnPlayerNumber.text = "Player 2";
                 Waiting = false;
             }
             else if(isPlayer3Playing)
@@ -386,7 +411,8 @@ void Update()
                 Player4Turn = false;
                 Player3Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(3);
-                // TurnPlayerNumber.text = "3";
+                ChangePanelColor(Player3Color);
+                TurnPlayerNumber.text = "Player 3";
                 Waiting = false;
             }
         }
@@ -421,7 +447,6 @@ public void InstantiateThisColorWithThisOwner(int color, long value, int owner, 
 
 public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
 {
-    
     if(isPreparingFaze)
     {
     int fieldCounter = 0;
@@ -487,6 +512,7 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                         ClearAfterSpawn();
                         CheckForGameOver(owner);
                         turnsToStartBR--;
+                        UIControlling.ChangeTurnNumber(turnsToStartBR);
                         Debug.Log(turnsToStartBR);
                         if(turnsToStartBR == 0)
                         {
@@ -494,6 +520,7 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                             isPreparingFaze = false;
                             SpawnField.initiateBRFaze();
                             Camera.GetComponent<CameraBRScript>().MoveForBR();
+                            UIControlling.MoveForBR();
                             MoveBlocksForBRPlaces();
                             isBRFaze = true;
                         }
@@ -542,6 +569,7 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                         ClearAfterSpawn();
                         // CheckForGameOver(owner);
                         turnsToStartBR--;
+                        UIControlling.ChangeTurnNumber(turnsToStartBR);
                         Debug.Log(turnsToStartBR);
                        
                     }
@@ -638,6 +666,15 @@ public void BlockLevelUp(long value, int owner, int x, int y) //#TODO This funct
 
     }
 
+    public void ChangePanelColor(int color)
+    {
+        if(color == 1){TurnColorImg.color = new Color32(119,221,250,255);}
+        else if(color == 2){TurnColorImg.color = new Color32(242,118,140,255);}
+        else if(color == 3){TurnColorImg.color = new Color32(137,217,171,255);}
+        else if(color == 4){TurnColorImg.color = new Color32(236,123,222,255);}
+        else if(color == 5){TurnColorImg.color = new Color32(104,105,104,255);}
+
+    }
 public void MoveBlocksForBRPlaces()
 {
     int x = 0;
