@@ -17,6 +17,7 @@ public GameObject gameOverPanel;
 [SerializeField] public GameObject TurnColorPanel;
 [SerializeField] Image TurnColorImg;
 [SerializeField] GameObject UI_Controller;
+LocalBRPowerUps LocalBRPowerUps;
 GameObject ObjectToRememberColors;
 ScriptToRememberBRColors ScriptToRememberColors;
 public UIControlling_BRLocal UIControlling;
@@ -72,6 +73,7 @@ public int turnsToStartBR = 0;
 void Start()
 {
     UIControlling = UI_Controller.GetComponent<UIControlling_BRLocal>();
+    LocalBRPowerUps = GetComponent<LocalBRPowerUps>();
     TurnColorImg = TurnColorPanel.gameObject.GetComponent<Image>();
     ObjectToRememberColors = GameObject.Find("ObjectToRememberColors");
     ScriptToRememberColors = ObjectToRememberColors.GetComponent<ScriptToRememberBRColors>();
@@ -169,7 +171,7 @@ void Update()
 
     if(idleCounter == blocks.Count)
     {
-        // CheckForGameOver();
+        CheckForGameOver(0);
         foreach(GameObject block in blocks)
         {
             //Mówimy blokom, że mogą się zacząć szukać swoich nowych pozycji
@@ -281,11 +283,11 @@ void Update()
             BlockBehaviourScript.dir = "empty";
         }
         // SpawnNewBlock();
+        CheckForGameOver(0);
         if(Player1Turn == true)
         {
             if(isPlayer2Playing)
             {
-                // TurnColorImg.color = Player2Color;
                 Player1Turn = false;
                 Player2Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(2);
@@ -295,7 +297,6 @@ void Update()
             }
             else if(isPlayer3Playing)
             {
-                // TurnColorImg.color = Player3Color;
                 Player1Turn = false;
                 Player3Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(3);
@@ -305,7 +306,6 @@ void Update()
             }
             else if(isPlayer4Playing)
             {
-                // TurnColorImg.color = Player4Color;
                 Player1Turn = false;
                 Player4Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(4);
@@ -319,7 +319,6 @@ void Update()
             
             if(isPlayer3Playing)
             {
-                // TurnColorImg.color = Player3Color;
                 Player2Turn = false;
                 Player3Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(3);
@@ -329,7 +328,6 @@ void Update()
             }
             else if(isPlayer4Playing)
             {
-                // TurnColorImg.color = Player4Color;
                 Player2Turn = false;
                 Player4Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(4);
@@ -339,7 +337,6 @@ void Update()
             }
             else if(isPlayer1Playing)
             {
-                // TurnColorImg.color = Player1Color;
                 Player2Turn = false;
                 Player1Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(1);
@@ -353,7 +350,6 @@ void Update()
             
             if(isPlayer4Playing)
             {
-                // TurnColorImg.color = Player4Color;
                 Player3Turn = false;
                 Player4Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(4);
@@ -363,7 +359,6 @@ void Update()
             }
             else if(isPlayer1Playing)
             {
-                // TurnColorImg.color = Player1Color;
                 Player3Turn = false;
                 Player1Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(1);
@@ -373,7 +368,6 @@ void Update()
             }
             else if(isPlayer2Playing)
             {
-                // TurnColorImg.color = Player2Color;
                 Player3Turn = false;
                 Player2Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(2);
@@ -387,7 +381,6 @@ void Update()
             
             if(isPlayer1Playing)
             {
-                // TurnColorImg.color = Player1Color;
                 Player4Turn = false;
                 Player1Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(1);
@@ -397,7 +390,6 @@ void Update()
             }
             else if(isPlayer2Playing)
             {
-                // TurnColorImg.color = Player2Color;
                 Player4Turn = false;
                 Player2Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(2);
@@ -407,7 +399,6 @@ void Update()
             }
             else if(isPlayer3Playing)
             {
-                // TurnColorImg.color = Player3Color;
                 Player4Turn = false;
                 Player3Turn = true;
                 LookForPlaceToSpawnBlockAndPlaceIt(3);
@@ -513,7 +504,6 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                         CheckForGameOver(owner);
                         turnsToStartBR--;
                         UIControlling.ChangeTurnNumber(turnsToStartBR);
-                        Debug.Log(turnsToStartBR);
                         if(turnsToStartBR == 0)
                         {
                             Debug.Log("BR START");
@@ -567,10 +557,9 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                         blockSpawned = true;
                         
                         ClearAfterSpawn();
-                        // CheckForGameOver(owner);
+                        CheckForGameOver(owner);
                         turnsToStartBR--;
                         UIControlling.ChangeTurnNumber(turnsToStartBR);
-                        Debug.Log(turnsToStartBR);
                        
                     }
                 }
@@ -597,7 +586,7 @@ void ClearAfterSpawn()
 
     public void CheckForGameOver(int player) // TĄ FUNKCJĘ TRZEBA W CAŁOŚCI PRZEROBIĆ
     {
-        if(isPreparingFaze)
+        if(isPreparingFaze && player != 0)
         {
             blocks.TrimExcess();
             List<GameObject> blocksToCheck = null;
@@ -630,8 +619,79 @@ void ClearAfterSpawn()
             if(canMove == 0) 
             {
                 // gameOverPanel.gameObject.SetActive(true);
-                Debug.Log("GameOver for player: " + player);
+                if(player == 1)
+                {
+                    Debug.Log("Gracz 1 przegrywa");
+                    isPlayer1Playing = false;
+                }
+                else if(player == 2)
+                {
+                    Debug.Log("Gracz 2 przegrywa");
+                    isPlayer2Playing = false;
+                }
+                else if(player == 3)
+                {
+                    Debug.Log("Gracz 3 przegrywa");
+                    isPlayer3Playing = false;
+                }
+                else if(player == 4)
+                {
+                    Debug.Log("Gracz 4 przegrywa");
+                    isPlayer4Playing = false;
+                }
             }
+        }
+        else if(isBRFaze)
+        {
+            player = 0;
+            List<GameObject> blocksToCheck = null;
+            blocks.TrimExcess();
+            if(isPlayer1Playing)
+            {
+                P1Blocks.TrimExcess();
+                if(P1Blocks.Count == 0){
+                    Debug.Log("Gracz 1 przegrywa");
+                    isPlayer1Playing = false;
+                }
+            }
+            if(isPlayer2Playing)
+            {
+                P2Blocks.TrimExcess();
+                if(P2Blocks.Count == 0){
+                    Debug.Log("Gracz 2 przegrywa");
+                    isPlayer2Playing = false;
+                }
+            }
+            if(isPlayer3Playing)
+            {
+                P3Blocks.TrimExcess();
+                if(P3Blocks.Count == 0){
+                    Debug.Log("Gracz 3 przegrywa");
+                    isPlayer3Playing = false;
+                }
+            }
+            if(isPlayer4Playing)
+            {
+                P4Blocks.TrimExcess();
+                if(P4Blocks.Count == 0){
+                    Debug.Log("Gracz 4 przegrywa");
+                    isPlayer4Playing = false;
+                }
+            }
+        }
+
+        int stillPlayingCounter = 0;
+        if(isPlayer1Playing){stillPlayingCounter++;}
+        if(isPlayer2Playing){stillPlayingCounter++;}
+        if(isPlayer3Playing){stillPlayingCounter++;}
+        if(isPlayer4Playing){stillPlayingCounter++;}
+        if(stillPlayingCounter == 1)
+        {
+            Debug.Log("Gra zakończona wygraną gracza");
+        }
+        if(stillPlayingCounter == 0)
+        {
+            Debug.Log("Gra zakończona remisem");
         }
     }
 

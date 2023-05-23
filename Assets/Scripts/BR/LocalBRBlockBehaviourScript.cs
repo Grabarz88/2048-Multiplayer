@@ -227,7 +227,6 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                         }
                                         else if(NextBlockBehaviourScript.OwnerID != OwnerID && NextBlockBehaviourScript.OwnerID != 0 && OwnerID != 0)
                                         {
-                                            Debug.Log("to się dzieje");
                                             //Zderzenie między blokami dwóch graczy.
                                             if((NextBlockBehaviourScript.finishedSearching == true || NextBlockBehaviourScript.idle == true) && NextBlockBehaviourScript.willBeDestroyed == false)
                                             {

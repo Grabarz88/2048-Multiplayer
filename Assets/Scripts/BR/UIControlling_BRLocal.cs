@@ -27,7 +27,6 @@ LocalBRSpawnBlock SpawnBlock;
 
    public void ChangeTurnNumber(int checkedMoves)
    {
-          Debug.Log("Change turn");
         moves = checkedMoves;
         turn = moves/activePlayersCounter;
         if(turn < 0){turn = turn*(-1);}
