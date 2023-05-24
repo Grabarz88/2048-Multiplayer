@@ -24,10 +24,10 @@ public UIControlling_BRLocal UIControlling;
 public LocalBRBlockBehaviourScript BlockBehaviourScript;
 
 int blockID = 0;
-int Player1Color = 0;
-int Player2Color = 0;
-int Player3Color = 0;
-int Player4Color = 0;
+public int Player1Color = 0;
+public int Player2Color = 0;
+public int Player3Color = 0;
+public int Player4Color = 0;
 public List<GameObject> fields;
 public List<GameObject> blocks;
 public List<GameObject> P1Blocks;
@@ -584,7 +584,7 @@ void ClearAfterSpawn()
         }
     }
 
-    public void CheckForGameOver(int player) // TĄ FUNKCJĘ TRZEBA W CAŁOŚCI PRZEROBIĆ
+public void CheckForGameOver(int player) // TĄ FUNKCJĘ TRZEBA W CAŁOŚCI PRZEROBIĆ
     {
         if(isPreparingFaze && player != 0)
         {
@@ -622,22 +622,30 @@ void ClearAfterSpawn()
                 if(player == 1)
                 {
                     Debug.Log("Gracz 1 przegrywa");
+                    UIControlling.AnnounceELiminatedPlayer(1);
                     isPlayer1Playing = false;
+                    activePlayersCounter--;
                 }
                 else if(player == 2)
                 {
                     Debug.Log("Gracz 2 przegrywa");
+                    UIControlling.AnnounceELiminatedPlayer(2);
                     isPlayer2Playing = false;
+                    activePlayersCounter--;
                 }
                 else if(player == 3)
                 {
                     Debug.Log("Gracz 3 przegrywa");
+                    UIControlling.AnnounceELiminatedPlayer(3);
                     isPlayer3Playing = false;
+                    activePlayersCounter--;
                 }
                 else if(player == 4)
                 {
                     Debug.Log("Gracz 4 przegrywa");
+                    UIControlling.AnnounceELiminatedPlayer(4);
                     isPlayer4Playing = false;
+                    activePlayersCounter--;
                 }
             }
         }
@@ -652,6 +660,8 @@ void ClearAfterSpawn()
                 if(P1Blocks.Count == 0){
                     Debug.Log("Gracz 1 przegrywa");
                     isPlayer1Playing = false;
+                    activePlayersCounter--;
+                    UIControlling.AnnounceELiminatedPlayer(1);
                 }
             }
             if(isPlayer2Playing)
@@ -660,6 +670,8 @@ void ClearAfterSpawn()
                 if(P2Blocks.Count == 0){
                     Debug.Log("Gracz 2 przegrywa");
                     isPlayer2Playing = false;
+                    activePlayersCounter--;
+                    UIControlling.AnnounceELiminatedPlayer(2);
                 }
             }
             if(isPlayer3Playing)
@@ -668,6 +680,8 @@ void ClearAfterSpawn()
                 if(P3Blocks.Count == 0){
                     Debug.Log("Gracz 3 przegrywa");
                     isPlayer3Playing = false;
+                    activePlayersCounter--;
+                    UIControlling.AnnounceELiminatedPlayer(3);
                 }
             }
             if(isPlayer4Playing)
@@ -676,6 +690,8 @@ void ClearAfterSpawn()
                 if(P4Blocks.Count == 0){
                     Debug.Log("Gracz 4 przegrywa");
                     isPlayer4Playing = false;
+                    activePlayersCounter--;
+                    UIControlling.AnnounceELiminatedPlayer(4);
                 }
             }
         }
@@ -726,7 +742,7 @@ public void BlockLevelUp(long value, int owner, int x, int y) //#TODO This funct
 
     }
 
-    public void ChangePanelColor(int color)
+public void ChangePanelColor(int color)
     {
         if(color == 1){TurnColorImg.color = new Color32(119,221,250,255);}
         else if(color == 2){TurnColorImg.color = new Color32(242,118,140,255);}
