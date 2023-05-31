@@ -15,6 +15,9 @@ public class FieldScript : MonoBehaviour
     [SerializeField] public bool isWall;
 
     [SerializeField] public GameObject FieldSpawner;
+    [SerializeField] public int blockOwnerID = -1;
+    [SerializeField] public long blockValue = 0;
+    [SerializeField] public bool chceckedForBeingFree;
     SpawnFieldBR SpawnField;
 
     public bool checkedForSpawnPurpose = false;
@@ -44,6 +47,12 @@ public class FieldScript : MonoBehaviour
         
     }
     
+    public void GiveInfoAboutYourself(int owner, long value) // This function is used onyl for BR purposes of checking movement posibilities.
+    {
+        blockOwnerID = owner;
+        blockValue = value;
+    }
+
     public void OnDestroy()
     {
         SpawnField.fields.Remove(this.gameObject);

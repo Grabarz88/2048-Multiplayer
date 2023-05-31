@@ -400,6 +400,7 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
 				positionX = FieldScript.positionX;
                 positionY = FieldScript.positionY;
                 FieldScript.isTaken = true;
+                FieldScript.GiveInfoAboutYourself(OwnerID, value);
             }
         }
         this.gameObject.transform.position = new Vector2(positionX, positionY);
@@ -412,19 +413,19 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
             FieldScript = previousField.gameObject.GetComponent<FieldScript>();
             if(blockDir == "right")
             {
-                if(FieldScript.TableNumberX == TableNumberX-1 && FieldScript.TableNumberY == TableNumberY){FieldScript.isTaken = false;}
+                if(FieldScript.TableNumberX == TableNumberX-1 && FieldScript.TableNumberY == TableNumberY){FieldScript.isTaken = false; FieldScript.blockValue = 0; FieldScript.blockOwnerID = -1;}
             }
             else if(blockDir == "left")
             {
-                if(FieldScript.TableNumberX == TableNumberX+1 && FieldScript.TableNumberY == TableNumberY){FieldScript.isTaken = false;}
+                if(FieldScript.TableNumberX == TableNumberX+1 && FieldScript.TableNumberY == TableNumberY){FieldScript.isTaken = false;  FieldScript.blockValue = 0; FieldScript.blockOwnerID = -1;}
             }
             else if(blockDir == "up")
             {
-                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY-1){FieldScript.isTaken = false;}
+                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY-1){FieldScript.isTaken = false;  FieldScript.blockValue = 0; FieldScript.blockOwnerID = -1;}
             }
             else if(blockDir == "down")
             {
-                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY+1){FieldScript.isTaken = false;}    
+                if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY+1){FieldScript.isTaken = false;  FieldScript.blockValue = 0; FieldScript.blockOwnerID = -1;}    
             }
         }
     }
@@ -434,7 +435,11 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
 		foreach (GameObject nextField in fields)
         {
             FieldScript = nextField.gameObject.GetComponent<FieldScript>();
-            if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY){FieldScript.isTaken = true;}
+            if(FieldScript.TableNumberX == TableNumberX && FieldScript.TableNumberY == TableNumberY)
+            {
+                FieldScript.isTaken = true;
+                FieldScript.GiveInfoAboutYourself(OwnerID, value);
+            }
         }
     }
 

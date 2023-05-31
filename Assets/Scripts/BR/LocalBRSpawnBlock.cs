@@ -39,6 +39,7 @@ public List<GameObject> P1Fields;
 public List<GameObject> P2Fields;
 public List<GameObject> P3Fields;
 public List<GameObject> P4Fields;
+public List<FieldScript> FreeFields;
 public bool Player1Turn = true;
 public bool Player2Turn = false;
 public bool Player3Turn = false;
@@ -286,10 +287,20 @@ void Update()
         CheckForGameOver(0);
         if(Player1Turn == true)
         {
+            CheckForGameOver(0);
             if(isPlayer2Playing)
             {
                 Player1Turn = false;
                 Player2Turn = true;
+                if(CheckForPlacingPossibilities(2) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(2));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(2));
+                }
+                CheckForMovementPossibilities(2);
                 LookForPlaceToSpawnBlockAndPlaceIt(2);
                 ChangePanelColor(Player2Color);
                 TurnPlayerNumber.text = "Player 2";
@@ -299,6 +310,15 @@ void Update()
             {
                 Player1Turn = false;
                 Player3Turn = true;
+                if(CheckForPlacingPossibilities(3) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(3));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
+                }
+                CheckForMovementPossibilities(3);
                 LookForPlaceToSpawnBlockAndPlaceIt(3);
                 ChangePanelColor(Player3Color);
                 TurnPlayerNumber.text = "Player 3";
@@ -308,6 +328,15 @@ void Update()
             {
                 Player1Turn = false;
                 Player4Turn = true;
+                if(CheckForPlacingPossibilities(4) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(4));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
+                }
+                CheckForMovementPossibilities(4);
                 LookForPlaceToSpawnBlockAndPlaceIt(4);
                 ChangePanelColor(Player4Color);
                 TurnPlayerNumber.text = "Player 4";
@@ -316,11 +345,20 @@ void Update()
         }
         else if (Player2Turn == true)
         {
-            
+            CheckForGameOver(0);
             if(isPlayer3Playing)
             {
                 Player2Turn = false;
                 Player3Turn = true;
+                if(CheckForPlacingPossibilities(3) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(3));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
+                }
+                CheckForMovementPossibilities(3);
                 LookForPlaceToSpawnBlockAndPlaceIt(3);
                 ChangePanelColor(Player3Color);
                 TurnPlayerNumber.text = "Player 3";
@@ -330,6 +368,15 @@ void Update()
             {
                 Player2Turn = false;
                 Player4Turn = true;
+                if(CheckForPlacingPossibilities(4) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(4));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
+                }
+                CheckForMovementPossibilities(4);
                 LookForPlaceToSpawnBlockAndPlaceIt(4);
                 ChangePanelColor(Player4Color);
                 TurnPlayerNumber.text = "Player 4";
@@ -339,6 +386,15 @@ void Update()
             {
                 Player2Turn = false;
                 Player1Turn = true;
+                if(CheckForPlacingPossibilities(1) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(1));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(1));
+                }
+                CheckForMovementPossibilities(1);
                 LookForPlaceToSpawnBlockAndPlaceIt(1);
                 ChangePanelColor(Player1Color);
                 TurnPlayerNumber.text = "Player 1";
@@ -347,11 +403,20 @@ void Update()
         }
         else if (Player3Turn == true)
         {
-            
+            CheckForGameOver(0);
             if(isPlayer4Playing)
             {
                 Player3Turn = false;
                 Player4Turn = true;
+                if(CheckForPlacingPossibilities(3) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(3));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
+                }
+                CheckForMovementPossibilities(4);
                 LookForPlaceToSpawnBlockAndPlaceIt(4);
                 ChangePanelColor(Player4Color);
                 TurnPlayerNumber.text = "Player 4";
@@ -361,6 +426,15 @@ void Update()
             {
                 Player3Turn = false;
                 Player1Turn = true;
+                if(CheckForPlacingPossibilities(1) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(1));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(1));
+                }
+                CheckForMovementPossibilities(1);
                 LookForPlaceToSpawnBlockAndPlaceIt(1);
                 ChangePanelColor(Player1Color);
                 TurnPlayerNumber.text = " Player 1";
@@ -370,6 +444,15 @@ void Update()
             {
                 Player3Turn = false;
                 Player2Turn = true;
+                if(CheckForPlacingPossibilities(2) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(2));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(2));
+                }
+                CheckForMovementPossibilities(2);
                 LookForPlaceToSpawnBlockAndPlaceIt(2);
                 ChangePanelColor(Player2Color);
                 TurnPlayerNumber.text = "Player 2";
@@ -378,11 +461,20 @@ void Update()
         }
         else if (Player4Turn == true)
         {
-            
+            CheckForGameOver(0); 
             if(isPlayer1Playing)
             {
                 Player4Turn = false;
                 Player1Turn = true;
+                if(CheckForPlacingPossibilities(4) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(4));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
+                }
+                CheckForMovementPossibilities(1);
                 LookForPlaceToSpawnBlockAndPlaceIt(1);
                 ChangePanelColor(Player1Color);
                 TurnPlayerNumber.text = "Player 1";
@@ -392,6 +484,15 @@ void Update()
             {
                 Player4Turn = false;
                 Player2Turn = true;
+                if(CheckForPlacingPossibilities(2) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(2));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(2));
+                }
+                CheckForMovementPossibilities(2);
                 LookForPlaceToSpawnBlockAndPlaceIt(2);
                 ChangePanelColor(Player2Color);
                 TurnPlayerNumber.text = "Player 2";
@@ -401,6 +502,15 @@ void Update()
             {
                 Player4Turn = false;
                 Player3Turn = true;
+                if(CheckForPlacingPossibilities(3) > 0)
+                {
+                    StartCoroutine(PickPositionsToPlaceBlocks(3));
+                }
+                else
+                {
+                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
+                }
+                CheckForMovementPossibilities(3);
                 LookForPlaceToSpawnBlockAndPlaceIt(3);
                 ChangePanelColor(Player3Color);
                 TurnPlayerNumber.text = "Player 3";
@@ -512,6 +622,7 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                             Camera.GetComponent<CameraBRScript>().MoveForBR();
                             UIControlling.MoveForBR();
                             MoveBlocksForBRPlaces();
+                            fields.TrimExcess();
                             isBRFaze = true;
                         }
                     }
@@ -584,7 +695,7 @@ void ClearAfterSpawn()
         }
     }
 
-public void CheckForGameOver(int player) // TĄ FUNKCJĘ TRZEBA W CAŁOŚCI PRZEROBIĆ
+public void CheckForGameOver(int player)
     {
         if(isPreparingFaze && player != 0)
         {
@@ -652,7 +763,6 @@ public void CheckForGameOver(int player) // TĄ FUNKCJĘ TRZEBA W CAŁOŚCI PRZE
         else if(isBRFaze)
         {
             player = 0;
-            List<GameObject> blocksToCheck = null;
             blocks.TrimExcess();
             if(isPlayer1Playing)
             {
@@ -799,5 +909,186 @@ public void MoveBlocksForBRPlaces()
         BBH.AfterSpawn(x, y);
     }
 }
+
+public int CheckForPlacingPossibilities(int player)
+{
+    // Debug.Log("Sprawdzam dla gracza: " + player);
+    int placesToPlaceBlock = 0;
+    List<GameObject> BlocksOfPlayers = new List<GameObject>();
+    if(player == 1){BlocksOfPlayers = P1Blocks;}
+    else if(player == 2){BlocksOfPlayers = P2Blocks;}
+    else if(player == 3){BlocksOfPlayers = P3Blocks;}
+    else if(player == 4){BlocksOfPlayers = P4Blocks;}
+    int x;
+    int y;
+    foreach(GameObject block in BlocksOfPlayers)
+    {
+        LocalBRBlockBehaviourScript thisBBH = block.GetComponent<LocalBRBlockBehaviourScript>();
+        x = thisBBH.TableNumberX;
+        y = thisBBH.TableNumberY;
+        
+
+        foreach(GameObject field in fields)
+        {
+            
+            FieldScript thisFieldScript = field.GetComponent<FieldScript>();
+            if((thisFieldScript.TableNumberX == x+1 && thisFieldScript.TableNumberY == y) || (thisFieldScript.TableNumberX == x-1 && thisFieldScript.TableNumberY == y) || (thisFieldScript.TableNumberX == x && thisFieldScript.TableNumberY == y+1) || (thisFieldScript.TableNumberX == x && thisFieldScript.TableNumberY == y-1))
+            {
+                if(thisFieldScript.isWall == false && thisFieldScript.isTaken == false && thisFieldScript.chceckedForBeingFree == false)
+                {
+                    thisFieldScript.chceckedForBeingFree = true;
+                    // Pamiętaj później dodać funkcję, która zwolni powyższy parametr z pól.
+                    FreeFields.Add(thisFieldScript);
+                    placesToPlaceBlock++;
+                }
+            }
+        }
+    }
+
+    foreach(GameObject fieldToForget in fields)
+    {
+        fieldToForget.GetComponent<FieldScript>().chceckedForBeingFree = false;
+    }
+
+    return placesToPlaceBlock;
+}
+
+
+public void CheckForMovementPossibilities(int player)
+{
+    Debug.Log("Sprawdzam dla gracza: " + player);
+    bool ismovementPossible = false;
+    List<GameObject> BlocksOfPlayers = new List<GameObject>();
+    if(player == 1){BlocksOfPlayers = P1Blocks;}
+    else if(player == 2){BlocksOfPlayers = P2Blocks;}
+    else if(player == 3){BlocksOfPlayers = P3Blocks;}
+    else if(player == 4){BlocksOfPlayers = P4Blocks;}
+    int x;
+    int y;
+    foreach(GameObject block in BlocksOfPlayers)
+    {
+        LocalBRBlockBehaviourScript thisBBH = block.GetComponent<LocalBRBlockBehaviourScript>();
+        x = thisBBH.TableNumberX;
+        y = thisBBH.TableNumberY;
+        
+
+        foreach(GameObject field in fields)
+        {
+            
+            FieldScript thisFieldScript = field.GetComponent<FieldScript>();
+            if((thisFieldScript.TableNumberX == x+1 && thisFieldScript.TableNumberY == y) || (thisFieldScript.TableNumberX == x-1 && thisFieldScript.TableNumberY == y) || (thisFieldScript.TableNumberX == x && thisFieldScript.TableNumberY == y+1) || (thisFieldScript.TableNumberX == x && thisFieldScript.TableNumberY == y-1))
+            {
+                if(thisFieldScript.isWall == false && thisFieldScript.isTaken == false && thisFieldScript.chceckedForBeingFree == false)
+                {
+                    thisFieldScript.chceckedForBeingFree = true;
+                    ismovementPossible = true;
+                }
+
+
+                
+                //Skrypt poniżej mówi że nie można się ruszyć, w sytuacji w której żaden z bloków gracza nie ma bezpośredniego sąsiada.
+                else if(thisFieldScript.isWall == false && thisFieldScript.isTaken == true && ismovementPossible == false)
+                {
+                    int thisFieldOwner = thisFieldScript.blockOwnerID;
+                    long thisFieldBlockValue = thisFieldScript.blockValue;
+
+                    if(thisFieldBlockValue == thisBBH.value)
+                    {
+                        ismovementPossible = true;
+                    }
+
+                    else if(thisFieldOwner != 0 && thisFieldOwner != player && thisFieldBlockValue <= thisBBH.value)
+                    {
+                        ismovementPossible = true;
+                    }
+
+                    else if(thisFieldOwner == 0)
+                    {
+                        bool isMovementHereImpossible = false;
+                        int multiplierX = 0;
+                        int multiplierY = 0;
+                        int thisFieldX = thisFieldScript.TableNumberX;
+                        int thisFieldY = thisFieldScript.TableNumberY;
+                        long referencePrevoiusValue = thisFieldBlockValue;
+
+                        if(thisFieldX > x){multiplierX++;}
+                        else if (thisFieldX < x){multiplierX--;}
+                        else if(thisFieldY > y){multiplierY++;}
+                        else if(thisFieldY < y){multiplierY--;}
+
+                        do
+                        {
+                            
+                            
+                            foreach(GameObject nextField in fields)
+                            {
+                                FieldScript nextFieldScript = nextField.GetComponent<FieldScript>();
+                                if(nextFieldScript.TableNumberX == thisFieldX + multiplierX && nextFieldScript.TableNumberY == thisFieldY + multiplierY)
+                                {
+                                    if(nextFieldScript.isWall == true)
+                                    {
+                                        isMovementHereImpossible = true;
+                                    }
+                                    else if(nextFieldScript.isTaken == false)
+                                    {
+                                        ismovementPossible = true;
+                                    }
+                                    else if(nextFieldScript.blockOwnerID != 0)
+                                    {
+                                        isMovementHereImpossible = true;
+                                    }
+                                    else if(nextFieldScript.blockOwnerID == 0)
+                                    {
+                                        if(nextFieldScript.blockValue == referencePrevoiusValue)
+                                        {
+                                            ismovementPossible = true;
+                                        }
+                                        else
+                                        {
+                                            referencePrevoiusValue = nextFieldScript.blockValue;
+                                            if(multiplierX > 0){multiplierX++;}
+                                            else if(multiplierX < 0){multiplierX--;}
+                                            else if(multiplierY > 0){multiplierY++;}
+                                            else if(multiplierY < 0){multiplierY--;}
+
+                                        }
+                                    }
+                                }
+                            }
+                        }while(ismovementPossible == false && isMovementHereImpossible == false);
+                    }
+                }
+
+            }
+
+        }
+    }
+    // Debug.Log("Tyle miejsc na postawienie bloku: " + placesToPlaceBlock);
+    Debug.Log("Ruch jest możliwy = " + ismovementPossible);
+}
+
+
+
+IEnumerator SkipPlacingBlocksFromLackOfSpace(int player)
+    {
+        Debug.Log("Pominięto rozkładanie bloków gracza" + player);
+        yield return null;
+    }
+IEnumerator PickPositionsToPlaceBlocks(int player)
+    {
+        if(isBRFaze)
+        {
+            yield return StartCoroutine(LocalBRPowerUps.PositionSelectorForBlockPlacing(FreeFields));
+            
+            Debug.Log("Rozłożono bloki gracza" + player);
+            FreeFields.Clear();
+            yield return null;
+        }
+        else
+        {
+            FreeFields.Clear();
+            yield return null;
+        }
+    }
 
 }

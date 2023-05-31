@@ -1917,7 +1917,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ffe497f72e2a94b94c058947899b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pointer: {fileID: 0}
+  Pointer: {fileID: 242004987061612579, guid: 662c818e58d88ca46ba7edc736b3cd84, type: 3}
+  fields: []
+  blocks: []
+  P1Blocks: []
+  P2Blocks: []
+  P3Blocks: []
+  P4Blocks: []
+  NeutralBlocks: []
+  currentPointerOwnerID: 0
 --- !u!4 &1224282799
 Transform:
   m_ObjectHideFlags: 0
@@ -1954,6 +1962,10 @@ MonoBehaviour:
   UI_Controller: {fileID: 541245978}
   UIControlling: {fileID: 0}
   BlockBehaviourScript: {fileID: 0}
+  Player1Color: 0
+  Player2Color: 0
+  Player3Color: 0
+  Player4Color: 0
   fields: []
   blocks: []
   P1Blocks: []
@@ -1965,6 +1977,7 @@ MonoBehaviour:
   P2Fields: []
   P3Fields: []
   P4Fields: []
+  FreeFields: []
   Player1Turn: 1
   Player2Turn: 0
   Player3Turn: 0
