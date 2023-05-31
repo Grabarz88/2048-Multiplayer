@@ -54,6 +54,10 @@ public bool isPlayer4Playing;
 public bool isPreparingFaze = true;
 public bool isBRFaze = false;
 
+public bool isCheckingTime = true;
+public bool needsToIndicatePlacing = false;
+public bool placingIsFinished = false;
+
 int idleCounter;
 int finishedSearchingCounter;
 int willMoveCounter;
@@ -152,370 +156,495 @@ void Start()
 
 void Update()
 {
-    blocks.TrimExcess();
-    idleCounter = 0;
-    finishedSearchingCounter = 0;
-    willMoveCounter = 0;
-    finishedMovingCounter = 0;
-    foreach(GameObject block in blocks)
+    if(isCheckingTime == true && needsToIndicatePlacing == false)
     {
-        if (block != null)
-        {
-            //Sprawdzamy statusy bloków
-            BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
-            if (BlockBehaviourScript.idle == true) {idleCounter++;}
-            if (BlockBehaviourScript.finishedSearching == true) {finishedSearchingCounter++;}
-            if (BlockBehaviourScript.willMove == true  || BlockBehaviourScript.willBeDestroyed == true) {willMoveCounter++;}
-            if (BlockBehaviourScript.finishedMoving == true) {finishedMovingCounter++;}
-        }
-    }
-
-    if(idleCounter == blocks.Count)
-    {
-        CheckForGameOver(0);
+        Debug.Log("Update");
+        blocks.TrimExcess();
+        idleCounter = 0;
+        finishedSearchingCounter = 0;
+        willMoveCounter = 0;
+        finishedMovingCounter = 0;
         foreach(GameObject block in blocks)
         {
-            //Mówimy blokom, że mogą się zacząć szukać swoich nowych pozycji
-            BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
-            if(Player1Turn == true && Waiting == false)
+            if (block != null)
             {
-                if(BlockBehaviourScript.OwnerID == 1)
+                //Sprawdzamy statusy bloków
+                BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
+                if (BlockBehaviourScript.idle == true) {idleCounter++;}
+                if (BlockBehaviourScript.finishedSearching == true) {finishedSearchingCounter++;}
+                if (BlockBehaviourScript.willMove == true  || BlockBehaviourScript.willBeDestroyed == true) {willMoveCounter++;}
+                if (BlockBehaviourScript.finishedMoving == true) {finishedMovingCounter++;}
+            }
+        }
+
+        if(idleCounter == blocks.Count)
+        {
+            CheckForGameOver(0);
+            foreach(GameObject block in blocks)
+            {
+                //Mówimy blokom, że mogą się zacząć szukać swoich nowych pozycji
+                BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
+                if(Player1Turn == true && Waiting == false)
                 {
-                    BlockBehaviourScript.executeWaitingForDir();
+                    if(BlockBehaviourScript.OwnerID == 1)
+                    {
+                        BlockBehaviourScript.executeWaitingForDir();
+                    }
+                    
                 }
-                
-            }
-            if (Player2Turn == true && Waiting == false)
-            {
-                if(BlockBehaviourScript.OwnerID == 2)
+                if (Player2Turn == true && Waiting == false)
                 {
-                    BlockBehaviourScript.executeWaitingForDir();
-                }                   
-            }
-            if (Player3Turn == true && Waiting == false)
-            {
-                if(BlockBehaviourScript.OwnerID == 3)
+                    if(BlockBehaviourScript.OwnerID == 2)
+                    {
+                        BlockBehaviourScript.executeWaitingForDir();
+                    }                   
+                }
+                if (Player3Turn == true && Waiting == false)
                 {
-                    BlockBehaviourScript.executeWaitingForDir();
-                }                   
-            }
-            if (Player4Turn == true && Waiting == false)
-            {
-                if(BlockBehaviourScript.OwnerID == 4)
+                    if(BlockBehaviourScript.OwnerID == 3)
+                    {
+                        BlockBehaviourScript.executeWaitingForDir();
+                    }                   
+                }
+                if (Player4Turn == true && Waiting == false)
                 {
-                    BlockBehaviourScript.executeWaitingForDir();
-                }                   
+                    if(BlockBehaviourScript.OwnerID == 4)
+                    {
+                        BlockBehaviourScript.executeWaitingForDir();
+                    }                   
+                }
+                if(Waiting == false)
+                {
+                    if(BlockBehaviourScript.OwnerID == 0)
+                    {
+                        BlockBehaviourScript.executeWaitingForDir();
+                    }
+                }
             }
-            if(Waiting == false)
+            Waiting = true;
+
+        }
+        
+        if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count) || (Player3Turn == true && finishedSearchingCounter == P3Blocks.Count + NeutralBlocks.Count) || (Player4Turn == true && finishedSearchingCounter == P4Blocks.Count + NeutralBlocks.Count)) && willMoveCounter > 0)
+        {
+            foreach(GameObject block in blocks)
             {
+                //Mówimy blokom, że mogą zacząć wykonywać ruch
+                BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
+                if(Player1Turn == true)                
+                {
+                    if(BlockBehaviourScript.OwnerID == 1)
+                    {
+                        BlockBehaviourScript.executeMove();
+                    }
+                }
+                if (Player2Turn == true)
+                {
+                    if(BlockBehaviourScript.OwnerID == 2)
+                    {
+                        BlockBehaviourScript.executeMove();
+                    }                    
+                }
+                if (Player3Turn == true)
+                {
+                    if(BlockBehaviourScript.OwnerID == 3)
+                    {
+                        BlockBehaviourScript.executeMove();
+                    }                    
+                }
+                if (Player4Turn == true)
+                {
+                    if(BlockBehaviourScript.OwnerID == 4)
+                    {
+                        BlockBehaviourScript.executeMove();
+                    }                    
+                }
+
                 if(BlockBehaviourScript.OwnerID == 0)
                 {
-                    BlockBehaviourScript.executeWaitingForDir();
-                }
+                    BlockBehaviourScript.executeMove();
+                } 
             }
         }
-        Waiting = true;
+        else if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count) || (Player3Turn == true && finishedSearchingCounter == P3Blocks.Count + NeutralBlocks.Count) || (Player4Turn == true && finishedSearchingCounter == P4Blocks.Count + NeutralBlocks.Count)) && willMoveCounter == 0)
+        {
+            foreach(GameObject block in blocks)
+            {
+                BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
+                BlockBehaviourScript.dir = "empty";
+                BlockBehaviourScript.finishedSearching = false;
+                BlockBehaviourScript.idle = true;
+                Waiting = false;
 
-    }
-    
-    if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count) || (Player3Turn == true && finishedSearchingCounter == P3Blocks.Count + NeutralBlocks.Count) || (Player4Turn == true && finishedSearchingCounter == P4Blocks.Count + NeutralBlocks.Count)) && willMoveCounter > 0)
-    {
-        foreach(GameObject block in blocks)
+            }
+        }
+        
+        if((Player1Turn == true && finishedMovingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedMovingCounter == P2Blocks.Count + NeutralBlocks.Count) || (Player3Turn == true && finishedMovingCounter == P3Blocks.Count + NeutralBlocks.Count) || (Player4Turn == true && finishedMovingCounter == P4Blocks.Count + NeutralBlocks.Count))
         {
-            //Mówimy blokom, że mogą zacząć wykonywać ruch
-            BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
-            if(Player1Turn == true)                
+            foreach(GameObject block in blocks)
             {
-                if(BlockBehaviourScript.OwnerID == 1)
-                {
-                    BlockBehaviourScript.executeMove();
-                }
+                //Mówimy blokom, że skoro skończyły się ruszać to mogą się zniszczyć jeśli potrzebują i mają się przygotować do następnej kolejki
+                BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
+                BlockBehaviourScript.executeLevelUp();
+                BlockBehaviourScript.finishedMoving = false;
+                BlockBehaviourScript.idle = true;
+                BlockBehaviourScript.dir = "empty";
             }
-            if (Player2Turn == true)
-            {
-                if(BlockBehaviourScript.OwnerID == 2)
-                {
-                    BlockBehaviourScript.executeMove();
-                }                    
-            }
-            if (Player3Turn == true)
-            {
-                if(BlockBehaviourScript.OwnerID == 3)
-                {
-                    BlockBehaviourScript.executeMove();
-                }                    
-            }
-            if (Player4Turn == true)
-            {
-                if(BlockBehaviourScript.OwnerID == 4)
-                {
-                    BlockBehaviourScript.executeMove();
-                }                    
-            }
+            
+            // SpawnNewBlock();
 
-            if(BlockBehaviourScript.OwnerID == 0)
+            CheckForGameOver(0);
+            if(Player1Turn == true)
             {
-                BlockBehaviourScript.executeMove();
-            } 
-        }
-    }
-    else if(((Player1Turn == true && finishedSearchingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedSearchingCounter == P2Blocks.Count + NeutralBlocks.Count) || (Player3Turn == true && finishedSearchingCounter == P3Blocks.Count + NeutralBlocks.Count) || (Player4Turn == true && finishedSearchingCounter == P4Blocks.Count + NeutralBlocks.Count)) && willMoveCounter == 0)
-    {
-        foreach(GameObject block in blocks)
-        {
-            BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
-            BlockBehaviourScript.dir = "empty";
-            BlockBehaviourScript.finishedSearching = false;
-            BlockBehaviourScript.idle = true;
-            Waiting = false;
+                CheckForGameOver(0);
+                if(isPlayer2Playing)
+                {
+                    Player1Turn = false;
+                    Player2Turn = true;
+                    if(CheckForPlacingPossibilities(2) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(2));
+                        if(CheckForMovementPossibilities(2))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(2);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(2);
+                        }
+                    }
+                    ChangePanelColor(Player2Color);
+                    TurnPlayerNumber.text = "Player 2";
+                    Waiting = false;
+                }
+                else if(isPlayer3Playing)
+                {
+                    Player1Turn = false;
+                    Player3Turn = true;
+                    if(CheckForPlacingPossibilities(3) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
+                        if(CheckForMovementPossibilities(3))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(3);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(3);
+                        }
+                    }
+                    ChangePanelColor(Player3Color);
+                    TurnPlayerNumber.text = "Player 3";
+                    Waiting = false;
+                }
+                else if(isPlayer4Playing)
+                {
+                    Player1Turn = false;
+                    Player4Turn = true;
+                    if(CheckForPlacingPossibilities(4) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
+                        if(CheckForMovementPossibilities(4))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(4);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(4);
+                        }
+                    }
+                    ChangePanelColor(Player4Color);
+                    TurnPlayerNumber.text = "Player 4";
+                    Waiting = false;
+                }
+            }
+            else if (Player2Turn == true)
+            {
+                CheckForGameOver(0);
+                if(isPlayer3Playing)
+                {
+                    Player2Turn = false;
+                    Player3Turn = true;
+                    if(CheckForPlacingPossibilities(3) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
+                        if(CheckForMovementPossibilities(3))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(3);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(3);
+                        }
+                    }
 
+                    ChangePanelColor(Player3Color);
+                    TurnPlayerNumber.text = "Player 3";
+                    Waiting = false;
+                }
+                else if(isPlayer4Playing)
+                {
+                    Player2Turn = false;
+                    Player4Turn = true;
+                    if(CheckForPlacingPossibilities(4) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
+                        if(CheckForMovementPossibilities(4))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(4);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(4);
+                        }
+                    }
+                    ChangePanelColor(Player4Color);
+                    TurnPlayerNumber.text = "Player 4";
+                    Waiting = false;
+                }
+                else if(isPlayer1Playing)
+                {
+                    Player2Turn = false;
+                    Player1Turn = true;
+                    if(CheckForPlacingPossibilities(1) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(1));
+                        if(CheckForMovementPossibilities(1))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(1);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(1);
+                        }
+                    }
+                    ChangePanelColor(Player1Color);
+                    TurnPlayerNumber.text = "Player 1";
+                    Waiting = false;
+                }
+            }
+            else if (Player3Turn == true)
+            {
+                CheckForGameOver(0);
+                if(isPlayer4Playing)
+                {
+                    Player3Turn = false;
+                    Player4Turn = true;
+                    if(CheckForPlacingPossibilities(3) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
+                        if(CheckForMovementPossibilities(3))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(3);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(3);
+                        }
+                    }
+                    ChangePanelColor(Player4Color);
+                    TurnPlayerNumber.text = "Player 4";
+                    Waiting = false;
+                }
+                else if(isPlayer1Playing)
+                {
+                    Player3Turn = false;
+                    Player1Turn = true;
+                    if(CheckForPlacingPossibilities(1) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(1));
+                        if(CheckForMovementPossibilities(1))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(1);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(1);
+                        }
+                    }
+                    ChangePanelColor(Player1Color);
+                    TurnPlayerNumber.text = " Player 1";
+                    Waiting = false;
+                }
+                else if(isPlayer2Playing)
+                {
+                    Player3Turn = false;
+                    Player2Turn = true;
+                    if(CheckForPlacingPossibilities(2) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(2));
+                        if(CheckForMovementPossibilities(2))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(2);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(2);
+                        }
+                    }
+                    ChangePanelColor(Player2Color);
+                    TurnPlayerNumber.text = "Player 2";
+                    Waiting = false;
+                }
+            }
+            else if (Player4Turn == true)
+            {
+                CheckForGameOver(0); 
+                if(isPlayer1Playing)
+                {
+                    Player4Turn = false;
+                    Player1Turn = true;
+                    if(CheckForPlacingPossibilities(4) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
+                        if(CheckForMovementPossibilities(4))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(4);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(4);
+                        }
+                    }
+                    ChangePanelColor(Player1Color);
+                    TurnPlayerNumber.text = "Player 1";
+                    Waiting = false;
+                }
+                else if(isPlayer2Playing)
+                {
+                    Player4Turn = false;
+                    Player2Turn = true;
+                    if(CheckForPlacingPossibilities(2) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(2));
+                        if(CheckForMovementPossibilities(2))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(2);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(2);
+                        }
+                    }
+                    ChangePanelColor(Player2Color);
+                    TurnPlayerNumber.text = "Player 2";
+                    Waiting = false;
+                }
+                else if(isPlayer3Playing)
+                {
+                    Player4Turn = false;
+                    Player3Turn = true;
+                    if(CheckForPlacingPossibilities(3) > 0)
+                    {
+                        needsToIndicatePlacing = true;
+                        isCheckingTime = false;
+                    }
+                    else
+                    {
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
+                        if(CheckForMovementPossibilities(3))
+                        {
+                            LookForPlaceToSpawnBlockAndPlaceIt(3);
+                        }
+                        else 
+                        {
+                        SkipPlayerMovementFromLackOfSpace(3);
+                        }
+                    }
+                    ChangePanelColor(Player3Color);
+                    TurnPlayerNumber.text = "Player 3";
+                    Waiting = false;
+                }
+            }
         }
     }
-    
-    if((Player1Turn == true && finishedMovingCounter == P1Blocks.Count + NeutralBlocks.Count) || (Player2Turn == true && finishedMovingCounter == P2Blocks.Count + NeutralBlocks.Count) || (Player3Turn == true && finishedMovingCounter == P3Blocks.Count + NeutralBlocks.Count) || (Player4Turn == true && finishedMovingCounter == P4Blocks.Count + NeutralBlocks.Count))
+    else if(isCheckingTime == false && needsToIndicatePlacing == true)
     {
-        foreach(GameObject block in blocks)
+        int activePlayerID = 0;
+        if(Player1Turn == true){activePlayerID = 1;}
+        else if(Player2Turn == true){activePlayerID = 2;}
+        else if(Player3Turn == true){activePlayerID = 3;}
+        else if(Player4Turn == true){activePlayerID = 4;}
+        
+       
+        PickPositionsToPlaceBlocks(activePlayerID);
+
+        
+        
+    }
+    else if(placingIsFinished == true)
+    {
+        int activePlayerID = 0;
+        if(Player1Turn == true){activePlayerID = 1;}
+        else if(Player2Turn == true){activePlayerID = 2;}
+        else if(Player3Turn == true){activePlayerID = 3;}
+        else if(Player4Turn == true){activePlayerID = 4;}
+
+        isCheckingTime = true;
+        needsToIndicatePlacing = false;
+        placingIsFinished = false;
+        if(CheckForMovementPossibilities(activePlayerID))
         {
-            //Mówimy blokom, że skoro skończyły się ruszać to mogą się zniszczyć jeśli potrzebują i mają się przygotować do następnej kolejki
-            BlockBehaviourScript = block.GetComponent<LocalBRBlockBehaviourScript>();
-            BlockBehaviourScript.executeLevelUp();
-            BlockBehaviourScript.finishedMoving = false;
-            BlockBehaviourScript.idle = true;
-            BlockBehaviourScript.dir = "empty";
+            LookForPlaceToSpawnBlockAndPlaceIt(activePlayerID);
         }
-        // SpawnNewBlock();
-        CheckForGameOver(0);
-        if(Player1Turn == true)
+        else 
         {
-            CheckForGameOver(0);
-            if(isPlayer2Playing)
-            {
-                Player1Turn = false;
-                Player2Turn = true;
-                if(CheckForPlacingPossibilities(2) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(2));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(2));
-                }
-                CheckForMovementPossibilities(2);
-                LookForPlaceToSpawnBlockAndPlaceIt(2);
-                ChangePanelColor(Player2Color);
-                TurnPlayerNumber.text = "Player 2";
-                Waiting = false;
-            }
-            else if(isPlayer3Playing)
-            {
-                Player1Turn = false;
-                Player3Turn = true;
-                if(CheckForPlacingPossibilities(3) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(3));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
-                }
-                CheckForMovementPossibilities(3);
-                LookForPlaceToSpawnBlockAndPlaceIt(3);
-                ChangePanelColor(Player3Color);
-                TurnPlayerNumber.text = "Player 3";
-                Waiting = false;
-            }
-            else if(isPlayer4Playing)
-            {
-                Player1Turn = false;
-                Player4Turn = true;
-                if(CheckForPlacingPossibilities(4) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(4));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
-                }
-                CheckForMovementPossibilities(4);
-                LookForPlaceToSpawnBlockAndPlaceIt(4);
-                ChangePanelColor(Player4Color);
-                TurnPlayerNumber.text = "Player 4";
-                Waiting = false;
-            }
-        }
-        else if (Player2Turn == true)
-        {
-            CheckForGameOver(0);
-            if(isPlayer3Playing)
-            {
-                Player2Turn = false;
-                Player3Turn = true;
-                if(CheckForPlacingPossibilities(3) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(3));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
-                }
-                CheckForMovementPossibilities(3);
-                LookForPlaceToSpawnBlockAndPlaceIt(3);
-                ChangePanelColor(Player3Color);
-                TurnPlayerNumber.text = "Player 3";
-                Waiting = false;
-            }
-            else if(isPlayer4Playing)
-            {
-                Player2Turn = false;
-                Player4Turn = true;
-                if(CheckForPlacingPossibilities(4) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(4));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
-                }
-                CheckForMovementPossibilities(4);
-                LookForPlaceToSpawnBlockAndPlaceIt(4);
-                ChangePanelColor(Player4Color);
-                TurnPlayerNumber.text = "Player 4";
-                Waiting = false;
-            }
-            else if(isPlayer1Playing)
-            {
-                Player2Turn = false;
-                Player1Turn = true;
-                if(CheckForPlacingPossibilities(1) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(1));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(1));
-                }
-                CheckForMovementPossibilities(1);
-                LookForPlaceToSpawnBlockAndPlaceIt(1);
-                ChangePanelColor(Player1Color);
-                TurnPlayerNumber.text = "Player 1";
-                Waiting = false;
-            }
-        }
-        else if (Player3Turn == true)
-        {
-            CheckForGameOver(0);
-            if(isPlayer4Playing)
-            {
-                Player3Turn = false;
-                Player4Turn = true;
-                if(CheckForPlacingPossibilities(3) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(3));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
-                }
-                CheckForMovementPossibilities(4);
-                LookForPlaceToSpawnBlockAndPlaceIt(4);
-                ChangePanelColor(Player4Color);
-                TurnPlayerNumber.text = "Player 4";
-                Waiting = false;
-            }
-            else if(isPlayer1Playing)
-            {
-                Player3Turn = false;
-                Player1Turn = true;
-                if(CheckForPlacingPossibilities(1) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(1));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(1));
-                }
-                CheckForMovementPossibilities(1);
-                LookForPlaceToSpawnBlockAndPlaceIt(1);
-                ChangePanelColor(Player1Color);
-                TurnPlayerNumber.text = " Player 1";
-                Waiting = false;
-            }
-            else if(isPlayer2Playing)
-            {
-                Player3Turn = false;
-                Player2Turn = true;
-                if(CheckForPlacingPossibilities(2) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(2));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(2));
-                }
-                CheckForMovementPossibilities(2);
-                LookForPlaceToSpawnBlockAndPlaceIt(2);
-                ChangePanelColor(Player2Color);
-                TurnPlayerNumber.text = "Player 2";
-                Waiting = false;
-            }
-        }
-        else if (Player4Turn == true)
-        {
-            CheckForGameOver(0); 
-            if(isPlayer1Playing)
-            {
-                Player4Turn = false;
-                Player1Turn = true;
-                if(CheckForPlacingPossibilities(4) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(4));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
-                }
-                CheckForMovementPossibilities(1);
-                LookForPlaceToSpawnBlockAndPlaceIt(1);
-                ChangePanelColor(Player1Color);
-                TurnPlayerNumber.text = "Player 1";
-                Waiting = false;
-            }
-            else if(isPlayer2Playing)
-            {
-                Player4Turn = false;
-                Player2Turn = true;
-                if(CheckForPlacingPossibilities(2) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(2));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(2));
-                }
-                CheckForMovementPossibilities(2);
-                LookForPlaceToSpawnBlockAndPlaceIt(2);
-                ChangePanelColor(Player2Color);
-                TurnPlayerNumber.text = "Player 2";
-                Waiting = false;
-            }
-            else if(isPlayer3Playing)
-            {
-                Player4Turn = false;
-                Player3Turn = true;
-                if(CheckForPlacingPossibilities(3) > 0)
-                {
-                    StartCoroutine(PickPositionsToPlaceBlocks(3));
-                }
-                else
-                {
-                    StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
-                }
-                CheckForMovementPossibilities(3);
-                LookForPlaceToSpawnBlockAndPlaceIt(3);
-                ChangePanelColor(Player3Color);
-                TurnPlayerNumber.text = "Player 3";
-                Waiting = false;
-            }
+            SkipPlayerMovementFromLackOfSpace(activePlayerID);
         }
     }     
 }
@@ -622,6 +751,7 @@ public void LookForPlaceToSpawnBlockAndPlaceIt(int owner)
                             Camera.GetComponent<CameraBRScript>().MoveForBR();
                             UIControlling.MoveForBR();
                             MoveBlocksForBRPlaces();
+                            fields = SpawnField.fields;
                             fields.TrimExcess();
                             isBRFaze = true;
                         }
@@ -912,7 +1042,6 @@ public void MoveBlocksForBRPlaces()
 
 public int CheckForPlacingPossibilities(int player)
 {
-    // Debug.Log("Sprawdzam dla gracza: " + player);
     int placesToPlaceBlock = 0;
     List<GameObject> BlocksOfPlayers = new List<GameObject>();
     if(player == 1){BlocksOfPlayers = P1Blocks;}
@@ -954,9 +1083,8 @@ public int CheckForPlacingPossibilities(int player)
 }
 
 
-public void CheckForMovementPossibilities(int player)
+public bool CheckForMovementPossibilities(int player)
 {
-    Debug.Log("Sprawdzam dla gracza: " + player);
     bool ismovementPossible = false;
     List<GameObject> BlocksOfPlayers = new List<GameObject>();
     if(player == 1){BlocksOfPlayers = P1Blocks;}
@@ -982,6 +1110,7 @@ public void CheckForMovementPossibilities(int player)
                 {
                     thisFieldScript.chceckedForBeingFree = true;
                     ismovementPossible = true;
+                    return true;
                 }
 
 
@@ -995,11 +1124,13 @@ public void CheckForMovementPossibilities(int player)
                     if(thisFieldBlockValue == thisBBH.value)
                     {
                         ismovementPossible = true;
+                        return true;
                     }
 
                     else if(thisFieldOwner != 0 && thisFieldOwner != player && thisFieldBlockValue <= thisBBH.value)
                     {
                         ismovementPossible = true;
+                        return true;
                     }
 
                     else if(thisFieldOwner == 0)
@@ -1028,20 +1159,25 @@ public void CheckForMovementPossibilities(int player)
                                     if(nextFieldScript.isWall == true)
                                     {
                                         isMovementHereImpossible = true;
+
+                                
                                     }
                                     else if(nextFieldScript.isTaken == false)
                                     {
                                         ismovementPossible = true;
+                                        return true;
                                     }
                                     else if(nextFieldScript.blockOwnerID != 0)
                                     {
                                         isMovementHereImpossible = true;
+                                        
                                     }
                                     else if(nextFieldScript.blockOwnerID == 0)
                                     {
                                         if(nextFieldScript.blockValue == referencePrevoiusValue)
                                         {
                                             ismovementPossible = true;
+                                            return true;
                                         }
                                         else
                                         {
@@ -1056,39 +1192,53 @@ public void CheckForMovementPossibilities(int player)
                                 }
                             }
                         }while(ismovementPossible == false && isMovementHereImpossible == false);
+                        
                     }
                 }
+                
 
             }
+           
 
         }
     }
-    // Debug.Log("Tyle miejsc na postawienie bloku: " + placesToPlaceBlock);
-    Debug.Log("Ruch jest możliwy = " + ismovementPossible);
+    return false;
 }
 
-
-
-IEnumerator SkipPlacingBlocksFromLackOfSpace(int player)
+public void PickPositionsToPlaceBlocks(int player)
     {
-        Debug.Log("Pominięto rozkładanie bloków gracza" + player);
-        yield return null;
-    }
-IEnumerator PickPositionsToPlaceBlocks(int player)
-    {
+        isCheckingTime = false;
+        needsToIndicatePlacing = false;
         if(isBRFaze)
         {
-            yield return StartCoroutine(LocalBRPowerUps.PositionSelectorForBlockPlacing(FreeFields));
-            
-            Debug.Log("Rozłożono bloki gracza" + player);
+            LocalBRPowerUps.PositionSelectorForBlockPlacing(FreeFields);
             FreeFields.Clear();
-            yield return null;
         }
         else
         {
             FreeFields.Clear();
-            yield return null;
+            placingIsFinished = true;
+
         }
     }
+
+public IEnumerator SkipPlacingBlocksFromLackOfSpace(int player)
+    {
+        placingIsFinished = true;
+        yield return null;
+    }
+
+public void SkipPlayerMovementFromLackOfSpace(int player)
+{
+    if(isBRFaze)
+    {
+        UIControlling.AnnounceMoveSkip(player);
+    }
+    else
+    {
+        LookForPlaceToSpawnBlockAndPlaceIt(player);
+    }
+}
+
 
 }

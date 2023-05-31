@@ -13,11 +13,16 @@ public class UIControlling_BRLocal : MonoBehaviour
 [SerializeField] GameObject ColorPanel;
 [SerializeField] TextMeshProUGUI nowMoving;
 
+[SerializeField] GameObject SkippedPlayerPanel;
+[SerializeField] TextMeshProUGUI SkippedPlayerID;
+
 [SerializeField] GameObject EliminatedPlayerPanel;
 [SerializeField] TextMeshProUGUI EliminatedPlayerID;
 
 [SerializeField] GameObject WinnerPanel;
 [SerializeField] TextMeshProUGUI WinnerID;
+
+
 
 
 public int moves;
@@ -30,6 +35,7 @@ Camera Camera;
     {
         SpawnBlock = BlockSpawner.GetComponent<LocalBRSpawnBlock>();
         turn = SpawnBlock.turnsToStartBR;
+        SkippedPlayerPanel.SetActive(false);
         EliminatedPlayerPanel.SetActive(false);
         WinnerPanel.SetActive(false);
 
@@ -58,10 +64,30 @@ Camera Camera;
      EliminatedPlayerPanel.SetActive(true);
      EliminatedPlayerID.text = player.ToString();
      EliminatedPlayerPanel.GetComponent<RectTransform>().position = new Vector2(100, 500);
-     StartCoroutine(PullDownEliminationPanel(player));
+     StartCoroutine(PullDownEliminationPanel());
    }
 
-     IEnumerator PullDownEliminationPanel(int player)
+   public void AnnounceMoveSkip(int player)
+   {
+     SkippedPlayerPanel.SetActive(true);
+     SkippedPlayerID.text = player.ToString();
+     SkippedPlayerPanel.GetComponent<RectTransform>().position = new Vector2(700, 100);
+     StartCoroutine(PullUpMoveSkippedPanel());
+   }
+
+     
+     IEnumerator PullUpMoveSkippedPanel()
+     {
+          for (int l = 30; l >= 0; l -= 1)
+          {
+          SkippedPlayerPanel.GetComponent<RectTransform>().position += new Vector3(-5, 0, 0);
+          SkippedPlayerPanel.GetComponent<Image>().color -= new Color32(0,0,0,2);
+          yield return new WaitForSeconds(.05f);   
+          }
+          SkippedPlayerPanel.SetActive(false);
+     }
+     
+     IEnumerator PullDownEliminationPanel()
      {
           for (int l = 30; l >= 0; l -= 1)
           {
@@ -112,6 +138,8 @@ Camera Camera;
           yield return new WaitForSeconds(.05f);   
           }
      }
+
+     
 
 
 }

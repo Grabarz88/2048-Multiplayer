@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LocalBRPowerUps : MonoBehaviour
 {
-LocalBRSpawnBlock LocalBRSpawnBlock;
+LocalBRSpawnBlock SpawnBlock;
 [SerializeField] public GameObject Pointer; 
 public GameObject positionPointer; 
 public List<GameObject> fields;
@@ -28,28 +28,29 @@ public int currentPointerOwnerID;
     
     void Start()
     {
-        LocalBRSpawnBlock = GetComponent<LocalBRSpawnBlock>();
+        SpawnBlock = GetComponent<LocalBRSpawnBlock>();
     }
 
-    public IEnumerator PositionSelectorForBlockPlacing(List<FieldScript> GivenFields)
+    public void PositionSelectorForBlockPlacing(List<FieldScript> GivenFields)
     {
+        
         isChosing = true;
-        FreeFields = GivenFields;
-        isPointerInUse = true;
+        // FreeFields = GivenFields;
+        // isPointerInUse = true;
 
-        positionPointer = Instantiate(Pointer); 
-        FreeFieldID = 0;
-        lastField = FreeFields.Count - 1;
-        spawnPlace = new Vector2(FreeFields[0].positionX, FreeFields[0].positionY);        
-        positionPointer.GetComponent<Transform>().position = spawnPlace;
-        do
-        {
-            isMovingPointer();
-        }
-        while(isChosing == true);
+        // positionPointer = Instantiate(Pointer); 
+        // FreeFieldID = 0;
+        // lastField = FreeFields.Count - 1;
+        // spawnPlace = new Vector2(FreeFields[0].positionX, FreeFields[0].positionY);        
+        // positionPointer.GetComponent<Transform>().position = spawnPlace;
+        // do
+        // {
+        //     isMovingPointer();
+        // }
+        // while(isChosing == true);
 
         
-        yield return null;
+        // SpawnBlock.placingIsFinished = true;
 
     }
     
@@ -70,6 +71,16 @@ public int currentPointerOwnerID;
     
     void Update()
     {
+        if(isChosing == true)
+        {
+            Debug.Log("POWER UP");
+            if(Input.GetButtonDown("D") || Input.GetButtonDown("MoveRight"))
+            {
+                isChosing = false;
+                SpawnBlock.placingIsFinished = true;
+            }
+
+        }
         // if(isPointerInUse)
         // {
         
