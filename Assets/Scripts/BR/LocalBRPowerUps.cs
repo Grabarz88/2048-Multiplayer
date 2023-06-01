@@ -17,13 +17,16 @@ public List<GameObject> NeutralBlocks;
 
 public bool isPointerInUse = false;
 public List<FieldScript> FreeFields;
-int FreeFieldID = 0;
+public List<FieldScript> SortedFields;
+public int FreeFieldID = 0;
+public int blocksLeftToPlace = 2;
 Vector2 spawnPlace;
 int lastField;
 
 public bool isChosing = false;
-
+ GameObject previouslyPlacedBlock;
 public int currentPointerOwnerID;
+public int colorToUse;
     
     
     void Start()
@@ -31,34 +34,60 @@ public int currentPointerOwnerID;
         SpawnBlock = GetComponent<LocalBRSpawnBlock>();
     }
 
-    public void PositionSelectorForBlockPlacing(List<FieldScript> GivenFields)
+    public void PositionSelectorForBlockPlacing(List<FieldScript> GivenFields, int player, int color)
     {
-        
+        Debug.Log("Power Up P1Blocks: " + SpawnBlock.P1Blocks.Count);
+        Debug.Log("Power UP P2Blocks: " + SpawnBlock.P2Blocks.Count);
+        blocksLeftToPlace = 2;
+        previouslyPlacedBlock = null;
+        currentPointerOwnerID = player;
+        colorToUse = color;
         isChosing = true;
-        // FreeFields = GivenFields;
-        // isPointerInUse = true;
+        FreeFields = new List<FieldScript>(GivenFields);
+        SortedFields.Clear();
+        int sortingX = 1;
+        int sortingY = 1;
+        int sortingID = 0;
+        
+        do
+        {
+            do
+            {
+                do
+                {
+                    foreach(FieldScript field in FreeFields)
+                    {
+                        if(field.TableNumberX == sortingX)
+                        {
+                            if(field.TableNumberY == sortingY)
+                            {
+                                SortedFields.Add(field);
+                                sortingID++;
+                            }
+                        }
+                    }
+                    sortingY++;
+                }while(sortingY < 21);
+                sortingX++;
+                sortingY = 1;
+            }while(sortingX <21);
+        }while(sortingID < FreeFields.Count);
 
-        // positionPointer = Instantiate(Pointer); 
-        // FreeFieldID = 0;
-        // lastField = FreeFields.Count - 1;
-        // spawnPlace = new Vector2(FreeFields[0].positionX, FreeFields[0].positionY);        
-        // positionPointer.GetComponent<Transform>().position = spawnPlace;
-        // do
-        // {
-        //     isMovingPointer();
-        // }
-        // while(isChosing == true);
 
         
-        // SpawnBlock.placingIsFinished = true;
+        isPointerInUse = true;
+        positionPointer = Instantiate(Pointer); 
+        FreeFieldID = 0;
+        lastField = SortedFields.Count - 1;
+        spawnPlace = new Vector2(SortedFields[0].positionX, SortedFields[0].positionY);        
+        positionPointer.GetComponent<Transform>().position = spawnPlace;
+        
 
+        // komenda na zakończenie działania pointera 
+        // SpawnBlock.placingIsFinished = true;
     }
     
-    public void MovePointer()
-    {
-        spawnPlace = new Vector2(FreeFields[FreeFieldID].positionX, FreeFields[FreeFieldID].positionY);
-        positionPointer.GetComponent<Transform>().position = spawnPlace;
-    }
+   
 
     public void isMovingPointer()
     {
@@ -71,14 +100,65 @@ public int currentPointerOwnerID;
     
     void Update()
     {
-        if(isChosing == true)
+        
+        bool needToChangePointerPlace = false;
+        if(isChosing == true && isPointerInUse == true)
         {
-            Debug.Log("POWER UP");
             if(Input.GetButtonDown("D") || Input.GetButtonDown("MoveRight"))
             {
-                isChosing = false;
-                SpawnBlock.placingIsFinished = true;
+                FreeFieldID++;
+                if(FreeFieldID >= FreeFields.Count){FreeFieldID = 0;}
+                needToChangePointerPlace = true;
+
+                // isChosing = false;
+                // SpawnBlock.placingIsFinished = true;
             }
+            if(Input.GetButtonDown("A") || Input.GetButtonDown("MoveLeft"))
+            {
+                FreeFieldID--;
+                if(FreeFieldID <= -1){FreeFieldID = lastField;}
+                needToChangePointerPlace = true;
+            }
+
+            if(needToChangePointerPlace == true)
+            {
+                MovePointer();
+                needToChangePointerPlace = false;
+            }
+
+            if(Input.GetButtonDown("Enter") || Input.GetButtonDown("Spacebar"))
+            {
+                Debug.Log("Stawiam");
+                if(blocksLeftToPlace == 1)
+                {
+                    previouslyPlacedBlock = GameObject.Find("block" + (SpawnBlock.blockID-1));
+                    if (previouslyPlacedBlock.GetComponent<LocalBRBlockBehaviourScript>().TableNumberX == SortedFields[FreeFieldID].TableNumberX && previouslyPlacedBlock.GetComponent<LocalBRBlockBehaviourScript>().TableNumberY == SortedFields[FreeFieldID].TableNumberY)
+                    {
+                        Destroy(previouslyPlacedBlock);
+                        SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 4, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
+                    }
+                    else
+                    {
+                        SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 2, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
+                    }
+                }
+                else
+                { 
+                    SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 2, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
+                }
+
+                blocksLeftToPlace--;
+                if(blocksLeftToPlace <= 0)
+                {
+                    Destroy(positionPointer);
+                    isChosing = false;
+                    isPointerInUse = false;
+                    SpawnBlock.placingIsFinished = true;
+                }
+            }
+
+
+
 
         }
         // if(isPointerInUse)
@@ -96,6 +176,13 @@ public int currentPointerOwnerID;
        
        
     }
+
+     public void MovePointer()
+    {
+        spawnPlace = new Vector2(SortedFields[FreeFieldID].positionX,SortedFields[FreeFieldID].positionY);
+        positionPointer.GetComponent<Transform>().position = spawnPlace;
+    }
+
     
     // public IEnumerator PositionSelectorForBlockPlacing(List<FieldScript> FreeFields)
     // {

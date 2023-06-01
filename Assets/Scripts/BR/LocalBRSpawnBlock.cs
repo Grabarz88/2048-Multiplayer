@@ -23,7 +23,7 @@ ScriptToRememberBRColors ScriptToRememberColors;
 public UIControlling_BRLocal UIControlling;
 public LocalBRBlockBehaviourScript BlockBehaviourScript;
 
-int blockID = 0;
+public int blockID = 0;
 public int Player1Color = 0;
 public int Player2Color = 0;
 public int Player3Color = 0;
@@ -57,6 +57,7 @@ public bool isBRFaze = false;
 public bool isCheckingTime = true;
 public bool needsToIndicatePlacing = false;
 public bool placingIsFinished = false;
+public bool canCheckForGameOver = false;
 
 int idleCounter;
 int finishedSearchingCounter;
@@ -158,7 +159,6 @@ void Update()
 {
     if(isCheckingTime == true && needsToIndicatePlacing == false)
     {
-        Debug.Log("Update");
         blocks.TrimExcess();
         idleCounter = 0;
         finishedSearchingCounter = 0;
@@ -290,9 +290,13 @@ void Update()
                 BlockBehaviourScript.idle = true;
                 BlockBehaviourScript.dir = "empty";
             }
+            canCheckForGameOver = true;
+        }
             
             // SpawnNewBlock();
-
+        if(canCheckForGameOver == true && idleCounter == blocks.Count)
+        {
+        //Powyższy warunek if może wydawać się dziwny, ale jest konieczny, żeby upewnić się że wszystkie bloki zdążyły wykonać Level Up i inne zmieniające Listę Bloków komendy.
             CheckForGameOver(0);
             if(Player1Turn == true)
             {
@@ -611,6 +615,7 @@ void Update()
                     Waiting = false;
                 }
             }
+            canCheckForGameOver = false;
         }
     }
     else if(isCheckingTime == false && needsToIndicatePlacing == true)
@@ -1042,8 +1047,14 @@ public void MoveBlocksForBRPlaces()
 
 public int CheckForPlacingPossibilities(int player)
 {
+    P1Blocks.TrimExcess();
+    P2Blocks.TrimExcess();
+    P3Blocks.TrimExcess();
+    P4Blocks.TrimExcess();
     int placesToPlaceBlock = 0;
     List<GameObject> BlocksOfPlayers = new List<GameObject>();
+    Debug.Log("P1Blocks: " + P1Blocks.Count);
+    Debug.Log("P2Blocks: " + P2Blocks.Count);
     if(player == 1){BlocksOfPlayers = P1Blocks;}
     else if(player == 2){BlocksOfPlayers = P2Blocks;}
     else if(player == 3){BlocksOfPlayers = P3Blocks;}
@@ -1055,7 +1066,7 @@ public int CheckForPlacingPossibilities(int player)
         LocalBRBlockBehaviourScript thisBBH = block.GetComponent<LocalBRBlockBehaviourScript>();
         x = thisBBH.TableNumberX;
         y = thisBBH.TableNumberY;
-        
+        // Debug.Log("Blok na pozycji X: " + x + "    Y: " + y);
 
         foreach(GameObject field in fields)
         {
@@ -1066,7 +1077,6 @@ public int CheckForPlacingPossibilities(int player)
                 if(thisFieldScript.isWall == false && thisFieldScript.isTaken == false && thisFieldScript.chceckedForBeingFree == false)
                 {
                     thisFieldScript.chceckedForBeingFree = true;
-                    // Pamiętaj później dodać funkcję, która zwolni powyższy parametr z pól.
                     FreeFields.Add(thisFieldScript);
                     placesToPlaceBlock++;
                 }
@@ -1211,7 +1221,12 @@ public void PickPositionsToPlaceBlocks(int player)
         needsToIndicatePlacing = false;
         if(isBRFaze)
         {
-            LocalBRPowerUps.PositionSelectorForBlockPlacing(FreeFields);
+            int colorToThrow = 0;
+            if(player == 1){colorToThrow = Player1Color;}
+            else if(player == 2){colorToThrow = Player2Color;}
+            else if(player == 3){colorToThrow = Player3Color;}
+            else if(player == 4){colorToThrow = Player4Color;}
+            LocalBRPowerUps.PositionSelectorForBlockPlacing(FreeFields, player, colorToThrow);
             FreeFields.Clear();
         }
         else

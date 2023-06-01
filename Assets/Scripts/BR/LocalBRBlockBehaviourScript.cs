@@ -184,6 +184,7 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                                         willMove = true;
                                                         willBeDestroyed = true;
                                                         willBeLevelingUp = true;
+                                                        TakeNewField(TableNumberX, TableNumberY);
 
                                                         NextBlockBehaviourScript.willBeDestroyed = true;
                                                         if(OwnerID == 0 && NextBlockBehaviourScript.OwnerID != 0)
@@ -289,6 +290,7 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                                     TableNumberX = TableNumberX_toCheck;
                                                     TableNumberY = TableNumberY_toCheck;
                                                     ReleaseOldField(TableNumberX, TableNumberY, dir);
+                                                    TakeNewField(TableNumberX, TableNumberY);
 
                                                             
                                                     searching = false;
@@ -307,6 +309,7 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
                                                     TableNumberX = TableNumberX_toCheck;
                                                     TableNumberY = TableNumberY_toCheck;
                                                     ReleaseOldField(TableNumberX, TableNumberY, dir);
+                                                    TakeNewField(TableNumberX, TableNumberY);
                                                 
                                                     searching = false;
                                                     finishedSearching = true;
