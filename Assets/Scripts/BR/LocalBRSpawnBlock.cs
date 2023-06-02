@@ -464,21 +464,21 @@ void Update()
                 {
                     Player3Turn = false;
                     Player4Turn = true;
-                    if(CheckForPlacingPossibilities(3) > 0)
+                    if(CheckForPlacingPossibilities(4) > 0)
                     {
                         needsToIndicatePlacing = true;
                         isCheckingTime = false;
                     }
                     else
                     {
-                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(3));
-                        if(CheckForMovementPossibilities(3))
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
+                        if(CheckForMovementPossibilities(4))
                         {
-                            LookForPlaceToSpawnBlockAndPlaceIt(3);
+                            LookForPlaceToSpawnBlockAndPlaceIt(4);
                         }
                         else 
                         {
-                        SkipPlayerMovementFromLackOfSpace(3);
+                        SkipPlayerMovementFromLackOfSpace(4);
                         }
                     }
                     ChangePanelColor(Player4Color);
@@ -543,21 +543,21 @@ void Update()
                 {
                     Player4Turn = false;
                     Player1Turn = true;
-                    if(CheckForPlacingPossibilities(4) > 0)
+                    if(CheckForPlacingPossibilities(1) > 0)
                     {
                         needsToIndicatePlacing = true;
                         isCheckingTime = false;
                     }
                     else
                     {
-                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(4));
-                        if(CheckForMovementPossibilities(4))
+                        StartCoroutine(SkipPlacingBlocksFromLackOfSpace(1));
+                        if(CheckForMovementPossibilities(1))
                         {
-                            LookForPlaceToSpawnBlockAndPlaceIt(4);
+                            LookForPlaceToSpawnBlockAndPlaceIt(1);
                         }
                         else 
                         {
-                        SkipPlayerMovementFromLackOfSpace(4);
+                        SkipPlayerMovementFromLackOfSpace(1);
                         }
                     }
                     ChangePanelColor(Player1Color);
@@ -1239,7 +1239,7 @@ public void PickPositionsToPlaceBlocks(int player)
 
 public IEnumerator SkipPlacingBlocksFromLackOfSpace(int player)
     {
-        placingIsFinished = true;
+        // placingIsFinished = true;
         yield return null;
     }
 

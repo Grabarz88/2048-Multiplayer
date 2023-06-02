@@ -13,7 +13,7 @@ public class PointerScript : MonoBehaviour
     }
 
     
-    void Update()
+    void FixedUpdate()
     {
         if(small == true)
         {
