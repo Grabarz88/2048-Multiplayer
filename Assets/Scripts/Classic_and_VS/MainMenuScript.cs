@@ -24,6 +24,11 @@ public class MainMenuScript : MonoBehaviour
     {
         SceneManager.LoadScene("BRSettings");
     }
+    
+    public void OnlineModes()
+    {
+        SceneManager.LoadScene("OnlineMenu");
+    }
 
     public void Quit()
     {
