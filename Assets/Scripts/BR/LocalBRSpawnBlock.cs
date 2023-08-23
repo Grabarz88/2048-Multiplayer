@@ -1239,7 +1239,7 @@ public void PickPositionsToPlaceBlocks(int player)
 
 public IEnumerator SkipPlacingBlocksFromLackOfSpace(int player)
     {
-        placingIsFinished = true;
+        // placingIsFinished = true;
         yield return null;
     }
 

@@ -20,6 +20,11 @@ public class MainMenuScript : MonoBehaviour
         SceneManager.LoadScene("VSSettings");
     }
 
+    public void LocalBR()
+    {
+        SceneManager.LoadScene("BRSettings");
+    }
+
     public void Quit()
     {
         Application.Quit();
