@@ -62,7 +62,10 @@ public class ScoreCounterScript : MonoBehaviour
         adjustScoreFieldSize();
     }   
 
-
+    public int GetPoints()
+    {
+      return score;
+    }
 
 
   public void adjustScoreFieldSize()
