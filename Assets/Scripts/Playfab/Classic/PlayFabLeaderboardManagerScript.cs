@@ -146,7 +146,7 @@ public class PlayFabLeaderboardManagerScript : MonoBehaviour
 
     
     
-    public void SendLeaderboard(int score)
+    public void SendLeaderboard()
     {
         SubmitNameButton();
 
@@ -154,7 +154,7 @@ public class PlayFabLeaderboardManagerScript : MonoBehaviour
             Statistics = new List<StatisticUpdate> {
                 new StatisticUpdate {
                     StatisticName  = "ClassicScore",
-                    Value = score
+                    Value = ScoreCounter.GetComponent<ScoreCounterScript>().GetPoints(),
                 }
             }
         };
@@ -177,18 +177,19 @@ public class PlayFabLeaderboardManagerScript : MonoBehaviour
     public void SubmitNameButton()
     {
         var request = new UpdateUserTitleDisplayNameRequest{
-            DisplayName = "Otto test",
+            DisplayName = NameInputField.text,
         };
-        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameUpdate, OnisplayNameUpdateError);
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameUpdate, OnDisplayNameUpdateError);
     }
     
     void OnDisplayNameUpdate(UpdateUserTitleDisplayNameResult result)
     {
         Debug.Log("Zmieniono imię gracza");
+        GetLeaderboard();
         
     }
 
-    void OnisplayNameUpdateError(PlayFabError error)
+    void OnDisplayNameUpdateError(PlayFabError error)
     {
         Debug.Log("ERROR Update nieudany");
         Debug.Log(error.GenerateErrorReport());
