@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class SpawnBlock : MonoBehaviour
 {
     public GameObject gameOverPanel;
+    public GameObject settingButton;
+    public GameObject arrowsCanvas;
     GameObject block;
     [SerializeField] GameObject block2;
     [SerializeField] GameObject block4;
@@ -265,6 +267,8 @@ public class SpawnBlock : MonoBehaviour
         gameOn = false;
         Debug.Log("TRUE GAME OVER");
         gameOverPanel.gameObject.SetActive(true);
+        arrowsCanvas.SetActive(false);
+        settingButton.SetActive(false);
         //We will check if SpawnField got confirmation, that we play Classic mode and can send score to online Leaderboard.
         if(PlayFabLeaderboardManager.activeSelf == true)
         {

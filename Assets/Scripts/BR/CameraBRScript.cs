@@ -17,6 +17,6 @@ public class CameraBRScript : MonoBehaviour
     }
     public void MoveForBR()
     {
-        GetComponent<Camera>().orthographicSize = 400;
+        GetComponent<Camera>().orthographicSize = 450;
     }
 }

@@ -91,10 +91,10 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
 
             if(waitingForDir == true)
 			{
-				if (Input.GetButtonDown("D") || Input.GetButtonDown("MoveRight")) { dir = "right"; }
-				if (Input.GetButtonDown("A") || Input.GetButtonDown("MoveLeft")) { dir = "left"; }
-				if (Input.GetButtonDown("W") || Input.GetButtonDown("MoveUp")) { dir = "up"; }
-				if (Input.GetButtonDown("S") || Input.GetButtonDown("MoveDown")) { dir = "down"; }
+				if (Input.GetButtonDown("D") || Input.GetButtonDown("MoveRight")) {goRight();}
+				if (Input.GetButtonDown("A") || Input.GetButtonDown("MoveLeft")) {goLeft();}
+				if (Input.GetButtonDown("W") || Input.GetButtonDown("MoveUp")) {goUp();}
+				if (Input.GetButtonDown("S") || Input.GetButtonDown("MoveDown")) {goDown();}
 
                 // if (SpawnBlock.Player2Turn == true && EnemyIsComputer == false && Input.GetButtonDown("MoveRight")) { dir = "right"; }
 				// if (SpawnBlock.Player2Turn == true && EnemyIsComputer == false && Input.GetButtonDown("MoveLeft")) { dir = "left"; }
@@ -339,6 +339,37 @@ public class LocalBRBlockBehaviourScript : MonoBehaviour
 		}   
     }
 
+    public void goRight()
+    {
+        if(waitingForDir == true)
+        {
+            dir = "right";
+        }
+    }
+
+    public void goLeft()
+    {
+        if(waitingForDir == true)
+        {
+            dir = "left";
+        }
+    }
+
+    public void goUp()
+    {
+        if(waitingForDir == true)
+        {
+            dir = "up";
+        }
+    }
+
+    public void goDown()
+    {
+        if(waitingForDir == true)
+        {
+            dir = "down";
+        }
+    }
     public void executeWaitingForDir()
 	{
         waitingForDir = true;

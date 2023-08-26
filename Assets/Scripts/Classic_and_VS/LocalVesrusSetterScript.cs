@@ -21,7 +21,7 @@ public class LocalVesrusSetterScript : MonoBehaviour
 
     public void Start()
     {
-    
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         Player1PanelSpr = Player1ColorPanel.gameObject.GetComponent<Image>();
         Player2PanelSpr = Player2ColorPanel.gameObject.GetComponent<Image>();
 

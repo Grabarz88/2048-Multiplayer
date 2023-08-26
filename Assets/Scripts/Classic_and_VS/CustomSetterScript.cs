@@ -45,4 +45,9 @@ public class CustomSetterScript : MonoBehaviour
             
         }
     }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }

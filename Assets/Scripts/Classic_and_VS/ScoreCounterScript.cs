@@ -37,7 +37,15 @@ public class ScoreCounterScript : MonoBehaviour
       score = 0;
       ScorePanelRectTransform = ScorePanel.GetComponent<RectTransform>();
       highScorePanelRectTransform = highScorePanel.GetComponent<RectTransform>();
-      highScore = PlayerPrefs.GetInt("HighScore");
+      if(PlayerPrefs.HasKey("HighScore"))
+      {
+        highScore = PlayerPrefs.GetInt("HighScore");
+      }
+      else
+      {
+        PlayerPrefs.SetInt("HighScore", 0);
+      } 
+
       textHighScore.text = highScore.ToString();
       adjustHighScoreFieldSize();
 

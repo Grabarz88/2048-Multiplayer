@@ -34,7 +34,10 @@ public class SpawnField : MonoBehaviour
         PodajSzerokoscPlanszy = 6;
         PodajWysokoscPlanszy = 6;
         //Playing classic mode allows us to send our score to HighScore Leaderboard in online services.
-        HighScoreManager.SetActive(true);
+        if(HighScoreManager != null) //Local VS mode uses this script, however it doesn't have this object assigned. That's why using this statement we make sure that current game mode is Classic.
+        {
+            HighScoreManager.SetActive(true);
+        }
        }
 
        int y = 0;

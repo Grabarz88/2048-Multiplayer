@@ -56,6 +56,8 @@ public class PlayFabLeaderboardManagerScript : MonoBehaviour
         LeaderboardPositions[7] = LeaderboardPosition8;
         LeaderboardPositions[8] = LeaderboardPosition9;
         LeaderboardPositions[9] = LeaderboardPosition10;
+        
+        
 
         
     }
@@ -122,6 +124,15 @@ public class PlayFabLeaderboardManagerScript : MonoBehaviour
     
     void OnLeaderboardGet(GetLeaderboardResult result)
     {
+        if(PlayerPrefs.HasKey("OnlineName"))
+        {
+            NameInputField.text = PlayerPrefs.GetString("OnlineName");
+        }
+        else
+        {
+            PlayerPrefs.SetString("OnlineName", null);
+        }
+
         LeaderboardPanel.SetActive(true);
         foreach (var item in result.Leaderboard) {
             Debug.Log(item.Position + " " + item.DisplayName + " " + item.StatValue);
@@ -148,7 +159,7 @@ public class PlayFabLeaderboardManagerScript : MonoBehaviour
     
     public void SendLeaderboard()
     {
-        SubmitNameButton();
+        SubmitName();
 
         var request = new UpdatePlayerStatisticsRequest {
             Statistics = new List<StatisticUpdate> {
@@ -174,12 +185,13 @@ public class PlayFabLeaderboardManagerScript : MonoBehaviour
         ConnectionFailedPanel.SetActive(true);
     }
 
-    public void SubmitNameButton()
+    public void SubmitName()
     {
         var request = new UpdateUserTitleDisplayNameRequest{
             DisplayName = NameInputField.text,
         };
         PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameUpdate, OnDisplayNameUpdateError);
+        PlayerPrefs.SetString("OnlineName", NameInputField.text);
     }
     
     void OnDisplayNameUpdate(UpdateUserTitleDisplayNameResult result)

@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
+    void Start()
+    {
+        Screen.orientation = ScreenOrientation.Portrait;
+    }
     public void Classic()
     {
         SceneManager.LoadScene("CustomGame");
