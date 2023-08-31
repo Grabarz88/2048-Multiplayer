@@ -28,6 +28,7 @@ public bool isChosing = false;
 public int currentPointerOwnerID;
 public int colorToUse;
 
+[SerializeField] GameObject SettingsButton;
 
 bool needToChangePointerPlace = false;
     
@@ -157,14 +158,19 @@ bool needToChangePointerPlace = false;
 
     public void PointerGoRight()
     {
-        FreeFieldID++;
-        if(FreeFieldID >= FreeFields.Count){FreeFieldID = 0;}
-        needToChangePointerPlace = true;
+        if(SettingsButton.GetComponent<ShowSettingsPanel>().isPauseActive == false)
+        {
+            FreeFieldID++;
+            if(FreeFieldID >= FreeFields.Count){FreeFieldID = 0;}
+            needToChangePointerPlace = true;
+        }
     }
 
     public void PointerPlaceBlock()
     {
-    if(blocksLeftToPlace == 1)
+        if(SettingsButton.GetComponent<ShowSettingsPanel>().isPauseActive == false)
+        {
+            if(blocksLeftToPlace == 1)
             {
                 previouslyPlacedBlock = GameObject.Find("block" + (SpawnBlock.blockID-1));
                 if (previouslyPlacedBlock.GetComponent<LocalBRBlockBehaviourScript>().TableNumberX == SortedFields[FreeFieldID].TableNumberX && previouslyPlacedBlock.GetComponent<LocalBRBlockBehaviourScript>().TableNumberY == SortedFields[FreeFieldID].TableNumberY)
@@ -181,7 +187,6 @@ bool needToChangePointerPlace = false;
             { 
                 SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 2, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
             }
-
             blocksLeftToPlace--;
             if(blocksLeftToPlace <= 0)
             {
@@ -190,13 +195,17 @@ bool needToChangePointerPlace = false;
                 isPointerInUse = false;
                 SpawnBlock.placingIsFinished = true;
             }
+        }
     }
 
     public void PoninterGoLeft()
     {
+        if(SettingsButton.GetComponent<ShowSettingsPanel>().isPauseActive == false)
+        {
         FreeFieldID--;
         if(FreeFieldID <= -1){FreeFieldID = lastField;}
         needToChangePointerPlace = true;
+        }
     }
 
     

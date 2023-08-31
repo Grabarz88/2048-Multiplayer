@@ -997,7 +997,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 255, y: -204}
+  m_AnchoredPosition: {x: 169, y: -204}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &310340063
@@ -1382,7 +1382,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -408, y: -127}
+  m_AnchoredPosition: {x: -193.48, y: -113.14}
   m_SizeDelta: {x: 386.96094, y: 81.712585}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &374343315
@@ -1799,7 +1799,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &843038264
 Canvas:
   m_ObjectHideFlags: 0
@@ -1809,7 +1809,7 @@ Canvas:
   m_GameObject: {fileID: 843038261}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_Camera: {fileID: 1978233194}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
@@ -1829,8 +1829,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 843038261}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 0.234375, y: 0.234375, z: 0.234375}
   m_Children:
   - {fileID: 1378269274}
   - {fileID: 333541878}
@@ -1843,9 +1843,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 74.21055, y: 84.999954}
+  m_SizeDelta: {x: 926.6019, y: 1641.553}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &917492697
 GameObject:
   m_ObjectHideFlags: 0
@@ -3878,7 +3878,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 150
+  orthographic size: 218.73859
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3902,7 +3902,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1978233192}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 73, y: 85, z: -10}
+  m_LocalPosition: {x: 75, y: 85, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

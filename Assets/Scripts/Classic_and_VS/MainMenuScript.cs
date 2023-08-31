@@ -8,6 +8,7 @@ public class MainMenuScript : MonoBehaviour
     void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait;
+        if(GameObject.Find("ObjectToRememberColors")){Destroy(GameObject.Find("ObjectToRememberColors"));}
     }
     public void Classic()
     {
