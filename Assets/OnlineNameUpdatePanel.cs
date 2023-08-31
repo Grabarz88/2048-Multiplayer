@@ -18,11 +18,11 @@ public class OnlineNameUpdatePanel : MonoBehaviour
         time -= Time.deltaTime;
         if (time >= 2)
         {
-            transform.position += new Vector3(-4 * Time.deltaTime, 0, 0);
+            transform.position += new Vector3(-5 * Time.deltaTime, 0, 0);
         }
         else if(time <= 1)
         {
-            transform.position += new Vector3(4 * Time.deltaTime, 0, 0);
+            transform.position += new Vector3(5 * Time.deltaTime, 0, 0);
         }
 
         if(time <=0)

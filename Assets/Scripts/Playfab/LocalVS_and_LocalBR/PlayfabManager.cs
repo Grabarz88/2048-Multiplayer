@@ -15,6 +15,7 @@ public class PlayfabManager : MonoBehaviour
     [SerializeField] GameObject LoginSuccessPanel;
     [SerializeField] GameObject LoginSuccessWelcomePanel;
     [SerializeField] TMP_InputField CustomName;
+    [SerializeField] TMP_Text DeviceIdentifier;
     [SerializeField] GameObject NameUpdateSuccessPanel;
     [SerializeField] GameObject NameUpdateFailedPanel;
     public string name;
@@ -57,20 +58,20 @@ public class PlayfabManager : MonoBehaviour
     {
         LoginInProgressPanel.SetActive(false);
         LoginSuccessPanel.SetActive(true);
-        // Debug.Log("Logowanie udane");
-
+        Debug.Log("Logowanie udane");
         if(result.InfoResultPayload.PlayerProfile != null)
         {
+            
             name = result.InfoResultPayload.PlayerProfile.DisplayName;
+            DeviceIdentifier.text = SystemInfo.deviceUniqueIdentifier;
         }
-        if(name == null)
+        else
         {
             name = PlayerPrefs.GetString("OnlineName");
+           
         }
-        else 
-        {
-            name = SystemInfo.deviceUniqueIdentifier;
-        }
+     
+        
         CustomName.text = name;
 
 
