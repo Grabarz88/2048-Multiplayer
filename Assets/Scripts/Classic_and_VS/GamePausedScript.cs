@@ -10,7 +10,8 @@ public class GamePausedScript : MonoBehaviour
     ShowSettingsPanel ShowSettingsPanel;
     void Start()
     {
-        restartMenu.gameObject.SetActive(false);
+        
+        if(restartMenu != null){restartMenu.gameObject.SetActive(false);}
         exitMenu.gameObject.SetActive(false);
         ShowSettingsPanel = settingsButton.GetComponent<ShowSettingsPanel>();
     }

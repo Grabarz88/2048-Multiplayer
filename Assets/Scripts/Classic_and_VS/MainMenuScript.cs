@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
+    void Start()
+    {
+        Screen.orientation = ScreenOrientation.Portrait;
+        if(GameObject.Find("ObjectToRememberColors")){Destroy(GameObject.Find("ObjectToRememberColors"));}
+    }
     public void Classic()
     {
         SceneManager.LoadScene("CustomGame");
@@ -23,6 +28,11 @@ public class MainMenuScript : MonoBehaviour
     public void LocalBR()
     {
         SceneManager.LoadScene("BRSettings");
+    }
+    
+    public void OnlineModes()
+    {
+        SceneManager.LoadScene("OnlineMenu");
     }
 
     public void Quit()

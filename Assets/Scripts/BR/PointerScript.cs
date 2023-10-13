@@ -8,7 +8,7 @@ public class PointerScript : MonoBehaviour
     bool small = true;
     void Start()
     {
-       gameObject.transform.localScale = new Vector3(10, 10, 1);
+       gameObject.transform.localScale = new Vector3(0.5f, 0.5f, 1);
 
     }
 
@@ -17,13 +17,13 @@ public class PointerScript : MonoBehaviour
     {
         if(small == true)
         {
-            gameObject.transform.localScale += new Vector3(1, 1, 0);
+            gameObject.transform.localScale += new Vector3(0.5f, 0.5f, 0);
             scale++;
         }
         
         if(small == false)
         {
-            gameObject.transform.localScale -= new Vector3(1, 1, 0);
+            gameObject.transform.localScale -= new Vector3(0.5f, 0.5f, 0);
             scale--;
         }
         if(scale > 30)

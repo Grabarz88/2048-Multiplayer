@@ -53,10 +53,10 @@ Camera Camera;
    
    public void MoveForBR()
    {
-        turnText.GetComponent<RectTransform>().position = new Vector2 (530, 430);
-        turnNumber.GetComponent<RectTransform>().position = new Vector2 (530, 380);
-        nowMoving.GetComponent<RectTransform>().position = new Vector2 (-270, 430);
-        ColorPanel.GetComponent<RectTransform>().position = new Vector2 (-315, 400);
+     //    turnText.GetComponent<RectTransform>().position = new Vector2 (530, 430);
+     //    turnNumber.GetComponent<RectTransform>().position = new Vector2 (530, 380);
+     //    nowMoving.GetComponent<RectTransform>().position = new Vector2 (-270, 430);
+     //    ColorPanel.GetComponent<RectTransform>().position = new Vector2 (-315, 400);
    }
 
    public void AnnounceELiminatedPlayer(int player)

@@ -22,6 +22,7 @@ GameObject ObjectToRememberColors;
 ScriptToRememberBRColors ScriptToRememberColors;
 public UIControlling_BRLocal UIControlling;
 public LocalBRBlockBehaviourScript BlockBehaviourScript;
+[SerializeField] GameObject SettingsButton;
 
 public int blockID = 0;
 public int Player1Color = 0;
@@ -654,6 +655,35 @@ void Update()
     }     
 }
 
+public void TryToSetDirRight()
+{
+    foreach(GameObject block in blocks)
+    {
+        block.GetComponent<LocalBRBlockBehaviourScript>().goRight();
+    }
+}
+
+public void TryToSetDirLeft()
+{
+    foreach(GameObject block in blocks)
+    {
+        block.GetComponent<LocalBRBlockBehaviourScript>().goLeft();
+    } 
+}
+public void TryToSetDirUp()
+{
+    foreach(GameObject block in blocks)
+    {
+        block.GetComponent<LocalBRBlockBehaviourScript>().goUp();
+    }
+}
+public void TryToSetDirDown()
+{
+    foreach(GameObject block in blocks)
+    {
+        block.GetComponent<LocalBRBlockBehaviourScript>().goDown();
+    }       
+}
 
 
 public void InstantiateThisColorWithThisOwner(int color, long value, int owner, int X, int Y)

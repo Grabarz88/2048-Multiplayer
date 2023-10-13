@@ -21,7 +21,8 @@ public class LocalVesrusSetterScript : MonoBehaviour
 
     public void Start()
     {
-    
+        Scene scene = SceneManager.GetActiveScene();
+        if(scene.name == "BRSettings"){Screen.orientation = ScreenOrientation.LandscapeLeft;}
         Player1PanelSpr = Player1ColorPanel.gameObject.GetComponent<Image>();
         Player2PanelSpr = Player2ColorPanel.gameObject.GetComponent<Image>();
 

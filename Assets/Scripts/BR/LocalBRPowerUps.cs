@@ -27,6 +27,10 @@ public bool isChosing = false;
  GameObject previouslyPlacedBlock;
 public int currentPointerOwnerID;
 public int colorToUse;
+
+[SerializeField] GameObject SettingsButton;
+
+bool needToChangePointerPlace = false;
     
     
     void Start()
@@ -100,24 +104,19 @@ public int colorToUse;
     
     void Update()
     {
-        
-        bool needToChangePointerPlace = false;
+    
         if(isChosing == true && isPointerInUse == true)
         {
             if(Input.GetButtonDown("D") || Input.GetButtonDown("MoveRight"))
             {
-                FreeFieldID++;
-                if(FreeFieldID >= FreeFields.Count){FreeFieldID = 0;}
-                needToChangePointerPlace = true;
+                PointerGoRight();
 
                 // isChosing = false;
                 // SpawnBlock.placingIsFinished = true;
             }
             if(Input.GetButtonDown("A") || Input.GetButtonDown("MoveLeft"))
             {
-                FreeFieldID--;
-                if(FreeFieldID <= -1){FreeFieldID = lastField;}
-                needToChangePointerPlace = true;
+                PoninterGoLeft();
             }
 
             if(needToChangePointerPlace == true)
@@ -128,33 +127,7 @@ public int colorToUse;
 
             if(Input.GetButtonDown("Enter") || Input.GetButtonDown("Spacebar"))
             {
-                Debug.Log("Stawiam");
-                if(blocksLeftToPlace == 1)
-                {
-                    previouslyPlacedBlock = GameObject.Find("block" + (SpawnBlock.blockID-1));
-                    if (previouslyPlacedBlock.GetComponent<LocalBRBlockBehaviourScript>().TableNumberX == SortedFields[FreeFieldID].TableNumberX && previouslyPlacedBlock.GetComponent<LocalBRBlockBehaviourScript>().TableNumberY == SortedFields[FreeFieldID].TableNumberY)
-                    {
-                        Destroy(previouslyPlacedBlock);
-                        SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 4, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
-                    }
-                    else
-                    {
-                        SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 2, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
-                    }
-                }
-                else
-                { 
-                    SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 2, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
-                }
-
-                blocksLeftToPlace--;
-                if(blocksLeftToPlace <= 0)
-                {
-                    Destroy(positionPointer);
-                    isChosing = false;
-                    isPointerInUse = false;
-                    SpawnBlock.placingIsFinished = true;
-                }
+                PointerPlaceBlock();
             }
 
 
@@ -181,6 +154,58 @@ public int colorToUse;
     {
         spawnPlace = new Vector2(SortedFields[FreeFieldID].positionX,SortedFields[FreeFieldID].positionY);
         positionPointer.GetComponent<Transform>().position = spawnPlace;
+    }
+
+    public void PointerGoRight()
+    {
+        if(SettingsButton.GetComponent<ShowSettingsPanel>().isPauseActive == false)
+        {
+            FreeFieldID++;
+            if(FreeFieldID >= FreeFields.Count){FreeFieldID = 0;}
+            needToChangePointerPlace = true;
+        }
+    }
+
+    public void PointerPlaceBlock()
+    {
+        if(SettingsButton.GetComponent<ShowSettingsPanel>().isPauseActive == false)
+        {
+            if(blocksLeftToPlace == 1)
+            {
+                previouslyPlacedBlock = GameObject.Find("block" + (SpawnBlock.blockID-1));
+                if (previouslyPlacedBlock.GetComponent<LocalBRBlockBehaviourScript>().TableNumberX == SortedFields[FreeFieldID].TableNumberX && previouslyPlacedBlock.GetComponent<LocalBRBlockBehaviourScript>().TableNumberY == SortedFields[FreeFieldID].TableNumberY)
+                {
+                    Destroy(previouslyPlacedBlock);
+                    SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 4, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
+                }
+                else
+                {
+                    SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 2, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
+                }
+            }
+            else
+            { 
+                SpawnBlock.InstantiateThisColorWithThisOwner(colorToUse, 2, currentPointerOwnerID, SortedFields[FreeFieldID].TableNumberX, SortedFields[FreeFieldID].TableNumberY);
+            }
+            blocksLeftToPlace--;
+            if(blocksLeftToPlace <= 0)
+            {
+                Destroy(positionPointer);
+                isChosing = false;
+                isPointerInUse = false;
+                SpawnBlock.placingIsFinished = true;
+            }
+        }
+    }
+
+    public void PoninterGoLeft()
+    {
+        if(SettingsButton.GetComponent<ShowSettingsPanel>().isPauseActive == false)
+        {
+        FreeFieldID--;
+        if(FreeFieldID <= -1){FreeFieldID = lastField;}
+        needToChangePointerPlace = true;
+        }
     }
 
     

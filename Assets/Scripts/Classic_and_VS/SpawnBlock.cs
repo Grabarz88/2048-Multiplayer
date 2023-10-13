@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class SpawnBlock : MonoBehaviour
 {
     public GameObject gameOverPanel;
+    public GameObject settingButton;
+    public GameObject arrowsCanvas;
     GameObject block;
     [SerializeField] GameObject block2;
     [SerializeField] GameObject block4;
@@ -20,8 +22,7 @@ public class SpawnBlock : MonoBehaviour
     [SerializeField] GameObject block1024;
     [SerializeField] GameObject block2048;
     [SerializeField] GameObject block4096;
-    //Następne bloki trzeba będzie dorobić i dodać
-
+    
     [SerializeField] GameObject FieldSpawner;
     FieldScript FieldScript;
     SpawnField SpawnField;
@@ -32,6 +33,9 @@ public class SpawnBlock : MonoBehaviour
    [SerializeField] GameObject ScoreCounter;
    ScoreCounterScript ScoreCounterScript;
 
+   [SerializeField] GameObject PlayFabLeaderboardManager;
+
+    bool gameOn;
     int idleCounter;
     int finishedSearchingCounter;
     int willMoveCounter;
@@ -46,6 +50,7 @@ public class SpawnBlock : MonoBehaviour
 
     void Start()
     {
+        gameOn = true;
         gameOverPanel.gameObject.SetActive(false);
         ScoreCounter = GameObject.Find("ScoreCounter");
         ScoreCounterScript = ScoreCounter.GetComponent<ScoreCounterScript>();
@@ -63,21 +68,15 @@ public class SpawnBlock : MonoBehaviour
         blocks.Add(block);
         block.gameObject.name = "block" + blockID;
         blockID++;
-
- 
-        
-
-
-
-        // SpawnNewBlock();   
+  
          
     }
 
     void Update()
     {
-        // Debug.Log(blocks.Count);
-        // try
-        // {
+   
+        if(gameOn == true)
+        {
             blocks.TrimExcess();
             idleCounter = 0;
             finishedSearchingCounter = 0;
@@ -106,7 +105,7 @@ public class SpawnBlock : MonoBehaviour
                     BlockBehaviourScript.executeWaitingForDir();
                 }
             }
-           
+        
             if(finishedSearchingCounter == blocks.Count && willMoveCounter > 0)
             {
                 foreach(GameObject block in blocks)
@@ -141,8 +140,7 @@ public class SpawnBlock : MonoBehaviour
                 }
                 SpawnNewBlock();
             }
-        // }
-        // catch{}
+        }
     }
     
     public void SpawnNewBlock()
@@ -185,7 +183,7 @@ public class SpawnBlock : MonoBehaviour
                             blockSpawned = true;
                             
                             ClearAfterSpawn();
-                            // CheckForGameOver();
+                            
                         }
                     }
 
@@ -228,8 +226,7 @@ public class SpawnBlock : MonoBehaviour
         }
         if(canMove == 0) 
         {
-            Debug.Log("TRUE GAME OVER");
-            gameOverPanel.gameObject.SetActive(true);
+            GameOver();
         }
     }
 
@@ -261,6 +258,23 @@ public class SpawnBlock : MonoBehaviour
     {
         // Debug.Log("RemoveBlockFromList");
         blocks.Remove(block);
+    }
+
+
+    //This function will stop Update from searching for places to spawn blocks and will check for possibility to send score data to online Leaderboard.
+    public void GameOver()
+    {
+        gameOn = false;
+        Debug.Log("TRUE GAME OVER");
+        gameOverPanel.gameObject.SetActive(true);
+        arrowsCanvas.SetActive(false);
+        settingButton.SetActive(false);
+        //We will check if SpawnField got confirmation, that we play Classic mode and can send score to online Leaderboard.
+        if(PlayFabLeaderboardManager.activeSelf == true)
+        {
+            PlayFabLeaderboardManager.GetComponent<PlayFabLeaderboardManagerScript>().Login();
+            // PlayFabLeaderboardManager.GetComponent<PlayFabLeaderboardManagerScript>().SendLeaderboard(ScoreCounterScript.GetPoints());
+        }
     }
 
 }
